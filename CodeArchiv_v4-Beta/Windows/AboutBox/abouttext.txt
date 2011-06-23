@@ -1,0 +1,9 @@
+This is a small example text for the AboutBox example.
+
+Dies ist ein kleiner Beispieltext für das AboutBox Beispiel.
+
+         www.PureBasic.com
+         www.PureArea.net
+
+          Code by Wichtel
+          German PB forum

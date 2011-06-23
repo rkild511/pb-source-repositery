@@ -1,0 +1,142 @@
+This text goes inside a multiline StringGadget.
+2
+3
+4
+5
+6
+7
+If OpenWindow(0,200,200,300,150,#PB_Window_SystemMenu,"test")
+  CreateGadgetList(WindowID())
+  t$="This text goes inside a multiline StringGadget."+Chr(13)+Chr(10)
+  For r=2 To 10 : t$+Str(r)+Chr(13)+Chr(10) : Next
+  StringGadget(0,10,10,200,100,t$,#PB_String_Multiline|#ES_AUTOVSCROLL|#WS_VSCROLL|#WS_HSCROLL)
+  ButtonGadget(1,230,10,50,20,"Save")
+  ButtonGadget(2,230,40,50,20,"Load")
+  ButtonGadget(3,230,70,50,20,"Info")
+  Repeat
+    ev=WaitWindowEvent()
+    If ev=#PB_Event_Gadget
+      Select EventGadgetID()
+        Case 1 ; Save
+          If CreateFile(0,"MultiLine.txt")
+            WriteStringN(GetGadgetText(0))
+            CloseFile(0)
+          EndIf
+        Case 2 ; Load
+          If ReadFile(0,"MultiLine.txt")
+            a$=""
+            Repeat
+              a$+ReadString()+Chr(13)+Chr(10)
+            Until Eof(0)<>0
+            CloseFile(0)
+            SetGadgetText(0,a$)
+          EndIf
+        Case 3 ; Info
+          lines=SendMessage_(GadgetID(0),#EM_GETLINECOUNT,0,0)
+          where=SendMessage_(GadgetID(0),#EM_LINEFROMCHAR,-1,0)+1
+          MessageRequester("Info",Str(lines)+" lines in the box."+Chr(13)+"You are on line "+Str(where)+".",0)
+      EndSelect
+    EndIf
+  Until ev=#PB_Event_CloseWindow
+EndIf
+
+If OpenWindow(0,200,200,300,150,#PB_Window_SystemMenu,"test")
+  CreateGadgetList(WindowID())
+  t$="This text goes inside a multiline StringGadget."+Chr(13)+Chr(10)
+  For r=2 To 10 : t$+Str(r)+Chr(13)+Chr(10) : Next
+  StringGadget(0,10,10,200,100,t$,#PB_String_Multiline|#ES_AUTOVSCROLL|#WS_VSCROLL|#WS_HSCROLL)
+  ButtonGadget(1,230,10,50,20,"Save")
+  ButtonGadget(2,230,40,50,20,"Load")
+  ButtonGadget(3,230,70,50,20,"Info")
+  Repeat
+    ev=WaitWindowEvent()
+    If ev=#PB_Event_Gadget
+      Select EventGadgetID()
+        Case 1 ; Save
+          If CreateFile(0,"MultiLine.txt")
+            WriteStringN(GetGadgetText(0))
+            CloseFile(0)
+          EndIf
+        Case 2 ; Load
+          If ReadFile(0,"MultiLine.txt")
+            a$=""
+            Repeat
+              a$+ReadString()+Chr(13)+Chr(10)
+            Until Eof(0)<>0
+            CloseFile(0)
+            SetGadgetText(0,a$)
+          EndIf
+        Case 3 ; Info
+          lines=SendMessage_(GadgetID(0),#EM_GETLINECOUNT,0,0)
+          where=SendMessage_(GadgetID(0),#EM_LINEFROMCHAR,-1,0)+1
+          MessageRequester("Info",Str(lines)+" lines in the box."+Chr(13)+"You are on line "+Str(where)+".",0)
+      EndSelect
+    EndIf
+  Until ev=#PB_Event_CloseWindow
+EndIf
+
+If OpenWindow(0,200,200,300,150,#PB_Window_SystemMenu,"test")
+  CreateGadgetList(WindowID())
+  t$="This text goes inside a multiline StringGadget."+Chr(13)+Chr(10)
+  For r=2 To 10 : t$+Str(r)+Chr(13)+Chr(10) : Next
+  StringGadget(0,10,10,200,100,t$,#PB_String_Multiline|#ES_AUTOVSCROLL|#WS_VSCROLL|#WS_HSCROLL)
+  ButtonGadget(1,230,10,50,20,"Save")
+  ButtonGadget(2,230,40,50,20,"Load")
+  ButtonGadget(3,230,70,50,20,"Info")
+  Repeat
+    ev=WaitWindowEvent()
+    If ev=#PB_Event_Gadget
+      Select EventGadgetID()
+        Case 1 ; Save
+          If CreateFile(0,"MultiLine.txt")
+            WriteStringN(GetGadgetText(0))
+            CloseFile(0)
+          EndIf
+        Case 2 ; Load
+          If ReadFile(0,"MultiLine.txt")
+            a$=""
+            Repeat
+              a$+ReadString()+Chr(13)+Chr(10)
+            Until Eof(0)<>0
+            CloseFile(0)
+            SetGadgetText(0,a$)
+          EndIf
+        Case 3 ; Info
+          lines=SendMessage_(GadgetID(0),#EM_GETLINECOUNT,0,0)
+          where=SendMessage_(GadgetID(0),#EM_LINEFROMCHAR,-1,0)+1
+          MessageRequester("Info",Str(lines)+" lines in the box."+Chr(13)+"You are on line "+Str(where)+".",0)
+      EndSelect
+    EndIf
+  Until ev=#PB_Event_CloseWindow
+EndIf
+
+If OpenWindow(0,200,200,300,150,#PB_Window_SystemMenu,"test")
+  CreateGadgetList(WindowID())
+  t$="This text goes inside a multiline StringGadget."+Chr(13)+Chr(10)
+  For r=2 To 10 : t$+Str(r)+Chr(13)+Chr(10) : Next
+  StringGadget(0,10,10,200,100,t$,#PB_String_Multiline|#ES_AUTOVSCROLL|#WS_VSCROLL|#WS_HSCROLL)
+  ButtonGadget(1,230,10,50,20,"Save")
+  ButtonGadget(2,230,40,50,20,"Load")
+  ButtonGadget(3,230,70,50,20,"Info")
+  Repeat
+    ev=WaitWindowEvent()
+    If ev=#PB_Event_Gadget
+      Select EventGadgetID()
+        Case 1 ; Save
+          If CreateFile(0,"MultiLine.txt")
+            WriteStringN(GetGadgetText(0))
+            CloseFile(0)
+          EndIf
+        Case 2 ; Load
+          If ReadFile(0,"MultiLine.txt")
+            a$=""
+            Repeat
+              a$+ReadString()+Chr(13)+Chr(10)
+            Until Eof(0)<>0
+            CloseFile(0)
+            SetGadgetText(0,a$)
+          EndIf
+        Case 3 ; Info
+          lines=SendMessage_(GadgetID(0),#EM_GETLINECOUNT,0,0)
+          where=SendMessage_(GadgetID(0),#EM_LINEFROMCHAR,-1,0)+1
+          MessageRe

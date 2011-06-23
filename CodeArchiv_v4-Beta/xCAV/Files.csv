@@ -1,0 +1,1302 @@
+AccessDatabase;Zugriff auf eine Access-Datenbank
+CreateDatabase;Erstellung einer Datenbank
+Database_Access+Excel;Zugriff auf Access-Datenbanken und Excel-Tabellen
+EasyBaseDLL_Include;Include-Datei für die Einbindung der EasyDB.dll
+LibMySQL-DLL_Example;Beispiel für die Verwendung von MySQL mittels der LibMySQL.dll
+MSSQL_ODBC-DSN_on-the-fly;Online-Zugriff auf einen MS SQL Server
+OpenSQLDatabase;SQL Datenbank-Zugriff 
+SQL;Bearbeiten einer SQL-Datenbank mit GUI
+SQLite_UseTwoDatabases;Datenbank Zugriff auf zwei Datenbanken gleichzeitig
+UseTsunamiDatabase;Datenbank-Zugriff mit der 'Tsunami.dll'
+Base64_Decode;Dekodierungs-Prozedur für Base64
+Base64_Decoder_Example;Beispiel für den Gebrauch von Base64_Decode
+Ceasar_Chiffre;Kodierung mit dem Caesar-Chiffre
+Checksum_Adler32;Prüfsumme Adler32
+Checksum_CRC32;Prüfsumme CRC32
+Checksum_ELF32;Prüfsumme ELF32
+Checksum_FNV32;Prüfsumme FNV32
+CryptoSys_En&Decryption;Kodierung und Dekodierung mit CryptoSys
+FileEncryptionViaSinusFunction;Datei-Verschlüsselung mittels der Sinus-Funktion
+MD5_FileFingerPrint;'Tastenabdruck' mittels MD5
+Password-Finder;Passwort-Finder für Eingabefelder
+PGP_Encryption;PGP-Kodierung
+RC4_Mem;RC4-Verschlüsselung
+RC4_SpeedImproved;RC4-Verschlüsselung in einer geschwindigkeitsoptimierten Version
+Rot13-Encryption;Rot13-Verschlüsselung
+Text_Chiffre;Text verschlüsseln
+Text_Encode+Decode1;Text kodieren und dekodieren
+Text_Encode+Decode2;Text kodieren und dekodieren
+Text_EncyrptWithPassword;Text mit Passwort verschlüsseln
+UserExample(Serials);Anwender-Beispiel für 'Serials'
+XorByte;Eingaben byteweise mittels Xor verschlüsseln
+XorWithKey;Xor-Verschlüsselung mit Kennwort
+Directory&File_Tree;Verzeichnisse und Dateien als Baum anzeigen
+DirectoryContent2File;Verzeichnisinhalt in Datei schreiben
+DirectoryTree&FileAttributes;Verzeichnisbaum und Datei-Attribute
+DirTree;Verzeichnisbaum
+ExamineDirectory;Verzeichnis untersuchen
+FlashCompare;Blitz-Vergleich von Dateien
+GetDirectorySize_Bytes;Verzeichnis-Größe in Bytes ermitteln
+Get_DirectorySize;Verzeichnisgröße ermitteln
+ListContents_of_Drives;Alle Laufwerke und deren Inhalte anzeigen
+ListFiles;Alle Dateien eines angegebenen Verzeichnisss auflisten
+NextDirectoryEntry_sorted;Verzeichnisinhalt sortiert in einem ListIcon anzeigen
+Path-Selector;Verzeichnis-Auswahl
+ReadDirs;Verzeichnisse auslesen
+AutoCompletePath;Automatische Pfad-Vervollständigung
+ComboBox_DirectoryLister;Verzeichnisse in einer Auswahlbox anzeigen
+Get_Systemfolders;System-Verzeichnisse ermitteln
+Get_Systemroot_Var;Pfad zum 'System-Root' Verzeichnis ermitteln
+List_ComputerDrives;Laufwerke auflisten
+CRC32_Checksum;CRC32-Prüfsumme des PB-Editors ermitteln
+FileCompare;Dateien vergleichen
+FileCRC32_Checksum;CRC32-Prüfsumme einer Datei ermitteln
+FileDigitalizer;Dateien digitalisieren und zurück
+FileFunctions;Datei-Funktionen
+FileName_HandleNameLength;Funktionen zum Umgang mit DOS-Dateinamen
+FileTime&Date;Verschiedene Datums- und Zeitangaben zu einer Datei ermitteln
+File_Load&Save&Time&Date&more;Datei laden & speichern, Zeit & Datum ermitteln & mehr
+GetFileAttributes;Datei-Attribute laden
+GetFileAttributesMask;Datei-Attribute laden mit Maske
+GetFileDate+Time;Datei Erstellungszeit und -datum ermitteln
+GetFilename2;Name und Pfad einer Exe-Datei ermitteln
+HexViewer_HD+Files;Hex-Anzeiger für Festplatten und Dateien
+IsNameValid;Gültigkeit eines Dateinamens überprüfen
+PureGolf_FileCounter;Puregolf - Anzahl der Zeichen in einer .pb Datei auslesen
+SetReadOnlyFlagOff;Entfernen des 'Read-Only' [nur lesen] Flags von Dateien und Verzeichnissen
+BatchRenamer;Alle Dateien eines Verzeichnisses umbenennen
+Data_load&save;Beispielprogramm zum Laden, Bearbeiten und Speichern von Textdateien
+DynamicFileHandles;Dynamische Datei-Handles
+FileMapping;Beispiel für FileMapping anhand einer Bilddatei
+FileParser;Datei-Parser
+FileSeek;Suche innerhalb von Dateien
+Files_Read&Write_blockwise;Dateien blockweise lesen & speichern
+Hex-Viewer;Hex-Datei-Anzeiger
+Load_NFO-Files;NFO-Dateien laden
+OpenFile_Example;'Datei Öffnen' Beispiel
+ReadFiles_to_Array;Dateien in Array einlesen
+ReadFiles_to_List;Dateien in Liste einlesen
+ReadFile_from_Parameter;Datei anhand eines übergegebenen Programmparameters lesen
+ReadFile_Hex&Bin;Datei hexadezimal & binär einlesen
+ReplaceFileData;Datei-Inhalt ersetzen
+SaveLinkedLists;Inhalt verknüpfter Listen speichern
+SeekFile;Pfad einer angegebenen Datei ermitteln
+WriteFileToTempDir;Schreibe Datei ins Temp Verzeichnis
+File_FindPath;Pfad der Datei ermitteln
+GetCurrentDir;Aktuelles Verzeichnis ermitteln
+GetExePath;Pfad der Exe ermitteln
+GetFullPathName;Vollständigen Pfad einer Datei ermitteln
+GetPureBasicDir;Pfad des PureBasic-Verzeichnisses ermitteln
+GetTempPath;Pfad des Temp-Verzeichnisses ermitteln
+ShortenPathName;Verzeichnisnamen kürzen
+CreateIncludeFile;Include-Datei erstellen
+ExpandBinary;Executable erweitern
+Include-Text;Text-Datei in die Exe einbinden
+Include-Textfile;Text-Datei in die Exe einbinden
+IncludeBinary;Beispiel für das Einbinden von .exe, .doc und .dll Dateien
+IncludeBitmap;Bilder in die Exe einbinden
+CopyProtection_Disksize;Einfacher Kopierschutz mittels Vergleich der Festplattengröße
+FileAssociate;Icons mit Dateitypen verknüpfen
+ForceDirectories;Mehrere Unterverzeichnisse mit nur einem Aufruf erstellen
+RecentFileList;Zuletzt benutzte Dateien im Programm anzeigen
+ShortenPathStrings;Lange Pfad-/Dateinamen abkürzen
+Cab_Boy;Eigene Cab-Dateien erstellen
+CreatePack_Example;Beispiel für das Erstellen von Pack-Archiven
+File-Splitter;Dateien teilen und wieder zusammenfügen
+Files_Pack&UnPack;Dateien packen und entpacken
+Packing_recursive_Files&Folders;Rekursives Packen und Dateien und Verzeichnissen
+PackUnpack_with-Filenames;Packen und Entpacken mit Dateinamen
+saucisson_jc;
+UnRar_Example;Beispiel für das Entpacken von RAR-Archiven mit der UnRar.dll
+UnRar_Include;Include-Datei für das Verwenden der UnRar.dll mit PureBasic
+INI-Files_Read&Write;INI-Dateien lesen und schreiben
+Preferences_load+save;Einstellungen laden und speichern
+SavePreferences;Einstellungen speichern
+WriteINIFile;INI-Datei Schreiben
+CoolFonts1;Coole Schriften 1
+CoolFonts2;Coole Schriften 2
+DefaultFontID;Verwendung einer Standard-Schriftart
+FontLister;Schriftarten auflisten
+Get_Systemfonts;Systemschriften anzeigen
+LoadAdditionalFonts;Zusätzliche Schriftarten laden und freigeben
+ScalableText;Skalierbarer Text
+ScalableText_W98;Skalierbarer Text (für ältere Windows-Versionen)
+ButtonGadget_Clicktypes1;Verschiedene Möglichkeiten zum Anklicken eines ButtonGadgets
+ButtonGadget_Clicktypes2;Verschiedene Möglichkeiten zum Anklicken eines ButtonGadgets
+Buttons_Eventtypes;Ereignistypen für ein ButtonGadget
+Buttons_LeftRight_Click;Schalter links/rechts anklicken
+FlatButton;Flacher Schalter
+OwnButtonImage;Eigene Bilder für Schalter verwenden
+ToggleButtons;Umschalt-Knöpfe
+Cloning_Windows&Gadgets;Fenster mit Gadgets klonen
+Background_Color;Hintergrund-Farbe festlegen
+Buttons_Colors;Schalter-Farben festlegen
+Buttons_Fonts_Colored;Farbige Schrift für Schalter
+ColoredButtons;Gefärbte Schalter
+ColoredButtons2;Gefärbte Schalter
+ColoredGadgets;Gefärbte Gadgets
+ColorizeButton;Farben für Knöpfe
+GadgetBackgroundColor;Hintergrund-Farbe für Gadgets
+Gadgets_Coloring;Gadgets einfärben
+Gadget_Use_SystemBackgroundColor;Verwende die System-Hintergrundfarbe für Gadgets
+GetGadgetTextSize;Textgröße von Gadgets ermitteln
+ListView_BackColor;ListView-Hintergrundfarbe
+String_and_ListIcon;Gefärbte String- und ListIcon-Gadgets
+TextGadget_BackgroundColor;TextGadget-Hintergrundfarbe
+TextGadget_Colored1;Coloriertes Textgadget
+TextGadget_Colored2;Coloriertes Textgadget
+ComboBox;Inhalt der Auswahlbox auswählen und anzeigen
+ComboBoxGadget;Inhalt der Auswahlbox auswählen und anzeigen
+ComboBox_AutoCompletion;Automatische Vervollständigung für die Auswahlbox
+ComboBox_CallList;Auswahlbox auf Knopfdruck aufklappen
+ComboBox_Colored;Farben für Auswahlbox
+ComboBox_DetectFocus;Fokus der Auswahlbox ermitteln
+ComboBox_Events;Ereignisse für Auswahlbox abfragen
+ComboBox_Example;Auswahlbox-Beispiele
+ComboBox_Keyboard;Auswahlbox mit Tastatur steuern
+ComboBox_OwnerDrawn;Auswahlbox mit Icon und besonderer Farbe
+ComboBox_ReturnKey;Auswahlbox mit Enter bestätigen
+ComboBox_SearchEntry;Position eines Eintrags in der Auswahlbox ermitteln
+ComboBox_Sorted;Auswahlbox mit sortiertem Inhalt
+ComboBox_UseOwnIcons;Auswahlbox mit eigenen Icons
+Date_Gadget;Datums-Gadget
+CatchRTF;In die Exe eingebundene RTF-Dateien in das Editorgadget laden
+EditorGadget_ChangeBackgroundColor;Hintergrundfarbe des Editorgadgets ändern
+EditorGadget_Color+Styles;Farben und Stile im Editorgadget ändern
+EditorGadget_Colors+Styles2;Farben und Stile im Editorgadget ändern
+EditorGadget_CountLines;Zeilen im Editorgadget zählen
+EditorGadget_DefineVisibleArea;Sichtbaren Bereich im Editorgadget definieren
+EditorGadget_FastTextLoading;Schnelleres Laden von Text in das Editorgadget
+EditorGadget_GetCursorPosition;Cursor-Position im Editorgadget ermitteln
+EditorGadget_HyperLink;EditorGadget mit Hyperlink
+EditorGadget_IncludeRTF;RTF-Dateien in das Editorgadget laden
+EditorGadget_InsertText;Text im Editorgadget einfügen
+EditorGadget_Link-inside;Editorgadget mit eingefügten Links
+EditorGadget_load+save;Laden und Speichern im Editorgadget
+EditorGadget_Print-Smiley;Smileys im Editorgadget ausgeben
+EditorGadget_Print;Inhalt des Editorgadgets drucken
+EditorGadget_PrintProcedure;Druck-Prozedur für das Editorgadget
+EditorGadget_Print_with_Border;Inhalt des EditorGadget unter Berücksichtigung von Randeinstellungen ausdrucken
+EditorGadget_Readonly;Editorgadget zum 'Nur Lesen', d.h. ohne Schreibmöglichkeit
+EditorGadget_SelectAll;Gesamten Inhalt des Editorgadgets auswählen
+EditorGadget_TabEditing;Tabulator im Editorgadget benutzen
+EditorGadget_Zooming;Zoom-Funktion für das Editorgadget
+Edit_Control_API;Texteingabe mittels dem WinAPI Edit-Control
+ExplorerTreeGadget_BackgroundPic;ExplorerTreeGadget mit Hintergrundbild
+ExplorerTreeGadget_colored_Background;ExplorerTreeGadget mit farbigem Hintergrund
+ExplorerTreeGadget_Dirs&Files;Verzeichnisse und Dateien anzeigen
+ExplorerTreeGadget_jaPBe;ExplorerTreeGadget wie es in 'jaPBe' verwendet wird
+FreeFormButtons1;Selbstgestaltete Schaltknöpfe
+FreeFormButtons2;Selbstgestaltete Schaltknöpfe
+GadgetDEMO;Demonstration vieler der in PureBasic verfügbaren Gadgets
+Button_with_KeyboardEvent;Buttons mit Tastatur verknüpfen
+DetectMouseOverGadget;Erkennen, wenn sich die Maus über einem Gadget befindet
+Enable&DisableButtons;Schalter aktivieren & deaktivieren
+Gadgets_Check_RightMouseClick;Rechten Mausklick bei Gadgets erkennen
+Gadgets_OnMouseOver;Mouseover bei selbstgezeichneten Gadgets erkennen
+Gadgets_with_KeyboardShortcuts;Gadgets mit Tastaturkürzel verknüpfen
+Gadget_Show&Hide;Gadgets verstecken und anzeigen
+IsGadgetEnabled;Überprüfen, ob ein Gadget aktiviert ist
+IsMouseOverGadget;Mouseover bei Gadgets erkennen
+SetDefaultButton;Standardmäßig aktivierten Schalter festlegen
+ActivateGadget;Gadget aktivieren
+ButtonGadget;
+ButtonImageGadget;
+CheckBoxGadget;
+ClearGadgetItemList;
+ComboBoxGadget;Inhalt der Auswahlbox auswählen und anzeigen
+ContainerGadget;
+CreateGadgetList;
+DisableGadget;
+EditorGadget;
+Frame3DGadget;
+GadgetTooltip;
+HideGadget;
+HyperLinkGadget;
+ImageGadget;
+IPAddressGadget;
+ListIconGadget;
+ListIconGadget_AddColumns;
+ListIconGadget_Image;
+ListViewGadget;
+OptionGadget;
+PanelGadget;
+ProgressBarGadget;
+ScrollAreaGadget;
+ScrollBarGadget;
+SetGadgetFont;
+SpinGadget;
+SplitterGadget;
+StringGadget_Flags;
+TextGadget;
+TrackBarGadget;
+TreeGadget;
+TreeGadget_Image;
+WebGadget;
+Gagets_with_BackgroundImage;Gadgets mit Hintergrundbild
+GetGadgetType;GadgetTyp erkennen
+GridControl;Gitter-Eingabefelder
+GridGadget;Gitter-Eingabefelder
+GridGadget_Edit;Gitter-Eingabefelder
+Hyperlink_API_1;HyperLink per WinAPI
+Hyperlink_API_2;HyperLink per WinAPI
+HyperTextGadget_Colored;Farben für HyperTextGadget
+ButtonImageGadget;
+CustomImageGadget;Selbstgemachtes ImageGadget
+ImageButtons_flat+borderless;Flache und rahmenlose ImageGadget
+ImageGadget_MouseEvents;Mausabfrage beim ImageGadget
+ImageGadget_Move;ImageGadget verschieben
+ImageGadget_SaveContent;Inhalt des ImageGadget speichern
+Save_ButtonImage_as_BMP;ButtonImage als BMP-Datei speichern
+Window_MoveImage;Bild auf dem Fenster bewegen
+LargeGadgetDisplay_UsingCallback;Große Programm-Oberfläche unter Verwendung von Callbacks
+Get&SetListIconColumnText;Tabellenüberschrift von ListIcon ermitteln und setzen
+ListIconColumn_Delete&Count;Spalten des ListIcons löschen und zählen
+ListIconGadget_Column&SortArrows;Sortierbares ListIcon mit Richtungspfeilen im Spaltenkopf
+ListIcon_BackgroundImage;ListIcon mit Hintergrundbild
+ListIcon_Check&UnCheck;ListIcon abhaken und Häkchen entfernen
+ListIcon_CheckStyles;Stil des ListIcons ermitteln
+ListIcon_Colored;Farbiges ListIcon
+ListIcon_Column+Index;Zeile und Spalte eines angeklickten Elements im ListIcon erkennen
+ListIcon_Custom;Selbstgemachtes ListIcon
+ListIcon_Detect_selected_Item;Im ListIcon markiertes Element erkennen
+ListIcon_DragnDrop+Sorting;Drag'n'Drop im ListIcon mit Sortierung
+ListIcon_DragnDrop;Drag'n'Drop im ListIcon
+ListIcon_DragnDrop_Tutorial;Tutorial über Drag'n'Drop im ListIcon
+ListIcon_Editable;Editierbares ListIcon
+ListIcon_FixedColumnHeader;Feste Spaltenbreite im ListIcon
+ListIcon_Font+Color;Schriftart und Farbe für das ListIcon festlegen
+ListIcon_Get-Column;Angeklickte Spalte im ListIcon erkennen
+ListIcon_GetPositions;Position des angeklickten Elements erkennen
+ListIcon_HeaderImages1;ListIcon mit Bilder in der Spaltenüberschrift
+ListIcon_HeaderImages2;ListIcon mit Bilder in der Spaltenüberschrift
+ListIcon_HeaderImages3;ListIcon mit Bilder in der Spaltenüberschrift
+ListIcon_left+middle+right;Elemente im ListIcon linksbündig, zentriert oder rechtsbündig anzeigen
+ListIcon_MoveElement;Aktiviertes Element im ListIcon nach oben/unten bewegen
+ListIcon_Scroll;Aktives Element im scrollbaren ListIcon festlegen
+ListIcon_Search;Suchfunktion zum Auffinden von ListIcon-Elementen
+ListIcon_set_Color+Font;Farbe und Schriftart für das ListIcon festlegen
+ListIcon_SortbyColumn;ListIcon nach Spalte sortieren
+ListIcon_UseSystemIcons;SystemIcons im ListIcon verwenden
+ListBox_Sort;Neue Einträge sortiert in der ListBox ablegen
+ListBox_NoBorders;ListBox ohne Rahmen
+Listview&ListIcon_Borderless;ListView und ListIcon ohne Rahmen
+ListView+Output;Im Listview angeklickte Elemente gesondert ausgeben
+ListView_AddItemsSorted;Sortierte Items zum ListView hinzufügen
+ListView_as_InputBox;Listview als InputBox
+ListView_BackgroundImage;Listview mit Hintergrundbild
+Listview_Focus;Feststellen, wenn das Listview den Fokus erhält/verliert
+ListView_HideScrollBar;Scrollbar vom Listview verstecken
+ListView_NewItemVisible;Neuesten Eintrag im sichtbaren Bereich des Listview behalten
+Listview_SetFont;Schriftart für das Listview festlegen
+Resize_ListView;Größe des Listview verändern
+OptionGadget_DoubleClick;OptionGadget mit Doppelklick
+OutlookGadget;
+DrawingOnPanel;Auf Panel zeichnen
+GetPanelItemWidth&Height;Breite und Höhe eines Panels ermitteln
+HideGadget_in_Panel;Gadget auf dem Panel verstecken
+PanelGadgetwithImages;Panelgadget mit Bildern
+PanelGadget_Detect_Tab;Aktuelles Panel erkennen
+PanelGadget_Multiline;Panelgadget mit mehrzeiligen Tabs
+PanelGadget_Resize;Größe des Panels anpassen
+PanelsOnFrameGadget;Panels auf einem Framegadget
+Tab-Control;Panelgadget mittels WinAPI
+Progressbar_Color;Farbige Fortschrittsanzeige (mittels SkinWin)
+ProgressBar_colored;Farbige Fortschrittsanzeige
+ProgressBar_for_Music;Fortschrittsanzeige für Musik missbrachen
+ProgressBar_in_ListView;Fortschrittsanzeige im ListView
+SetProgressBarRange;Werte-Bereich für die Fortschrittsanzeige festlegen
+Gadget_Resize_on_the_Fly;Gadgets in Echtzeit an eine Größenveränderung anpassen
+Window+Gadget_Resize;Fenster und Gadgets in der Größe anpassen
+RichEdit;RichEdit-Eingabecontrol
+RichEditonPanelGadget;
+RichEdit_Panel;
+RichEdit_Printing;
+RichEdit_ReadOnly;
+ResizeScrollArea_Command;Größe des Scrollbereichs anpassen
+ResizeScrollArea_Desktop;
+ResizeScrollArea_MultiWindow;
+ScrollAreaGadget_AutoResize;Automatische Größenanpassung des Scrollareagadgets
+ScrollAreaGadget_Example;
+ScrollAreaGadget_Example2;
+ScrollAreaGadget_RelativeMousePos;
+ScrollAreaGadget_ShowPositions;
+Scroll;Scrollen
+ScrollBarWidth+Height;Breite und Höhe der Scrollbalken ermitteln
+ScrollBar_RealtimeStatus;Information zu den Scrollbalken in Echtzeit aktualisieren
+ScrollBar_SetColor;Farbe der Scrollbalken setzen
+ScrollGadget2;
+ScrollGadget_with_Delete;
+Advanced_SpinGadget;
+SpinGadget;
+SpinGadget_API;
+SpinGadget_as_Combobox;
+SpinGadget_Editable;
+SpinGadget_using;
+ResizeSplitterGadget;
+SplitterGadget_Example;
+SplitterGadget;
+SplitterGadget2;
+MultilineStringGadget;Mehrzeiliges Stringgadget
+NumbersInStringGadget;Eingabe im Stringgadget auf Zahlen beschränken
+ReActivateStringGadget;Stringgadget nach Erhalt des Fokus automatisch aktivieren
+StringGadgets_Tab;Per Tabulator von einem Stringgadget zum nächsten springen
+StringGadget_AutoWordWrap;Automatisches Wort-Umbruch im Stringgadget
+StringGadget_CheckforChanges;StringGadget auf inhaltliche Änderungen überprüfen
+StringGadget_Color;Farbiges Stringgadget
+StringGadget_Countdown;'Count-Down' im Stringgadget
+StringGadget_FilterInput;Eingabe im Stringgadget filtern
+StringGadget_GetCursorPosition;Cursor-Position im Stringgadget ermitteln
+StringGadget_KeyboardShortcut;Stringgadget mit Tastaturkürzeln
+StringGadget_Limited;Maximale Anzahl einzugebender Zeichen festlegen
+StringGadget_move_around;Per Tabulator und Cursor-Tasten zwischen mehreren Stringgadgets bewegen
+StringGadget_Multiline;Mehrzeiliges Stringgadget
+StringGadget_Numeric;Stringgadget mit numerischer Eingabe
+StringGadget_Outlined+Enter;'Outline'-Stringgadget und Enter überprüfen
+StringGadget_OwnPopupMenu;Stringgadget mit eigenem Popup-Menü
+StringGadget_Readonly_on+off;'Nur lesen' Funktion im Stringgadget ein- und ausschalten
+StringGadget_Return;Return-Eingabe im Stringgadget feststellen
+StringGadget_ReturnHandler;Return-Eingabe im Stringgadget feststellen
+StringGadget_ScrollText;Lauftext im Stringgadget
+StringGadget_Select;Text im Stringgadget markieren
+StringGadget_SelectAll;Kompletten Text im Stringgadget markieren
+StringGadget_SetCursor;Cursor-Position im Stringgadget festlegen
+StringGadget_WordWrap;Automatischer Zeilenumbruch bei langen Strings
+Textbox;
+Textbox2;
+BalloonTips_with_Icon&Title;Ballon-Tipps mit Icons und Titel
+ToolTipps;Hinweistexte
+ToolTip_API;
+FaderTrackBar;
+TrackbarGadgets;
+TrackBarGadget_Example;Trackbar Gadget Beispiel
+Trackbar_Colored;
+TrackBar_SetFocus;Fokus auf das Trackbar setzen
+DragnDrop;Drag'n'Drop [Ziehen und Fallen lassen]
+ShowTreeViewNodeNames;
+TreeGadget_BackgroundImage;Treegadget mit Hintergrundbild
+TreeGadget_Detect_RMB;Rechten Mausklick im Treegadget erkennen
+TreeGadget_Expand+Collapse;Treegadget öffnen und schließen
+TreeGadget_Functions;Treegadget-Hilfsfunktionen
+TreeGadget_MarkOnlyParentNode;
+TreeGadget_with_Functions;Treegadget-Einträge mit zugeordneten Funktionen
+WebGadget_Actualize;Webgadget aktualisieren
+WebGadget_DetectLoadFinish;Ende des Lade-Vorgangs im Webgadget erkennen
+WebGadget_OfflineBrowser;
+WebGadget_Use_Clipboard;Zwischenablage beim Webgadget benutzen
+FPS;Frames pro Sekunde
+FrameRate_Counter;Frame-Rate Zähler
+Get_FrameRate;Frame-Rate ermitteln
+KeyboardControl_LimitedFPS;Tastaturabfrage mit limitierten FPS
+BackgroundScroller;Hintergrund-Scroller
+BreakOut_CollisionDetection;BrakeOut Kollisions-Erkennung
+FireShotsToMouseCursor;In Richtung des Mauspfeils schießen
+Game_Menu;Spiel-Menü
+Game_PseudoCode;Grundgerüst für die Erstellung eines Spiels
+Move&Shot;Bewegen und schießen
+MovePlayer_UniqueSpeed;Spieler-Bewegung mit einheitlicher Geschwindigkeit auf verschiedenen Rechnersystemen
+Move_Player_Background;Hintergrund der Spielfigur bewegen
+Players_HandleDynamically;Dynamisches Verwalten der Spieler-Daten
+Player_move+shoot;Spieler schießend bewegen
+Shot2MouseCursor;Auf MausCursor Schiessen
+Conways_GameOfLife;
+PuzzleGame_PB3.72;Puzzelspiel für PureBasic bis Version 3.72
+PuzzleGame_PB3.80;Puzzelspiel für PureBasic ab Version 3.80
+TileStudio_Export;Export-Routinen für die Verwendung des BlitzBasic TileStudio
+TileStudio_Export_short;
+3DEffects;3D-Effekte
+3DObjects;3D-Objekte
+CreateMesh_at_Runtime;Mesh in Echtzeit erstellen 
+Demo_Collision3D;3D Kollisionen
+Mesh-Editor;
+Mesh_Create+Rotate;Mesh erstellen und drehen
+Nice_Fog_Effect;Schöner Nebel Effekt
+ParticleFire;Partikel-Feuer
+Screen3DRequester;Standard-Requester für die Auswahl des Bildschirmmodus für 3D
+Terrain_KeepDistance;
+AnimGif;Animiertes GIF-Bild anzeigen
+ColorPicker;Farbwert der Windows-Oberfläche auslesen
+ColorViewer;Farbanzeiger und -auswahl
+ConvertRGBtoCurrentScreenMode;RGB-Farbwerte für aktuellen Bildschirmmodus konvertieren
+Convert_ColorValues;Farbwerte konvertieren
+Convert_RGBtoHSV&HSVtoRGB;RGB- in HSV-Farbwerte und umgekehrt konvertieren
+GrayImage;Bild in Graustufen umwandeln
+Hex2RGB;Rot,Grün und Blau-Farbwerte aus einem Hex-Farbwert lesen
+Effects;Effekte
+EyeCandy;
+EyeCandy2;
+InteractivingMasses;Interaktive Massen unter Beachtung physikalischer Gesetze
+Painter&MovingBalls_Demo;
+Particledemo;
+Plasma_Effect;
+Radar;
+ItCanBeDone;Das legendäre - da vielleicht das erste in PB geschriebene - Demo von Rings!
+Scroll+Moving_Demo;
+Transparent_Screenshot;
+DirectX8-Drawing;Zeichnen mittels DirectX v8
+Blockcopy;
+DrawCircle_Mouse_dependend;Kreis mausabhängig zeichnen
+Drawing_Circles;Kreise zeichnen
+Half-Circle;Halbkreis zeichnen
+BezierCurves;Bezier-Kurven
+DrawBezierCurve;Bezier-Kurve zeichnen
+DrawBezierCurve_adjustable;Einstellbare Bezier-Kurve zeichnen
+Leaning_Trajectory;Schiefer Wurf
+Draw3DButton;3D Button zeichnen
+Drawing_Angles;Winkel zeichnen
+Drawing_Tutorial;Zeichnen-Tutorial
+DrawTransparentBitmap;Zeichne transparente Bitmap
+Draw_Spirale;Spirale zeichnen
+FadeCross;Linienkreuz
+FillArea_Example;FillArea Beispiel
+GFA16-DrawingCommands;Umsetzung von Zeichenbefehlen aus GFA-Basic 16
+HighlightDrawing;
+Defline;
+Line_Styles1;Linien Styles 
+Line_Styles2;Linien Styles 
+Line_Styles3;Linien Styles 
+Line_Styles4;Linien Styles 
+LineXY-Rotate;
+PaintToDC_Example;
+PixelArray_WindowScreen;
+Poly2D_Example;
+ScreenDrawing;
+SimpleScrollPainter;
+Some_Stars;Sternenfeld
+DrawText_withAngle_Screen;Text im Winkel zeichnen (auf dem Screen)
+DrawText_withAngle_Window;Text im Winkel zeichnen (im Fenster)
+Draw_OutlineText;Text-Umriss zeichnen
+Draw_Triangles;Dreiecke zeichnen
+Draw_Triangles_to_Sprite;Dreiecke auf ein Sprite zeichnen
+WindowLinePainter;kleines Linien-Zeichenprogramm
+DrawingBuffer;
+DrawingBuffer_MousePainter;
+DrawResizedArea;
+KeepBackBuffer_forRendering;
+AlmondBread;Mandelbrot
+AlmondBread_Julia;Mandelbrot mit Julia-Menge
+AlphaBlend;
+BlurCube;
+BossPlasma;
+ChangeGamma;
+CrazyDots1;
+CrazyDots2;
+Dot-Effect;
+Draw_Sinus_Wave;Sinus Kurve zeichnen
+FadeIn_FadeOut;Ein- und Ausblenden
+Circle-Fire1;Kreisförmiger Feuereffekt
+Circle-Fire2;Kreisförmiger Feuereffekt
+FireEffect;Feuereffekt
+Horizontal_FireEffect;Horizontaler Feuereffekt
+PureBlureFire;Feuereffekt
+PureBlureFire_Fred;Feuereffekt
+Set_on_Fire;Feuereffekt
+Set_on_Fire2;Feuereffekt
+Set_on_Fire_TrueColor;Feuereffekt
+Flashtext;
+FigTree;Feigenbaum
+FractalTree;Fraktalbaum
+Gradient;Farbverlauf
+Matrix1;
+Matrix2;
+CosBall;
+MovingBalls;Bälle bewegen
+Moving_Wuerfel;Würfel bewegen
+Moving_3DSprites;3D Sprites bewegen
+OldSkool_Slide;
+PlasmaEffect;
+PureBlureLines;
+Circle_RotatingPoint;Punkt, der sich auf einer Kreisbahn um das Zentrum bewegt
+Rotate_Cube;Rotierender Würfel
+Rotate2D;
+Rotate_3D-Block;
+RotatingPoints;
+RoundTunnel;
+4-Way-Scroller;4-Wege-Scroller
+IsoScroller;
+Textscroller;
+TextScroller_at_Mouse;
+RotatingStarfield;Rotierendes Sternenfeld
+SomeStars_with_Text;
+Starfield-Window;
+Starfield;
+Starfield2;
+Thunderstorm;Gewitter
+TV_Noise;TV-Rauschen
+WaterEffect;WasserEffekt
+AnimWormHole;Animiertes Wurmloch
+CreateWormHole;Wurmloch erstellen
+Xmas Card 3D;Weihnachtskarte
+Xmas Card;
+X_Line_NewSkoolBudbrain;
+GetTextHeight;Texthöhe laden
+TextWidth;Textbreite
+UseBitmapFont;Bitmap Schrift benutzen
+Bar&LineChart1;Balken- und Linien-Diagramm
+Bar&LineChart2;Balken- und Linien-Diagramm
+BarChart_WebStats;Balkendiagramm für eine Web-Statistik
+PieChart;Kuchen-/Torten-Diagramm
+CreateIcons1;Icons erstellen
+CreateIcons2;Icons erstellen
+CatchImage_Example;Beispiel für CatchImage
+CatchTransparentImage;
+ChangeImageColorChannel;Farbkanal eines Bildes ändern
+Change_ColorDepth;Farbtiefe ändern
+CreateTransparentImage;Transparentes Image erstellen
+DrawTransparentImage;Transparentes Image zeichnen
+DrawTransparentImage2;Transparentes Image zeichnen
+Fill_ImageBuffer;ImageBuffer füllen
+Flipbuffer&Image;
+Frame-merge;
+BatchImageConverter;Bild-Konvertierer mit Batch-Funktion
+Bmp2Tga;BMP-Format in TGA umwandeln
+MoreFormats;Verschiedene Bildformate mittels der NView.dll laden
+WMF_Display;WMF-Bilder darstellen
+GradientImage;Farbverlauf [wie von Installerprogrammen bekannt]
+GreyImage;Bild in Graustufen konvertieren
+Images_lighten+darken;Bilder abdunkeln und aufhellen
+Image_edit_in_Memory;Bilder im Speicher editieren
+Image_Save_as_Icon;Bild als Icon speichern
+Join_Images;Bilder verbinden
+JPG-Images_AddComments;Kommentare zu Jpeg-Bildern hinzufügen
+LoadPictureFile;Bild-Datei laden
+LoadTransparentImage;Transparentes Bild laden
+Load_GIF;Gifs laden
+MirrorImageXY;Bild spiegeln
+Read_BMP-Image;BMP-Bild lesen
+ResizeImage_NoAntialias;Bild ohne Antialias vergrößern
+RotateImage;Bild drehen
+SaveImage_from_Clipboard;Bild aus Zwischenablage speichern
+SaveTextInJPEGImage;Text in JPEG image speichern
+Window_ImageRepaint;
+PictureViewerJPEG+;Bildanzeiger
+bmpfontANDtunnel03;
+InsideTheCube;
+MotionBlur;
+OpenGL_Example;
+OpenGL_Triangle;
+RenderToTexture;
+TextureDemo;
+3DSprite_Moving+Resizing;
+Buttons_on_DirectXScreen;
+OpenScreen_withButtons;
+Screen_InputText;
+StatusButton_on_Screen1;Schaltknöpfe auf einem Vollbildschirm
+StatusButton_on_Screen2;
+StatusButton_on_Screen3;
+DisplayTranslucideSprite;Durchscheinendes Sprite anzeigen
+Draw_on_Sprite;Auf einem Sprite zeichnen
+FlipScreen;
+MirrorSprite;Sprite spiegeln
+PartScreen_MovingSprite;Sprite in einem Teilbereich des Bildschirms bewegen
+RotatingSpriteBox;Drehende Spritebox
+ExamineScreenmodes;Bildschimmodi untersuchen
+Get_actual_Screenmode;Aktuellen Bildschirmmodus ermitteln
+Screen_WindowedScreen_Switch;Umschalten zwischen Vollbild und Fensterbildschirm
+SwitchScreenMode;Zwischen Bildschirmmodi umschalten
+ScreensaverPreview;Bildschirmschoner-Vorschau
+Screen_Text_with_Font;
+Sprite2D+3D;
+Sprite3D_BlendingModes;
+Sprite3D_BlendingMode_Tester;
+Sprite_Animated;Animierte Sprites
+Detect_SpriteCollisions;Sprite Kollisionen erkennen
+SpriteCollision&Shake;
+SpriteCollisionDemo1;Demo's für Sprite-Kollisionen
+SpriteCollisionDemo2;
+SpriteCollisionDemo3;
+SpriteCollision_Counter;Sprite Kollisionen zählen
+SpriteElasticCollision1;Physikalische Sprite-Kollision
+SpriteElasticCollision2;
+Sprite_change_Color;Farben von Sprites ändern
+Sprite_Demo;
+Sprite_Demo2;
+Sprite_move&rotate;Sprites bewegen und drehen
+Sprite_Outlined;
+Transforming3DSprites;
+WindowedScreen_Example;
+Console_ChangeSize;Konsole-Größe ändern
+Console_Check-CTRL-C;In der Konsole STRG-C abfragen
+Console_Fullscreen;Konsole im Vollbildmodus
+Console_PositioningOutput;Ausgabe in der Konsole platzieren
+Console_PrintUmlauts1;Umlaute in der Konsole anzeigen
+Console_PrintUmlauts2;Umlaute in der Konsole anzeigen
+Console_RedirectOutput;Ausgabe in der Konsole umleiten
+DisplayASCIICodes;Ascii-Codes anzeigen
+DisplayOemText;OEM-Text anzeigen
+MaskedPasswordInput;Passworteingabe mit Sternchen
+Scrolling_Console;Konsole scrollen
+Xtended-Example;
+DataDisplayer;
+DataSelector;
+DragnDrop;Drag'n'Drop [Ziehen und Fallen lassen]
+DropFiles_GetPath;
+MultilineEditor;
+EventHandling;Ereignis-Verarbeitung
+EventLoop;Ereignis-Schleife
+Key+Mouse-Messages;Tastatur- und Mausnachrichten
+Get_Set_Focus;Fokus ermitteln und setzen
+SetFocus_to_Window;Fenster fokussieren
+GetKeys_from_OtherWindows;Tastendrücke anderer Fenster abfangen
+SendKeys;Tastendruck senden
+SendKeys_to_PB-Editor;Tastendruck an den PB-Editor senden
+SendKey_to_NotePad;Tastendruck an den Notepad senden
+Joystick_Test;Joystick-Test
+UseJoystickasMouse;Joystick als Maus benutzten
+Button_OnKeyPressed;Tastendruck überprüfen
+Check_Key;Tasten prüfen und zählen
+Gadget_with_KeyboardSupport;Tasten bei Gadgets verwenden
+GetAsyncKeyStates;Asynchronen Tastaturstatus ermitteln
+GetKey;ASCII einer Taste
+GetKeyName;Name einer Taste
+HotKeys;Name einer Taste
+InputOnWindow;Eingabe auf einem Fenster
+KeyboardCatcher;Taste im Fenster überprüfen
+KeyboardExample;Beispiel für Tastaturabfrage
+Keyboard_GetScanCodes;ScanCodes abfragen
+Keyboard_Hook;Tastendruck abfangen
+Keyboard_Shortcut+Return;Shortcut+Return abfragen
+Keyboard_Shortcuts;Shortcuts abfragen
+ReturnCheck;Return abfragen
+Tastatur&OpenScreen;Tasten abfragen + Ausgabe auf dem Bildschirm
+Tastatur_Keycodes;Keycodes anzeigen
+Windows_KeyboardQuery;Windows Tastaturabfrage
+CatchLeftDoubleClick;Linken Doppelklick abfragen
+CheckMouseClicks;Maustastenabfrage
+CheckMouseWheel;Mausrad abfragen
+CheckMouseXY;Mauskoordinaten anzeigen
+MouseBeeps;Beep bei gedrückter Maustaste
+MouseClicks_Simulate;Maustasten simulieren
+MouseCursor_on+off;Mauszeiger ein-/ausschalten
+MouseHook;Abfrage der rechten Maustaste in einem Hook
+MouseOverButton;Testet, ob sich Mauszeiger über Schalter befindet
+MousePositions;Mauskoordinaten anzeigen
+MouseSelector;Auswahlbereich festlegen
+SwapMouseButton;Maustasten tauschen
+UseAdditionalMouseButtons;Zusätzliche Maustasten abfragen
+Window_MouseMessages_API;Mausabfrage im Fenster
+NameListEditor;Editor für eine Namensliste
+CheckIncomingPortData;Ports abfragen
+OpenCom1Port;Daten über Com1 Port
+SendChr(0)toComPort;Chr(0) an Com-Port senden
+SerialPort_Communicating;Über serielle Schnittstelle kommunizieren
+SerialPort_Receive_NMEA-Data;NMEA-Daten über serielle Schnittstelle empfangen
+SerialPort_Send&ReceiveData;Daten über den seriellen Anschluss senden und empfangen
+UsingPrinterPort;Drucker-Schnittstelle verwenden
+UsingSerialPort;Serielle Schnittstelle verwenden
+Using_InpOutDll;Drucker-Schnittstelle mit .dll ansteuern
+TextScroller_Dialog;Text scrollen
+TextScroller_Thread+Config;Konfigurierbarer Textscroller unter Verwendung von Threads
+TextScroller_Window;Text in Fenster scrollen
+Browser_DisableRightClick;Rechtsklick im Browser sperren
+Google_Search;Google Suche
+HTML-Check;Überprüft HTML
+Html2StringCode;HTML-Dateien in String umwandeln
+HtmlTag_Filter;HTML Befehle filtern
+OpenURL;Website aufrufen
+OpenURL_GUI;Website in Fenster anzeigen
+PureWebBrowser;Webbrowser in Purebasic
+PureWebBrowser2;Webbrowser in Purebasic 2
+StartInternetBrowser;Browser starten
+URL-Manager;Web-Adressen verwalten
+WebBrowser_PrintFunction;Webgadget mit Druckfunktion
+Client;Client Beispiel
+DDE;DDE Server und Client
+ReceiveClientData;Daten von Client empfangen
+Server;Server Beispiel
+Webserver;Webserver Beispiel
+DownloadToMem;Download in den Speicher
+Download_with_ProgressBar;Download mit Fortschrittsbalken
+HTTPGet;Download über HTTP
+Http_FileDownload;Download über HTTP
+IEGetFile;Download einer Datei aus dem Internet
+InternetFileDownload;Download einer Datei/Webseite aus dem Internet
+Read_CSV_Data_from_Website;CSV-Daten von einer Webseite einlesen
+Call_Emailer;Email-Programm starten
+GetNumberOfEmails;Anzahl der Mails in Mailbox anzeigen
+Pop3_Email-check+delete;Mails auf Server abfragen + löschen
+POP3_Email-Checker;Mails auf Server abfragen
+ReadEmailHeaders;Mailheader auf Server lesen
+SendMail;Mail senden
+SendMail_with_Attachment;Mail mit Anlage senden
+SendMail_with_Authentication;Mail mit Authenfizierung senden ohne vorhergehende Abfrage der Mails
+UUEncode&UUDecode;UU kodieren/dekodieren
+Connect2FTP-Server;Mit FTP-Server verbinden
+FTP-Access_API;Mit FTP-Server per API verbinden
+FTP-Client;
+FTP_ListFiles;Dateien von FTP-Server anzeigen
+UploadFile_to_Server;Datei auf Server übertragen
+CheckInternetConnection;Internet-Verbindung kontrollieren
+GetNetworkComputer;Computer-Namen im Netzwerk anzeigen
+GetRemoteIP;Computer-IPs im Netzwerk anzeigen
+Https_SSL_Connect;Mit HTTPS, SSL verbinden
+IsDestinationReachable;Erreichbarkeit einer Internet-Adresse prüfen
+LAN-Connect;LAN-Verbindung
+NetworkClient_GetIPAdress;IPs der Clients im Netzwerk ermitteln
+Ping2;
+WinSocket_lib;WinSocket Library
+x_lib;Include für WinSocket Library
+IPCalculator;IPs errechnen
+IPRenew;IPs aktualisieren
+Clients_in_LAN;Mit Clients kommunizieren
+Get_IP-Names_in_LAN;Computer-IPs im Netzwerk anzeigen
+NetSend;Benutzernamen im Netzwerk ermitteln und Nachrichten senden
+NetSendPro;Benutzernamen im Netzwerk ermitteln und Nachrichten senden
+SendMessages_on_Network;Nachrichten im Netzwerk senden
+GetURLParts;URL-Infos anzeigen
+HeiseNewsTicker;HeiseNewsTicker mit Regular Expression
+ICQ-Bot;
+IECache_List&OptionalDelete;Temporäre Dateien im IE anzeigen+löschen
+Pure_ICQ2Go;ICQ starten
+WebCam-UpdateImage;Anzeige eines WebCam-Bildes aktualisieren
+WebCam-Viewer;Bilder verschiedener WebCams laden + anzeigen
+WebCam-Viewer_short;Bild einer WebCam laden + anzeigen
+BinaryRotate&Shift;Rotate+Shift binärer Zahlen
+Macro_TestBits;Bits testen
+SetBits;Bits setzen
+CalcAnnuityLoan;Finanzierungsberechnungen
+Limit&LimitF;Fließkommazahl auf einen festgelegten Bereich limitieren
+Min&Max;Größere/kleinere zweier Zahlen ermitteln
+Numeric_check;Überprüfung einer Eingabe auf numerischen Inhalt
+Sgn;Vorzeichen +/- ermitteln
+Wrap&WrapF;Zahl innerhalb eines Bereichs wrappen
+BigEndian2LittleEndian;BigEndian in LittleEndian umwandeln
+Bin&Hex_to_Decimal;Bin+Hex in Dezimal umwandeln
+ExtractDecimalValuefromHexString;Dezimal aus Hex-String lesen
+FloattoString;Floats in Strings umwandeln
+GetCharContent;Wert einer Ziffer innerhalb einer Zahl bestimmen
+HexEx;Hex-Funktion mit Längenangabe
+HexVal+BinVal;Hexadezimal- und Binärzahlen in Dezimal umwandeln
+Hex_to_Decimal;Hex in Dezimal umwandeln
+ReadBytes_MotorolaFormat;Bytes im Motorola-Format lesen
+Roman2Decimal;Römische in Dezimalzahlen umwandeln und umgekehrt
+SplitType;Zeichen separieren
+SwapLong;Long-Zahl umkehren
+SwapWord;Word-Zahl umkehren
+ArithmeticStringTermCalculation;Berechnung eines arithmetischen String-Terms
+ComputeTaylorCoefficients;Taylor-Koeffizienten berechnen
+Eval;Berechnung eines mathematischen Strings
+EvalSmall_Floats;Berechnung eines mathematischen Strings
+EvalSmall_Longs;Berechnung eines mathematischen Strings
+Eval_Include;Berechnung eines mathematischen Strings
+Eval_Small;Berechnung eines mathematischen Strings
+FNEval;Berechnung eines mathematischen Strings
+FNEval_Test;Berechnung eines mathematischen Strings
+Fraction_Arithmetic;Bruchteil-Berechnung
+ATan2;ATan2 Funktion
+CalcDistance_of_2Points;Entfernung zwischen zwei Punkten ermitteln
+Calculate_PI;PI berechnen
+GetAngle_Triangle;Winkel zwischen den Schenkeln eines Dreiecks ermitteln
+SinusCosinus;Sinus- und Cosinus-Funktion mit Grad-Angabe
+Sin_Cos_Grad;Sinus/Cosinus-Berechnung aus einer Grad-Angabe
+Vector_Procedures;Vektor Berechnungen
+IPow;Potenz-Funktion
+PermutationsGenerator;Permutationen eines Strings ermitteln
+PrimeFactors;Primfaktoren berechnen
+PrimeNumbers;Primzahlen berechnen
+PrimeNumbers_old;Primzahlen berechnen [alt]
+QuadraticFunctions;Rechner für quadratische Funktionen
+SimpleCalculator;Einfacher Additions-Rechner
+CatchDoubleReturn;Doubles in Floats konvertieren
+LongLongs_64Bit;Longs mit 64Bit
+Splitting_Longs_to_Word;Longs in Words teilen
+Split_Variables;Variablen splitten
+Array3D;Verwendung eines dreidimensionalen Arrays
+Arrays_Compare;Array-Inhalt vergleichen
+ArrayTest;Vertex Array Test
+Array_Insert&Delete-Items;Werte in ein Array einfügen + löschen
+Array_Matrix-Check;Array Matrix - Bereichsüberprüfung
+Array_UBound;UBound Funktion für Arrays
+BooleanArray;Boolean [0/1] Array
+GetArraySize;Array-Größe bestimmen
+Read_predefined_Arrays;Vordefinierte Arrays lesen
+ASM;Verwendung von Inline-Assembler und direktem Assembler
+FAsm-Search;Adresse eines String-Abschnitts ermitteln
+Bitwise_Poke&Peek;Bitweises Poke+Peek
+Data&Sprites;Sprites aus Data-Block einlesen
+ReadData;Verwendung von ReadData
+FillMemory;Speicher füllen
+GetFreeRAM;Freien Speicher ermitteln
+Associative_Array;Datenwerte über einen Schlüssel ansprechen
+Hash-Map;Verwendung einer Hash-Tabelle
+ClearStructureMemory;Speicher einer Struktur löschen
+CountListContents;Anzahl der Elemente einer Liste nach einem Suchmuster ermitteln
+LinkedLists_CopyListItem;Kopieren von Elementen zwischen 2 Listen
+LinkedLists_in_LinkedLists;Verwendung von verknüpften Listen innerhalb verknüpfter Listen
+LinkedList_BinaryInsert;Binäres Einfügen neuer Elemente in eine sortierte Liste
+LinkedList_endless;Endlose Listen
+LinkedList_Internals;Internas von verknüpften Listen
+LinkedList_Pointer;Verwendung von Zeigern auf die Liste innerhalb von Prozeduren
+LinkedList_Shuffle;Mischen der Elemente einer Liste
+Structures_complex;Beispiel für komplexe Strukturen
+Structures_FixedStrings;Strukturen mit Strings fester Länge
+Structures_in_Procedures;Strukturen in Prozeduren
+Structures_in_Structures;Strukturen in Strukturen
+Structure_with_DynamicArray;Strukturen mit dynamischem Array
+TreeLinkedList;Verknüpfte Listen mit Baumstruktur
+Poke&Peek_Bits;Poke & Peek einzelner Bits innerhalb großer Speicherblöcke
+ReDim_Preserve_Save;Inhalt eines Arrays vor dem Neudimensionieren sichern und wiederverwenden
+HideMenu_afterClickingOutsideWindow;Verstecken des Menüs nach einem Klick ausserhalb des Fensters
+Menu&Keyboard;Menü+Tastatur
+Menu&KeyboardShortcut;Menü+Tastenkürzel
+MenuHelp_in_StatusBar;Menü-Hilfe in Statuszeile
+MenuItemHelp_in_StatusBar;Menü-Hilfe in Statuszeile
+MenuItems_in_MenuBar;Menü-Einträge in Menüzeile
+MenuItem_PlaceRightSite;Menü-Einträge rechts formatiert
+Menu_ChangeText;Ändert Text im Menü
+Menu_Disable+Enable;Menü aktivieren/deaktivieren
+Menu_KeyShortcut;Menü Tastenkürzel
+Menu_new-Font+Color+Icon;Neuer Schriftsatz, Farbe, Icon für Menü
+Menu_Width;Menü-Breite festlegen
+Menu_with_ToolBarIcons;Menü mit Werkzeugleisten-Icons
+PopUpMenu_Events;Erstellt PopUp Menü
+SetMenuText;Menü-Text nachträglich ändern
+CreateMenu;Erstellt Menü
+CreatePopupMenu;Erstellt PopUp Menü
+DisableMenuItem;Menü-Eintrag deaktivieren
+GetMenuItemState;Status eines Menü-Eintrags testen
+MenuBar;Menü-Trennbalken
+MenuItem;Menü-Eintrag
+MenuTitle;Menü-Titel
+OpenSubMenu;Öffnet Unter-Menü
+SetMenuItemState;Status eines Menü-Eintrags setzen
+Clock_StatusBar_Example;Uhrzeit in Statuszeile
+ColoredStatusBar;Farbige Statuszeile
+StatusBar_Events;Click-Funktion für Statuszeile
+StatusBar_SetFont&Resize;Definiert Schrift für Statuszeile
+ToolBarButton_SetPosition&Toggle;ToolBar-Schalter in einem ContainerGadget sowie als Toggle-Schalter
+ToolBar_Autosize;Automatische Größenanpassung der Werkzeugleiste
+ToolBar_DropDownButtons;DropDown-Schalter in der Werkzeugleiste
+ToolBar_in_Window;Werkzeugleiste im Fenster
+ToolBar_Show+Hide;Werkzeugleiste anzeigen und verstecken
+AVI2BMP_Converter;Konvertiert AVI nach BMP
+Include_AVI_in_Exe;AVI in EXE einfügen
+PlayAVI_via_MCI;AVI über MCI abspielen
+Read&Write_AVI;AVI in BMP-Bilder umwandeln sowie BMP-Bilder in AVI-Video
+Bassmod_Player;Musik-Abspieler mittels der Bassmod.dll
+Beep_Melody;Melodie über Systemlautsprecher
+Beep_Sirene;Sirene über Systemlautsprecher
+PCInternalSpeaker_Keyboard;Spielt über Tastatur Töne
+CapturingAudio;Audio aufnehmen
+DirectX8_PlaySoundBuffer;SoundBuffer mittels DirectX abspielen
+FMod_CatchSound;
+FMod_Realtime-Keyboard;Töne über ein virtuelles Keyboard abspielen [mittels FMod.dll]
+FMod_Sinemouse;Sinus-Töne über Mausbewegungen abspielen [mittels FMod.dll]
+FMod_Songplayer;Song-Player für MOD,S3M,XM,IT,MID,RMI,SGT [mittels FMod.dll]
+SpectrumAnalyzer;Song-Player mit Spektrum-Analyser [mittels FMod.dll]
+MCI-Procedures_for_MIDI;MCI Prozeduren für MIDI
+Midi2Wave;Konvertiert MIDI nach WAVE
+MidiConnecter;Midi - Verbindung
+Midi_ConvertDeltaTimes;Midi - Konvertieren von DeltaTimes
+Midi_In&Out;Midi - Ein- und Ausgabe
+Midi_Keyboard;Midi - Tastatur
+Midi_MiniExample_per_MCI;Midi - kleines Beispiel [per MCI]
+Midi_Procedures_per_MCI;Midi - Prozeduren [per MCI]
+Midi_ReadVarLenData;Midi - Einlesen von Byte-Streams
+PlayMidiNotes;Abspielen von Midi-Noten
+PlayMIDI_via_MCI;Abspielen von Midi via MCI
+FullScreen_Movie;Film im Vollbild auf dem Desktop abspielen
+MoviePlayer;Movie-Abspieler
+PlayMovie_Fullscreen;Film im Vollbild auf einem eigenen Bildschirm abspielen
+MP3-DJ-Tool;
+MP3-Functions;
+MP3-ID-Tags;
+MP3-ID1-Genres;
+MP3-ID1.1-Tags;
+MP3-ID3v2.3_TagReader;
+MP3-Movie_Loop;Mp3 - Film in einer Endlos-Schleife abspielen
+MP3-Player;
+MP3-Read-ID3-v1-Tags;
+MP3-Tags;
+PlayMP3;
+PlayMP3_via_MCI;Mp3 über MCI abspielen
+CatchSound_Ogg_files;Ogg-Musikdateien in die Exe einbinden
+XM-FileReader;XM-Musikdateien einlesen
+PlayOGG+WAV+MP3_via_MCI;Ogg, Wav und Mp3 über MCI abspielen
+Speech_Sample1;Ausgabe von Sprache
+Speech_Sample2;Ausgabe von Sprache
+CreateWaveFile;Wave-Datei erstellen
+ExtractWAVfromGIG;Wave-Dateien aus einem Giga-Archiv extrahieren
+PlayWAV_via_MCI;Wave über MCI abspielen
+RecordWave;Wave aufnehmen
+WinAMP_Plugin;Beispiel für ein WinAMP Visual-Plugin
+Barcode_128;Erstellen des Barcodes 128
+BarCode_39;Erstellen des Barcodes 39
+Create_UPC-BarCode;Erstellen eines UPC Barcodes
+CalcPensionGap;Berechnen der Rentenlücke
+Calculate_EAN;EAN-Code berechnen
+Counter;Freilaufender Zähler
+CreatePDF;PDF's erzeugen
+Dir&File&URL_Utils;Werkzeuge für den Umgang mit Verzeichnissen, Dateien und URL's
+DLL-Viewer;DLL-Anzeiger
+DLL_Extract_FunctionNames;DLL-Funktionen auslesen
+DLL_GetVersion;DLL-Versionsnummer ermitteln
+DLL_IncludeGenerator;Automatisches Erstellen einer Include-Datei mit den Funktionsdefinitionen einer DLL
+GetVersionInfo;Komplette Versionsinformationen zu einer DLL ermitteln
+Get_DLL_Path;Verzeichnis einer DLL ermitteln
+IncludeBinary_in_DLLs;Include-Dateien in eine DLL einbinden
+ListDLLFunctions;DLL-Funktionen auflisten
+OpenWindow_in_DLL;Beispiel für das Öffnen eines Fensters innerhalb einer DLL
+StringTable_in_DLL;String-Tabelle in einer DLL abspeichern
+BackwardsWriter;Rückwärts-Schreiber
+Brainfuck_Interpreter;Interpreter für 'Brainfuck'
+Desktop-Twirl;Desktop-Wirbel [Grafikeffekt]
+ExplodingRockets;Explodierende Raketen
+Lindenmeyer-Systems;Verlauf von Lindenmeyer-Systemen
+StarWars_NameGenerator;Erstellen von Personen-Namen für StarWars
+Test2MorseLED;Darstellen von eingegebenem Text als Morse-Code durch Aufleuchten der Tastatur-LED
+VIC_KI_ala_Eliza;KI-Programm, Umsetzung eines C64-Programms
+HelloWorldExample;Hallo-Welt Beispiel
+Installer-Tool;Include-Datei für das Installer-Programm
+Installer;Erstellen eines Installer-Programms
+Little_Magnifier;Kleine Lupe
+AutocompleteObject;Objekt zum 'Auto-Vervollständigen' eingegebener Begriffe
+ClockObject_Example;Beispiel für ein Uhren-Objekt
+CreateObjects;Erstellen von Objekten
+MsgRequester_Class;Klasse für Nachrichtenfenster
+OOP-Example_Class_Template;Beispiel für die Verwendung von OOP in PureBasic [Klassen-Schablone]
+OOP-Example_Class_Test;Beispiel für die Verwendung von OOP in PureBasic
+OOP_Object_Example;
+Command_Opcodes;Befehls-OpCodes
+Compile_without_Starting;Kompilieren ohne das Executable automatisch zu starten
+RedirectCompilerOutput;Ausgabe des Compilers in den Speicher umlenken
+DebugClear;Inhalt des Debugger-Fenster löschen
+SaveDebuggerOutput;Ausgabe des Debuggers abspeichern
+Ecxecutable_SelfModifying;Selbst modifizierende EXE
+ExePatcher;Patchen einer Exe
+FilePatcher;Patchen einer Datei
+GetStartAddress;Speicheradresse einer Programms ermitteln
+HandleErrorProcedure;Verwendung von Fehler-Prozeduren im PB-Programm
+LanguageFile_Editor;Sprachdatei-Editor
+MakeGUID;Erstellt GUIDs
+Output_to_ConsoleOrWindow;Ausgabe wahlweise in die Konsole oder in ein Fenster
+PBL-Creator;Erstellen von PBL-Dateien für den DLL-Importer
+Program_RunOnlyOneInstance;Nur eine Instanz eines Programms starten
+ReadmePacker_CreateExe;Liesmich-Dateien ins die Exe packen
+ReadmePacker_CreatePak;Pak-Datei für das ReadmePacker-Beispiel erzeugen
+SourceOptimizer_v2;Tool zum Optimieren des Sourcecodes
+Trainer_PatchOtherProcess;Andere Prozesse patchen
+UserRegistration;Benutzer-Registrierung
+RecordFromMicrophone;Aufzeichnen vom Mikrofon aufzeichnen
+ScreenSaver;Beispiel für einen Bildschirmschoner
+Screenshot_FindWindow;Bildschirmfoto eines Fensters erstellen
+Screenshot_Windows;Bildschirmfoto des Windows-Desktops erstellen
+Speedtest;Geschwindigkeitstest
+Speedtest2;Geschwindigkeitstest
+Speedtest2_API;Geschwindigkeitstest mit Hilfe von WinAPI-Funktionen
+Speedtest_Array_vs_List;Geschwindigkeitsvergleich zwischen Arrays und verknüpften Listen
+Speedtest_CallFunction&CallFunctionFast;Geschwindigkeitsvergleich zwischen CallFunction und CallFunctionFast
+Speedtest_Drawing-vs-DisplaySprite;Geschwindigkeitsvergleich zwischen Zeichenoperationen und Anzeigen von Sprites
+Speedtest_If&Select;Geschwindigkeitsvergleich zwischen If- und Select-Abfragen
+Speedtest_VariableTypes&F64;Geschwindigkeitsvergleich zwischen den Variablen-Typen
+Speedtest_VariableTypes;Geschwindigkeitsvergleich zwischen den Variablen-Typen sowie der F64 UserLib
+SwitchProcedure;Automatisches Umschalten ziwschen Prozeduren, abhängig vom übergegebenen Parameter
+Printer_List;Anzeigen aller installierten Drucker
+Printer_PhysicalOptions;Drucken unter Beachtung der physikalischen Eigenschaften eines Druckers
+Printing_on_selected_Printer;Drucken auf einem ausgewählten Drucker
+PrintRequester_extended;Erweiterter Print-Dialog
+PrintRequester_NumberOfCopies;Anzahl der Ausdrucke festlegen
+Print_DesktopArea;Ausgewählten Bereich des Windows-Desktops drucken
+Print_DPI_independent;DPI-unabhängig drucken
+Print_Image;Ausdruck eines Bildes
+Print_Review;Druckvorschau
+Print_sideways;Drucken im Querformat
+Print_sideways2;Drucken im Querformat [Landscape-Modus]
+AboutImageRequester;Über-Dialog
+ColorRequest_API;Farben-Requester per API
+ColorViewer_improved;Farb-Einsteller
+MultiFileReq_SaveSelectedFiles;Speichert Dateien mit Mehrauswahl
+OpenFileRequester_with_Preview;Öffnet Dateien mit Vorschau
+FontRequester_Custom;Schriftarten auswählen
+FontRequester_FixedFontHeight;Schriftarten mit festgelegter Höhe auswählen
+FontRequester_NoColor&Effects;Schriftarten ohne Farben und Effekte auswählen
+FullScreen_Requester;Requester auf dem Vollbildschirm
+InputBox;Erweiterter Input-Requester
+InputRequester;Erweiterter Input-Requester
+PasswordInputBox;Verdeckte Passworteingabe
+MessageRequester-Demo;Nachrichten-Fenster Demonstration
+MessageRequester_Centered;Zentriertes Nachrichten-Fenster
+MessageRequester_extraPics;Nachrichten-Fenster mit zusätzlichem Icon
+MessageRequester_OwnTextButtons;Nachrichten-Fenster mit eigenen Schaltern
+MsgBox_on_Screen;Nachrichten-Fenster auf eigenem Bildschirm
+Requester-Constants;Zeigt die verschiedenen möglichen MessageRequester-Konstanten
+ScreenMessageRequester;Nachrichten-Fenster auf eigenem Bildschirm
+RequesterFunny;Lustiger Requester
+PlaceRequesters;Requester positionieren
+Requester_SetPosition;Requester positionieren
+Set_Requester-Position;Requester positionieren
+ColorRequester;Farben-Requester
+FontRequester;Zeichensatz-Requester
+InputRequester;Erweiterter Input-Requester
+MessageRequester;Nachrichten-Requester
+OpenFileRequester;Requester zum Auswählen einer Datei zum Öffnen
+PathRequester;Pfad-Requester
+SaveFileRequester;Requester zum Auswählen einer Datei zum Speichern
+SelectedFilePattern;Dateiendungen im Datei-Requester
+ArraySearching;Suchfunktion in Arrays
+CompareStringwithMask;Rekursive Suche
+CompareWithWildcards;Suche mit Wildcards
+CompareWithWildcards_old;Suche mit Wildcards [alt]
+RFindString;Erweiterte FindString Funktion
+SearchCharReverse;Zeichen rückwärts suchen
+SearchForPBFiles;Nach PB-Dateien suchen
+MultipleArraySort;Schnelles Sortieren mehrerer Arrays mittels Index
+Quick+Bubblesort;Quick- und Bubble-Sortierung
+Quicksort;Quick-Sortierung
+SelectionSort;Selektive Suche
+SortAlgorithms_SpeedTest;Geschwindigkeitsvergleich mehrerer Sortieralgorithmen
+SortAlgorithms_various;Verschiedene Sortieralgorithmen
+SortedList_InsertElement;Einfügen von Elementen in einer sortierte Liste
+Sort_2Dim_Fields;Sortiert zweidimensionale Felder
+AddNumberStrings;Addieren von numerischen Strings
+MatchPattern;Pattern-Suche in Strings
+WildcardStringCompare;Suche mit Wildcards
+ConvertSpecialChars;Deutsche Sonderzeichen in normale Zeichen umwandeln
+Digit2String;Zahlen verschiedener Typen in Strings konvertieren
+GetBytes_from_String;Bytes aus einem String auslesen
+String2Unicode;String in Unicode umwandeln
+String_GetNumber;Sucht einen Zahlenwert im String
+CountChars;Überprüft wie oft ein String in einem anderem vorkommt
+CountChars_in_StringFields;Überprüft wie oft ein String in einem Feld vorkommt
+CountStrings;Strings zählen
+String-Count;Überprüft wie oft ein String in einem anderem vorkommt
+FreeingStrings;Speicher von Strings löschen
+PassStringbetweenPrograms;String zwischen 2 Programmen übermitteln
+ReadNullTerminatedStrings;Lesen von Null-terminierten Strings
+SetStringManipulationBufferSize;64k Limit von Strings aufheben
+StringFunctions;String-Funktionen
+StringFunctions2;String-Funktionen
+StringFunctions3;String-Funktionen
+StringUsing;Formatierten Zahlen-String erstellen
+SubString;Speicher-Adresse eines Teil-Strings ermitteln
+Calendar;Win-API Kalender
+Calendar_4-Months;Win-API Kalender mit gleichzeitiger Darstellung von 4 Monaten
+Calendar_on_Panel;Kalender auf PanelGadget
+Calendar_Set;Kalender stellen
+DateTimePicker&Checkbox;Zeigt Datum mit und ohne Gadget
+Date_Functions;Datums-Funktionen
+CheckValidDate;Gültigkeit des Datums feststellen
+Anaclox;Analoge Uhr
+DigitalClock;Digitale Uhr
+Glox;Uhr in Gadget
+TeaClock;Tee-Uhr
+TitleBar_Clock;Uhr in der Titelzeile
+WindowsClock;Digitale Uhr in kleinem Fenster
+Date&Time;Datum und Uhrzeit ausgeben
+Date;Datum mit Wochentag ausgeben
+GetCalendarWeek;Kalenderwoche ermitteln
+GetTimeZoneInformation;Zeitzone ermitteln
+HolidaySmarts_DE;Feiertagsgrüße ausgeben [deutsch]
+HolidaySmarts_US;Feiertagsgrüße ausgeben [US]
+Holidays_DE;Deutsche Feiertage mit Wochentag anzeigen
+IsDateInSpace;Überprüft, ob ein Datum in einem vorgegebenen Bereich liegt
+IsDateValid;Gültigkeit des Datums feststellen
+Num2Date_1800;Zahlenwert in Datum umwandeln [Datumsbasis ab 1800]
+ParseDate;Datumszahl als Uhrzeit und Datum ausgeben
+Time+Date_API;Aktuelle(s) Datum und Zeit per WinAPI ermitteln
+TimeSpinGadget;Zeit über ein SpinGadget eingeben
+TimeStampToTime;Datumszahl umwandeln
+AboutBox_ScrollText;'Über'-Dialog mit Scroll-Text
+Main&AboutWindow;Hauptfenster mit einem 'Über'-Fenster
+AllWindows-Browser;Browser für alle Fenster inkl. Child-Fenster
+BackColor;Hintergrundfarbe eines Fensters festlegen (mit SkinWin UserLib)
+Window_ColoredTitleBar;Fenster mit farbiger Titelzeile
+Window_Set_BackgroundColor;Hintergrundfarbe eines Fensters festlegen (per WinAPI)
+Dialog&MainWindow;Dialog-Fenster und Hauptfenster
+Dialog_Editor;Dialog-Editor
+Dialog_ToolWindow;Dialog als Tool-Window
+Dialog_Window;Dialog-Fenster
+ModalDialogBoxes;Dialog-Fenster mit Gadgets
+FindWindow;Fenster-Namen ermitteln
+ChangeWindowIcon;Fenster-Icon ändern
+DisableWindow;Fenster deaktivieren
+MoveMessage1;Bewegliches Nachrichtenfenster
+MoveMessage2;Bewegliches Nachrichtenfenster
+Move_borderless_Window;Rahmenlose Fenster verschieben
+RoundedGadget;Abgerundete Schaltflächen
+SplashWindow;Fenster mit Einblend- und Ausblendeffekt
+TransparentWindows;Transparente Fenster
+Window-FX;verschiedene Fenster-Effekte
+WindowForms;Fenster-Formen
+WindowSkinning;Neue Fensterform erzeugen
+WindowTitle_get+set;Fenster-Titel ermitteln und ändern
+Window_borderless;Rahmenlose Fenster
+Window_FadeIn-Out;Fenster ein- und ausblenden
+Window_Invisible;Unsichtbares Fenster
+Window_ModifyBackground;Fensterhintergrund ändern
+Window_Regions;Verwendung von Fenster-Regionen
+Window_RoundMode;Verwendung von Fenster-Regionen
+GetWindowBorders;Größe der Fensterrahmen ermitteln
+GetWindowColor;Fensterfarbe auslesen
+LeftAlignedWindow;Fenster nicht überlappen lassen
+CreateRandomWindows;Zufällige Fenster erzeugen
+DisableParentWindow;Übergeordnetes Fenster deaktivieren
+Handle_two_Windows;Umgang mit 2 gleichzeitig geöffneten Fenstern
+MultipleWindows;Mehrere Fenster
+MultipleWindows2;Mehrere Fenster
+MultiWindow;Umgang mit 2 gleichzeitig geöffneten Fenstern
+Window&SecondWindow;Hauptfenster mit Editor im Zusatzfenster
+ChildWindows;Mehrere 'Kind'-Fenster
+Main&ChildWindow;Haupt- und 'Kind'-Fenster
+MDI_ChildWindow;MDI-Fenster
+OwnedWindow;Fixiertes 'Owned' Fenster
+OwnErrorWindow;Fenster zur Fehlerausgabe, welche sich kopieren lässt
+RealSetForegroundWindow;Vordergrundfenster festlegen
+OpenWindow_FullSize;Fenster in Maximalgröße öffnen
+ResizeImageWindow;Bildfenster in der Größe verändern
+ResizeWindow;Größe des Fensters ändern
+WindowedScreen_borderless&fullscreen;Vollbildschirm auf rahmenlosen Fenster
+Window_borderless&fullscreen;Rahmenloses Fenster in Maximalgröße
+Window_Resolution;Fenster mit Inhalt an Auflösung anpassen
+ScreenshotAsWinBackground1;Bildschirmfoto als Hintergrund verwenden
+ScreenshotAsWinBackground2;Bildschirmfoto als Hintergrund verwenden
+ScrollerWindow;Scroll-Fenster
+ToolWindows;Tool-Fenster
+ToolWindow_without_TaskbarIcon;Tool-Fenster ohne Icon in der Windows-Startleiste
+Window_CloseButtonOnly;Tool-Fenster mit Informationstext und Schließknopf
+WindowCallback_2Win;Callback für 2 Fenster
+Mouse_DetectCaptureChange;'Anfassen' eines Fensters in der Titelleiste feststellen
+Window-Refresh_WaitWindowEvent;Auffrischen des Fensterinhalts bei WaitWindowEvent
+Window-Refresh_WindowEvent;Auffrischen des Fensterinhalts bei WindowEvent
+Window_Active&Inactive;Aktives und inaktives Fenster
+Window_API-Demo;Fenster per WinAPI erstellen
+Window_borderless+moveable;Rahmenloses und verschiebbares Fenster
+Window_Detect_Min-Maximize;Minimieren und Maximieren eines Fensters erkennen
+Window_MinimumSize;Minimalgröße eines Fensters festlegen
+Window_MovableArea;Fenster verschieben mittels einem definierten Bereich
+Window_Rename&SetStatus;Fenster umbenennen und Status setzen
+Window_RightMouse_moveable;Fenster mit der rechten Maustasten verschieben
+GameSkin;Skin-Fenster für ein Spiel
+PB_Skin;Skin-Fenster mit dem PureBasic-Logo
+SkinnedWindow&Image;Skin-Fenster mit zu ladendem Bild
+TrackBar_Skinned;Schieberegler im eigenen Design
+WindowSkin_Example;Beispiel für die Anwendung des vom Generator erstellen Fenster-Skins
+WindowSkin_Generator;Generator eines Fenster-Skins
+Window_with_Transparency;Fenster mit Transparenz
+WrapStringWindow;Fenster mit StringGadget und automatischem Zeilenumbruch
+Buttons_with_WinAPI;Schaltflächen mit WinAPI
+CreateOwnControlElements;Eigene Steuerelemente
+CreateWindowEx_;Fenster per WinAPI mit normalen PB-Gadgets kombinieren
+CreateWindow_API;Fenster per WinAPI erstellen
+FileHandling_WinAPI;Beispiel zum Datei-Handling mit WinAPI
+FlatButton_API;'Flacher' Knopf per WinAPI
+GetCommandLine_WinAPI;Befehlszeile per WinAPI ermitteln
+WinAPI-FileOperations;Windows-ähnliche Dateioperationen per WinAPI
+Add_XP-Manifest_to_Exe;XP-Manifest zur Exe hinzufügen
+Add_XP-Manifest_to_Exe_Win9x;XP-Manifest zur Exe hinzufügen [für Win9x]
+ChangeMouseCursor;Mauscursor verändern
+CPIApplet_Example;Grundgerüst für ein Windows 'CPI Applet'
+CheckDesktopStatus;Überprüft ob Desktop gesperrt ist
+GetActualWallpaper;Desktop-Hintergrund ermitteln
+GetDesktopPath;Desktop-Verzeichnis ermitteln
+Lock_Alt+Windows-Keys;CTRL+ALT+DEL sperren
+RefreshDesktopIcons;Desktop-Icons aktualisieren
+RemoveWindowsStartButton;Windows Start-Knopf entfernen
+SetWallPaper;Desktop Hintergrund festlegen
+StartPanel;Erstellen einer eigenen Startleiste
+TerminateWindowsShutDown;Runterfahren stoppen
+WindowsRebootQuestion;Nach Neustart fragen
+DesktopPainter;Auf Desktop malen
+Drawing_Cards;Benutzung der cards.dll zur Darstellung von Skatkarten
+GetMIMEType;MIMEType ermitteln
+CheckforMedium_inDrive;Laufwerk auf ein eingelegtes Medium überprüfen
+Detect_MMX;Verfügbarkeit von MMX im Prozessor ermitteln
+Eject&Load-CDTray;CD-Laufwerk öffnen und schließen
+GetCPUSpeed;CPU-Geschwindigkeit ermitteln
+GetDiskFreeSpace;Freien Festplattenspeicher ermitteln
+GetFreeDiskSpace_old;
+GetGraphicCardInformations;Informationen zur Grafikkarte ermitteln
+GetInstalledRAM;Installierten Speicher ermitteln
+Get_Harddisk_Info;Informationen zur Festplatte ermitteln
+Get_MultiMonitor-Specs1;Spezifikationen bei Verwendung mehrerer Monitore ermitteln
+Get_MultiMonitor-Specs2;Spezifikationen bei Verwendung mehrerer Monitore ermitteln
+HDAvail;Verschiedene Informationen zu den verfügbaren Laufwerken ermitteln
+ListAdapters;Netzwerkkarte ermitteln
+Lock-CDTray;CD-Laufwerk blockieren
+Memory_Freeing;Speicher freigeben
+Nic&Interface_Scanner;Parameter der NICs ermitteln
+SetLEDKey;Tastatur-LED's ein- und ausschalten
+SetScrollLED;Tastatur LEDs
+Windows_StandBy;Windows in den StandBy-Modus versetzen
+ExtractIcon;System Icons anzeigen
+GetAllFileTypeIcons;Icons aller vorhandenen Dateitypen anzeigen
+GetExeIcon;Icon einer Exe ermitteln
+IconFinder;Icon's aus beliebigen Dateien ermitteln
+IconLoader;Icons laden
+SystemIcons;SystemIcons anzeigen
+MSDos_Dir_Command;MS-DOS DIR-Befehl verwenden
+NT-Service;Starten eines NT-Service
+OpenSystemWindows;Öffnen verschiedener Windows-System Fenster
+Autostart;Programm dem Windows-AutoStart hinzufügen
+InstallProgram;Installiertes Programm in die Registry eintragen
+RegistryReader;Werte aus der Windows-Registry lesen
+Registry_DeleteKey_rekursive;Registrierdatenbank-Schlüssel rekursiv löschen
+Registry_Functions;Registry-Funktionen
+RunProgram&CheckforQuit;Programm starten und dessen Beendigung überprüfen
+RunProgram&TerminatingIt;Prozess starten und beenden
+RunProgramAfterExit;Ein anderes Programm am Ende des PB-Programms starten
+RunProgramEx;Programm starten und das Handle seines geöffneten Fensters ermitteln
+Capture+Zoom;Screenshot vergrössern/verkleinern
+CaptureDesktop;Screenshot vom Desktop
+Capture_Desktop_or_Window;...oder Fenster
+Capture_ScreenPart;...oder Teil vom Desktop
+MakeDesktopScreenshot;Bildschirmfoto vom Desktop machen
+MakeWindowScreenshot;Bildschirmfoto von einem Fenster machen
+ScreenCapture_SnagIt;Bildschirmfotos wie mit SnagIt
+Screenshot_Grabber;Teil des Desktops für Bildschirmfoto auswählen
+ChangeDisplayDepth;Farbtiefe ändern
+ChangeDisplaySettings;Anzeigeeigenschaften ändern
+CreateShellLink;Verknüpfung erstellen
+DetectSafeMode;Modus, in dem Windows gestartet wurde, anzeigen
+EmptyTrashcan;Papierkorb leeren
+EnviromentalVariables;Umgebungsvariablen lesen und setzen
+GetComputerName+UserName;Computer- und Benutzer-Name ermitteln
+GetEnviromentalValues;Umgebungsvariablen lesen
+GetUserLanguage;Gebietsschema ermitteln
+GetWindowsFolders;Windows-Ordner ermitteln
+GetWindowsSpecialFolders;Spezielle Windows-Ordner ermitteln
+Read_WIN-INI-Sections;WIN-INI Sektionen lesen
+Set&Get_MasterVolume&Mute;Lautstärke einstellen
+SetScreenMode;Bildschirmeigenschaften einstellen
+ShowSystemErrors;Systemfehler anzeigen
+Play_Windows_SystemSounds;Systemsounds abspielen
+Systemmenu_ChangeItems;Systemmenü-Einträge verändern
+AppBar-StatusInfo;Eigenschaften der Windows-Startleiste anzeigen
+HideWindowFromTaskbar;Fenster vom Taskbar verstecken
+Hide_program_from_Taskbar;Programm vom Taskbar verstecken
+Monitor_Taskbar_Protection;Keine Fenster in Taskbar anzeigen
+Program2Taskbar;Minimiert Programm
+ProgressBar_in_Taskbar;Fortschrittsbalken in der Taskbar
+Taskbar_Icon_Example1;Beispiel für TaskBar-Icons
+Taskbar_Icon_Example2;Beispiel für TaskBar-Icons
+AnotherProcessMonitor;Prozess-Monitor
+DeleteOwnExe1;Eigene EXE löschen
+DeleteOwnExe2;Eigene EXE löschen
+GetProcesses_Win98;Laufende Prozesse ermitteln
+GetProcesses_WinNT;Laufende Prozesse ermitteln
+GetProcessName_from_Handle;Prozessname von einem Handle ermitteln
+KillProcess;Prozess beenden
+List&Close_TaskBar-Windows;Anzeigen und schliessen von Fenstern in Taskbar
+ListAllWindowNames&Classes;Alle Fensternamen und -klassen auflisten
+ListChildWindows;Child-Fenster auflisten
+ListChildWindows_GUI;Child-Fenster auflisten (mit Oberfläche)
+ListRunningProcesses;Laufende Prozesse anzeigen
+ListRunningProcesses_W9x;Laufende Prozesse anzeigen
+ListRunningProcesses_withHierarchy;Laufende Prozesse mit Hirarchie anzeigen
+ListRunningProcesses_withHierarchy_W9x;Laufende Prozesse mit Hirarchie anzeigen
+MultipleProcessesRemover;Mehrere Prozesse entfernen
+Task_delayed;Verzögerter Task
+TerminateProcess;Prozess anhand seiner Prozess-ID beenden
+AnalogTimer;Analoger Zeitgeber (Sekundenticker)
+Multiple_Timer;Mehrerer Zeitgeber
+PopUpWindow_Timer;Popup-Fenster zeitgesteuert anzeigen
+TimedConditions;Zeitgesteuerte Bedingungen
+Timer&EventLoop;Zeitgeber innerhalb einer Ereignisschleife
+Timer&Scrolling;Zeitgeber und Scrolling
+Timer&SpriteDemo;Zeitgeber und Sprites
+Timer_in_Callback;Zeitgeber in einem Callback
+WakeUpTimer;Nachrichtenfenster zeitgesteuert anzeigen
+Window_Timer;Nachrichtenfenster zeitgesteuert anzeigen
+AnimatedSearch;Animierte Such-Funktion
+AnimatedWindowsAVI;Verschiedene Windows-Animationen
+Windows_Animations;Verschiedene Windows-Animationen

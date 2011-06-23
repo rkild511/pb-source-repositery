@@ -1,0 +1,223 @@
+CAV - Catalog File v1.0 
+Author: Joaquín Alcañiz 
+-------------------------------------------------------------- 
+C.A.V. - el Visor de CodeArchive 
+Códigos de ejemplo disponibles: 
+Buscar          
+Fuente: 
+Autor: 
+Fecha: 
+Texto Completo: 
+Borrar todos los campos para la búsqueda. 
+Comenzar búsqueda 
+Resultados      
+Ver código 
+Ver tema del fórum 
+Ver código en el editor 
+Todo 
+Fórum inglés    
+Fórum alemán 
+Otro 
+Enero 
+Febrero 
+Marzo 
+Abril 
+Mayo 
+Junio 
+Julio 
+Agosto 
+Septiembre 
+Octubre 
+Noviembre 
+Deciembre 
+Borrar búsqueda 
+Seleccionar palabra clave: 
+PB palabra clave 
+PB función 
+ASM comando 
+Cancelar 
+Búsqueda completa por una o más palabras, combinadas con +/-, o comillas para frases completas. 
+Aquí puede abrir una ventana para seleccionar palabras calve PB, comandos PB o comandos ASM. 
+El Visor de CodeArchive está inicializando... 
+Carga de CodeArchive... 
+Búsqueda del Fuente, autor y fecha... 
+Carga de palabras clave PureBasic y ASM... 
+carga de comandos PureBasic... 
+Prepración de la ventana principal... 
+Seleccione autor para buscar: 
+Autor 
+Proyecto 
+Salir 
+Opciones 
+Preferencias 
+Ayuda 
+Acerca de 
+Acerca de C.A.V. - the Visor de CodeArchive... 
+Escrito por 
+ y  
+Versión: v1.0 / May 2005 
+Presentado por www.PureArea.net 
+e-mail 
+Todos los derechos reservados. 
+Contenido de CodeArchive 
+Nombre 
+Descripción 
+SO 
+Demo 
+Ver CodeArchive completo 
+Preferencias 
+Ver la traducción de los nombres de directorio 
+Ver la descripción de los fuentes 
+Usar PureBasic IDE original y cambiar el acceso: 
+Preparación de la ventana de Preferencias... 
+Guardar 
+Usar 
+Cancelar 
+Seleccione su editor PB preferido 
+Lenguaje del Programa 
+Error 
+Fichero de lenguaje 
+ no se puede cargar! 
+Guardar posición de la ventana principal 
+Colapsar árbol de directorios 
+Directorio 
+Guardar todas las opciones automáticamente y finalizar 
+Árbol de directorios 
+Introduzca términos de búsqueda / Resultados 
+Buscar el SO (compatibilidad del Sistema Operativo) y ver resultado 
+Comprobar la capacidad para la Demo y ver resultado 
+Búscando... 
+Nota 
+No se puede encontrar ningún ejemplo. 
+Gracias y saludos a los siguientes codificadores PureBasic: 
+Presentado por 
+Lo siento, no hay ningún tema en el fórum sobre este ejemplo. 
+Control 
+Atrás 
+Autores Top10 
+Autores Top20 
+Autores Top50 
+Lugar 
+Autor 
+Ejemplos 
+Mostrar ejemplos del autor 
+mi amigo escocés & desarrollador GeoWorld 
+para 
+por su inestimable ayuda en PureArea.net 
+por supuesto todos los demás desarrolladores PB 
+Si lo quiere utilizar 
+, la frase debe encerrarse entre 
+. 
+Entre 
+ aquí debe incluir la frase 
+Dentro de una frase encerrada entre 
+ no se permiten + ni -. 
++/- para la inclusión/exclusión sólo se permiten delante de la palabra. 
+Error en el término de búsqueda 
+por su ayuda para crear un CodeArchive compatible con PB3.92+ 
+Seleccione el mes y el año. 
+Seleccione el día, mes y año. 
+La selección del día tiene error, por favor corríjalo. 
+Cargando las funciones WinAPI soportadas... 
+WinAPI función 
+Fórum francés 
+PB constante 
+Cargando las constantes de PureBasic... 
+saltar al siguiente campo de entrada 
+comenzar la función de búsqueda inmediatamente 
+Lo siento, guardar preferencias ha fallado. 
+Búsquedas de código PB, que corrrespondan con los términos de la izquierda, y ver los resultados. 
+Elegir el fuente de código PB: 'Todo', fórums inglés, alemán o francés, y también 'Otro'. 
+Aqui el nombre del autor completo o parcial (debe aparecer en la segunda línea del ejemplo). 
+Abre una ventana, que permite seleccionar entre todos los nombre de autor de los ejemplos. 
+Elegir el día en que los ejemplos fueron publicados (en combinación con el mes y el año). 
+Elegir el mes en que los ejemplos fueron publicsdos (en combinación con el año). 
+Elegir el año en que los ejemplos fueron publicados. 
+Se visualizarán todos los ejemplos que correspondan a la selección hecha con anterioridad. 
+Se visualizarán todos los ejemplos seleccionados antes. 
+Se visualizarán todos los ejemplos incluidos en CodeArchive, con estructura de árbol, ordenados por tema. 
+Ver el ejemplo completo seleccionado a la izquierda. 
+Abre el tema del fórum para el ejemplo seleccionado, si se ha incluído una URL correcta. 
+Carga el ejemplo seleccionado a la izquierda en el editor. 
+Muestra de nuevo todos los ejemplos en estructura de árbol clasificados por tema. 
+Colapsa todos los ejemplos mostrados a la izquierda a la estructura inicial. 
+Abre el soporte PureBasic de www.PureArea.net en su navegador de internet. 
+Vuelve del ejemplo mostrado a la selección anterior. 
+No mostrar información del árbol, resultados, y ejemplos. 
+Fichero local 
+creado por 
+Más informaciones 
+Más información acerca de la versión de C.A.V. 
+Términos de búsqueda optimizados para PureBasic 
+Número de términos conocidos actualmente: 
+PB palabras clave 
+PB funciones/comandos 
+Enlínea ASM comandos 
+PB constantes 
+WinAPI funciones 
+Autores de ejemplos PB 
+Saliendo de C.A.V. 
+¿Guardar las opciones y búsquedas? 
+... preguntar antes de guardar 
+Volver al campo de búsqueda: 
+General 
+Operación 
+Windows 
+Crear acceso directo de C.A.V. 
+en el Escritorio 
+en la Barra de Acceso 
+Ver información para los controles en la ventana principal 
+Información 
+Usuario 
+Seleccionar editor preferido 
+Usar editor alternativo (ej. jaPBe): 
+Prueba del código con el compilador PB 
+Código 
+Prueba 
+Nota 
+Probar ejemplo seleccionado 
+Probar todos los ejemplos 
+Activar el editor 
+OK 
+Error 
+No se encuentra el compilador PB en la vía: 
+Preste atención porque esta vía puede ser determinada por la vía 
+del editor PureBasic original (vea las preferencias). 
+Continuar la prueba del ejemplo 
+La prueba del compilador se ha cancelado. 
+Último código compilado: 
+No. 
+No se encuentra el editor en la vía: 
+Esta vía puede ser cambiada en las Preferencias. 
+Visor de Código 
+Usar Sintaxis Coloreada 
+Sintaxis Coloreada 
+Constantes 
+Activar a los colores estándar 
+Activar el color de fondo del Visor de Códigos 
+Color de Fondo 
+Comentarios 
+Arrancar con 'Probar todo' desde el ejemplo seleccionado 
+Ejecutar el código compilado (la ejecución del programa se suspenderá) 
+El fichero ejecutable temporal no se encuentra: 
+Color de texto normal 
+Acceso directo en Escritorio creado. 
+Acceso directo en Escritorio no creado. 
+Acceso directo en Barra de Acceso creado. 
+Acceso directo en Barra de Acceso no creado. 
+Activar el debugger con la prueba del código 
+Lanzar con el código de prueba: 
+Esperar hasta que finalice 
+No esperar 
+Si 
+No 
+Doble click para activar C.A.V. 
+Antes 
+Después 
+Última creación: 
+Soporte para ASM Enlínea con el código de prueba 
+Exactamente 
+Antes 
+después 
+Aquí se puede ajustar, si la fecha de publicación corresponde [exactamente] con la fecha elegida o fue enviado [antes] o [después] de esa fecha. 
+No se puede abrir la ayuda [CAV.chm] 

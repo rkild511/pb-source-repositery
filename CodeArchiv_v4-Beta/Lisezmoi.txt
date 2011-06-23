@@ -1,0 +1,53 @@
+Chère communauté PureBasic! 
+
+Les codes archives de PureBasic contiennent les codes source de deux
+forums PureBasic : 
+
+   http://forums.purebasic.com    (forum anglais)
+   http://www.pure-board.de       (forum allemand)
+
+J'ai essayé de trier les codes aussi bien que possible sous la forme
+d’une liste structurée pertinente et de créer également une vue
+d'ensemble des codes groupés par thèmes en liens HTML (utilisez la
+page CodeArchiv.html pour vous y rendre), qui sont utilisables en
+ligne ou hors ligne. Utilisez simplement la fonction de recherche de
+votre navigateur (CTRL-+ F).
+
+Dans une prochaine version, il est prévu  d’ajouter pour chaque code
+source, une courte description avec le type de système requis (version
+de Windows  + celle de PureBasic) , le forum, l'auteur et la date de
+publication. Puisque cela exige un peu de temps, je ne voudrais pas
+vous laisser attendre plus longtemps avec cette première version ... :) 
+
+Je remercie ici Olivier Baum qui a fait naître à l'origine ce projet
+il y a quelque temps déjà. Mille mercis bien sûr aussi à tout les
+auteurs qui ont fournis les codes pour le public.
+
+Tous les programmeurs PureBasic qui reconnaissent leur code parmi les
+exemples peuvent m'en informer, afin que je puisse compléter
+l’information correspondante.
+
+Je serais également très reconnaissant pour toutes "nouvelles
+soumissions",  aussi bien que pour des compléments, des remarques,
+des critiques, des éloges etc. :)
+Mon adresse e-mail : andre@purearea.net 
+
+
+Deutscheinsiedel, le 14 juin 2003 
+
+André Beer – Equipe PureBasic
+www.PureArea.net
+
+
+
+Historique du CodeArchive de PureBasic :
+------------------------------------------
+Mai 2003       Première version de Code-Archive
+15 Juin  2003  Version 1.1 avec presque 500 codes
+06 Juil. 2003  Version 1.2 avec presque 550 codes
+16 Juil. 2003  Version 1.3 avec presque 600 codes
+24 Août 2003   Version 1.4 avec 698 exemples de code
+28 Sep. 2003   Version 1.5 avec 800 exemples de code
+01 Nov. 2003   Version 1.6 avec 914 exemples de code
+30 Nov. 2003   Version 1.7 avec 1090 exemples de code (Merci à cnesm!)
+18 Jan. 2004   Version 1.8 avec 1302 exemples de codes (Merci à Denis pour les traductions françaises !)

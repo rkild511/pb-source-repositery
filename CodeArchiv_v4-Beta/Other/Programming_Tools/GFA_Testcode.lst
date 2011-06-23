@@ -1,0 +1,38 @@
+$OPTION 0- 
+$FOR+ 
+
+Datum$ = DATE$ 
+monat& = VAL(MID$(DATE$,4,2)) 
+text$ = "Hallo ... "+str$(monat&) 
+
+DIALOG #0,40,100,432,176,"Information",WS_SYSMENU | DS_MODALFRAME,16,"Helv" 
+BUTTON "xxx",777,2,6,272,138,WS_DISABLED | BS_OWNERDRAW // Dino forever... 
+CONTROL Datum$,901,"static",SS_CENTER,280,20,140,25 
+CONTROL text$,902,"static",SS_CENTER,280,50,140,25 
+CONTROL "&Ok",1,"button",$10010001,305,105,90,28 
+ENDDIALOG 
+
+SHOWDIALOG #0 
+
+
+e! = FALSE 
+
+DO 
+GETEVENT 
+SELECT _Mess 
+CASE WM_COMMAND 
+PRINT "WM_Command" 
+SELECT _wParam 
+CASE 1,IDOK,IDCANCEL 
+e! = TRUE 
+ENDSELECT 
+
+CASE WM_RBUTTONDOWN 
+PRINT "Rechte Maustaste" 
+e! = TRUE 
+ENDSELECT 
+
+LOOP UNTIL e! 
+
+DELAY 2 
+CLOSEDIALOG #0

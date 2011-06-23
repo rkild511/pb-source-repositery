@@ -1,0 +1,223 @@
+CAV - Catalog File v1.0 
+Author: Blade 
+-------------------------------------------------------------- 
+C.A.V. - Visualizzatore di CodeArchive 
+Numero di esempi disponibili: 
+Cerca 
+Codice: 
+Autore: 
+Data: 
+Testo completo: 
+Nuova ricerca. 
+Inizio ricerca 
+Risultati della ricerca 
+Mostra il codice 
+Mostra l'argomento sul forum 
+Apri il codice nell'editor 
+Tutto 
+Forum inglese 
+Forum tedesco 
+Altro 
+Gennaio 
+Febbraio 
+Marzo 
+Aprile 
+Maggio 
+Giugno 
+Luglio 
+Agosto 
+Settembre 
+Ottobre 
+Novembre 
+Dicembre 
+Nuova ricerca 
+Scegli la parola da cercare: 
+Parola chiave PB 
+Funzione PB 
+Istruzione ASM 
+Cancella 
+Ricerca del testo con parole singole, combinato con +/- o frasi complete tra virgolette. 
+Potete aprire una piccola finestra per poter scegliere parole, comandi PB e istruzioni ASM. 
+CAV inizializzato... 
+CodeArchive verrà analizzato... 
+Codice, autore e data saranno trovate... 
+Le parole di PureBasic e istruzioni ASM saranno caricate... 
+I comandi di PureBasic saranno caricati... 
+La finestra principale sarà inizializzata... 
+Scegli l'autore da cercare: 
+Autore 
+Progetto 
+Esci 
+Opzioni 
+Impostazioni 
+Aiuto 
+Informazioni 
+Informazioni su C.A.V. - Visualizzatore di CodeArchive... 
+Scritto da 
+ e 
+Versione: v1.0 / Maggio 2005 
+Presentato da www.PureArea.net 
+e-mail 
+Tutti i diritti riservati. 
+Contenuti di CodeArchive 
+Nome 
+Descrizione 
+OS 
+Demo 
+Mostra tutto CodeArchive 
+Impostazioni 
+Mostra la traduzione dei nomi delle cartelle 
+Mostra la descrizione degli esempi 
+Usa l'IDE originale e definisci il percorso: 
+Le finestre delle impostazioni saranno inizializzate... 
+Salva 
+Usa 
+Cancella 
+Scegli il tuo editor PB preferito 
+Lingua del programma 
+Errore 
+File di lingua 
+ non si può caricare! 
+Salva la posizione della finestra principale 
+Chiudi tutti i rami dell'albero 
+Cartella 
+Salva tutte le opzioni alla chiusura del programma 
+Albero delle cartelle 
+Inserimento dei termini di ricerca / Risultati della ricerca 
+Cerca per OS (compatibilità per sistema operativo) e mostra i risultati 
+Controlla la disponibilità di esempi e mostra i risultati 
+Ricerca in corso... 
+Nota 
+La ricerca non ha dato risultati. 
+Ringraziamenti ai seguenti programmatori PureBasic: 
+Presentato da 
+Spiacente, non c'è un messaggio sul forum corrispondente a questo codice. 
+Ctrl 
+Indietro 
+Autori Top10 
+Autori Top20 
+Autori Top50 
+Luogo 
+Autore 
+Esempi 
+Mostra gli esempi dell'autore 
+il mio amico scozzese e sviluppatore GeoWorld 
+per 
+per il loro aiuto inestimabile su PureArea.net 
+naturalmente tutti gli altri sviluppatori PB 
+Se vuoi usare 
+, allora la frase deve essere racchiusa da due 
+. 
+Tra due 
+ deve essere inserita una frase. 
+Dentro una frase tra 
+ non sono permessi i simboli + e -. 
+I caratteri +/- (AND e NOT) sono permessi solo all'inizio di un termine di ricerca. 
+Errore nella ricerca del testo 
+per il loro aiuto nel creare una versione di CodeArchiv compatibile con PB3.92+ 
+Si prega di scegliere un anno assieme al mese. 
+Si prega di scegliere mese e anno assieme al giorno. 
+La data inserita non è corretta, si prega di correggerla. 
+Le funzioni WinAPI supportate saranno caricate... 
+Funzione WinAPI 
+Forum francese 
+Costante PB 
+Le costanti PureBasic saranno caricate... 
+vai al prossimo campo di inserimento 
+inizia subito la ricerca 
+Spiacente, il salvataggio delle impostazioni è fallito. 
+Ricerche sugli esempi corrispondenti ai termini cercati a sinistra, appariranno nei risultati della ricerca. 
+Scegli il codice degli esempi: 'tutti', forum inglese, tedesco o francese oppure 'altro'. 
+Qui il nome completo o parziale dell'autore (deve essere salvato nella seconda riga del codice) può essere inserito. 
+Apre una piccola finestra, che permette di scegliere tra tutti i nomi degli autori trovati negli esempi. 
+Scegli il giorno di publicazione degli esempi (solo in combinazione con mese/anno). 
+Scegli il mese di publicazione degli esempi (solo in combinazione con l'anno). 
+Scegli l'anno di publicazione degli esempi. 
+In questa anteprima sono mostrati tutti gli esempi corrispondenti alla selezione o alla ricerca precedente. 
+Qui viene mostrato l'esempio scelto precedentemente.. 
+Qui tutti gli esempi in clusi nel CodeArchive saranno mostrati in una struttua ad albero ordinati per agomento. 
+Mostra l'esempio completo scelto a sinistra. 
+Apre la discussione sul forum corrispondente all'esempio selezionato, se un indirizzo corretto era stato incluso. 
+Carica l'esempio selezionato a sinistra nell'editor. 
+Richiama l'anteprima di tutti gli esempi nella struttura ad albero. 
+Nasconde tutti i codici aperti sull'albero. 
+Apre la pagina di supporto e ordinazione di www.PureArea.net nel browser. 
+Ritorno dall'esempio alla selezione precedente. 
+Nessun tooltip per i rami, i risultati di ricerca e gli esempi visualizzati 
+File di lingua 
+creato da 
+Altre Informazioni 
+Ulteriori informazioni sulla versione di C.A.V. 
+Termini di ricerca ottimizzati per PureBasic 
+Numero dei termini di ricerca attualmente conosciuti: 
+parole PB 
+funzioni e comandi PB 
+Istruzioni ASM in linea 
+costanti PB 
+Funzioni WinAPI 
+Autori degli esempio in PB 
+Chiudendo C.A.V. 
+Salvare gli attuali termini di ricerca? 
+... chiedi prima di salvare 
+Ritorna nel campo di ricerca della ricerca: 
+Generale 
+Operazione 
+Windows 
+Crea un collegamento per C.A.V. 
+sul Desktop 
+nella barra di avvio rapido 
+Mostra tooltips per i controlli nella finestra principale. 
+ToolTips 
+Utente 
+Definisci l'editor predefinito 
+Usa editor alternativi (es. jaPBe) e definisci il path: 
+Controllo degli esempi con il tuo compilatore PB 
+Code 
+Test 
+Commento 
+Controlla l'esempio selezionato 
+Controlla tutti glie esempi 
+Apri l'editor 
+OK 
+Errore 
+Non è stato possibile trovare il compilatore PB al seguente percorso: 
+Si prega di notare che questo percorso è determinato dal percorso 
+dell'editor originale di PureBasic (vedi le impostazioni). 
+Continuare il test degli esempi 
+Il test è stato interrotto. 
+Ultimo esempio compilato: 
+No. 
+Non è stato trovato l'editor in questo percorso: 
+Questo percorso verrà memorizzato nelle impostazioni. 
+Code viewer 
+Usa l'evidenziazione sintattica 
+Evidenziazione sintattica 
+Costanti 
+Ripristina ai colori standard. 
+Definisci il colore di fondo del CodeViewer 
+Colore di sfondo 
+Commenti 
+Inizia con 'controlla tutti gli esempi' dal codice selezionato 
+Esegui l'esempio compilato (l'esecuzione del programma si bloccherà) 
+Il file eseguibile temporaneo non è presente: 
+Colore del testo normale 
+Collegamento al desktop creato con successo. 
+Creazione del collegamento al desktop fallita. 
+Collegamento nella barra di esecuzione rapida creato con successo. 
+Creazione del collegamento nella barra di esecuzione rapida fallita. 
+Lancia il debugger quando si controllano gli esempi 
+Quando inizia il testo dell'esempio: 
+Aspetta fino alla fine 
+Non aspettare 
+si 
+No 
+Doppio click per attivare C.A.V. 
+Prima 
+Dopo 
+Ultima compilazione: 
+Supporto per ASM in linea nel controllo degli esempi 
+Esattamente 
+Prima 
+Dopo 
+Qui si può regolare, se gli esempi da trovare dovessero coincidere [esattamente] per data o erano inseriti [prima] o [dopo] quella data. 
+Non è possibile aprire l'help in linea [CAV.chm] ! 

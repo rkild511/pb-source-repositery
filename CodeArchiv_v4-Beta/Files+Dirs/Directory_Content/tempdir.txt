@@ -1,0 +1,91 @@
+C:\
+    AUTOEXEC.BAT
+    BOOT.BAK
+    boot.ini
+    boot.new
+    bootfont.bin
+    cmdcons
+    cmldr
+    Config.Msi
+    CONFIG.SYS
+    debugInstaller.txt
+    Dokumente und Einstellungen
+    GeoWorld
+    Grafik
+    hiberfil.sys
+    Hostile Skies
+    installer.txt
+    Internet
+    IO.SYS
+    IPH.PH
+    Lexika
+    MSDOS.SYS
+    msvcp70.dll
+    msvcr70.dll
+    Musik
+    NTDETECT.COM
+    ntldr
+    NVIDIA
+    Office
+    pagefile.sys
+    Phenomedia AG
+    Program Files
+    Programme
+    Programming
+    RECYCLER
+    Residents
+    System Volume Information
+    TDSLCheck.txt
+    Tools
+    VQ
+    WINDOWS
+D:\
+    $ntservicepackuninstall$
+    Amiga
+    Cache
+    coLinux
+    Email
+    Games
+    MP3
+    MSDN
+    msdownld.tmp
+    MSOCache
+    RECYCLER
+    System Volume Information
+    Tools
+    Treiber
+    Video-Cover
+    x___Bilder_2006
+E:\
+    System Volume Information
+    Recover
+    Recycled
+    swconf.dat
+    desktop.ini
+    boot.ini
+    PASS.RPT
+    CDROM-Cache
+    Games
+    INet
+    Tools
+F:\
+G:\
+H:\
+I:\
+J:\
+K:\
+L:\
+M:\
+N:\
+O:\
+P:\
+Q:\
+R:\
+S:\
+T:\
+U:\
+V:\
+W:\
+X:\
+Y:\
+Z:\

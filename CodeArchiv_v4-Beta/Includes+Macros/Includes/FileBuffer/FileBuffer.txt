@@ -1,0 +1,71 @@
+FileBuffer IncludeFile - by Horst Schaeffer
+
+PureBasic's ReadString() function is extremely slow. 
+Here is a fast method to read lines from a text file:
+The complete file is read to a memory buffer; then the lines can be
+read sequentially from memory.
+
+I made two versions:
+
+FileBuffer.pbi    with Peek, supports CR+LF or LF+CR or CR or LF only
+FileBufferASM.pbi with InlineASM, supports CR+LF or CR only
+
+Benchmark        local HD     network    (file: 2.5Mb, 20,000 lines)
+ASM version      0.10 sec     0.10 sec
+Peek version     0.16 sec     0.16 sec
+PB ReadString()  5.42 sec     17 minutes 
+
+The Peek version should be fast enough in most cases, and can be easily
+modified if necessary. Note that zero bytes in text files (like in PB 
+source files) need a special handling! 
+
+Usage information
+
+The current line pointer (MemFileOffset) is kept as global variable,
+and can be reset (=0) or saved any time for later use. 
+
+Functions:
+
+LoadFileToMem(filenumber,filename)
+  Use instead of ReadFile().  
+  Memory space is allocated for the complete file, then the source file
+  is opened, read and closed.   
+
+ReadLineFromMem() 
+  Replaces ReadString() 
+  Note: The variable MemFileOffset is always set to the next line. 
+        It can be saved and set like FileSeek().
+
+MoreInMem() 
+  Use instead of Eof()
+  Returns non zero if NOT end of file (there is more in memory!). 
+
+CloseFileMem()
+  To release memory buffer.
+  Note that the file was closed in LoadFileToMem function already.
+
+Notes:
+  #FileBufferMem is the number for AllocateMemory(#Memory, Size, Flags);
+  it must be set before the IncludeFile directive.
+  With this version you can not use several FileBuffers at the same time. 
+
+Example:
+
+#FileBufferMem = 0             ; number for memory allocation (normally:0) 
+XIncludeFile "FileBuffer.pbi" 
+
+Procedure example(sourcefile)
+  If LoadFileToMem(0,sourcefile)
+    While MoreInMem()
+      line.s = ReadLineFromMem()
+      ; do anything with line
+    Wend 
+    CloseFileMem()
+  Else 
+    ; error ..
+  EndIf 
+EndProcedure 
+
+
+horst.schaeffer@gmx.net
+

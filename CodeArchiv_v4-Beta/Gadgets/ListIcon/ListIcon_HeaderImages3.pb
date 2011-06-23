@@ -1,0 +1,525 @@
+; English forum: http://www.purebasic.fr/english/viewtopic.php?t=8912&start=30
+; Author: Denis (updated for PB 4.00 by Deeem2031)
+; Date: 03. January 2004
+; OS: Windows
+; Demo: No
+
+
+; constantes des Gadgets 
+
+Enumeration 
+  #MainWindow 
+  #ListIconGadget1 
+  #Image 
+  #button 
+EndEnumeration 
+
+#ImageOnTheLeft = 1 
+#ImageOnTheRight = 2 
+#NoImage = 0 
+
+#LVM_GETHEADER     = 4127 
+#LVM_GETCOLUMN     = 4121 
+#HDM_SETITEM       = 4612 
+#HDM_GETITEM       = 4611 
+#LVM_GETIMAGELIST  = 4098 
+#LVM_SETIMAGELIST  = 4099 
+#LVSIL_SMALL       = 1 
+#LVCF_TEXT         = 4 
+
+#ILC_MASK          = 1 
+#ILC_COLOR32       = 32 
+
+#HDF_BITMAP_ON_RIGHT = 4096 
+#HDF_IMAGE           = 2048 
+#HDF_STRING          = 16384 
+#HDI_TEXT            = 2 
+#HDI_IMAGE           = 32 
+#HDI_FORMAT          = 4 
+
+Structure HDITEM 
+  Mask.l 
+  cxy.l 
+  pszText.l 
+  hbm.l 
+  cchTextMax.l 
+  fmt.l 
+  lParam.l 
+  iImage.l 
+  iOrder.l 
+  type.l 
+  pvFilter.l 
+EndStructure 
+
+Structure LVCOLUMN 
+  Mask.l 
+  fmt.l 
+  cx.l 
+  pszText.l 
+  cchTextMax.l 
+  iSubItem.l 
+  iImage.l 
+
+  iOrder.l 
+EndStructure 
+
+Global Hwnd_ListSmall.l 
+
+; ======================================================================================== 
+; ======================================================================================== 
+
+Procedure.l GetHeaderID(Gadget) 
+  ProcedureReturn SendMessage_(GadgetID(Gadget), #LVM_GETHEADER, 0, 0) 
+EndProcedure 
+
+; ======================================================================================== 
+; ======================================================================================== 
+
+Procedure SetHeaderImage(Gadget.l, ImageIndex.l, Column.l, Align.l) 
+  TextColumn.s = Space(255) 
+  Var.LVCOLUMN\Mask = #LVCF_TEXT 
+  Var\pszText = @TextColumn 
+  Var\cchTextMax = 255 
+  SendMessage_(GadgetID(Gadget), #LVM_GETCOLUMN, Column, @Var) 
+  
+  ; variable on HDITEM 
+  VarHeader.HDITEM\Mask = #HDI_IMAGE | #HDI_FORMAT | #HDI_TEXT 
+  VarHeader\fmt = #HDF_IMAGE | Align | #HDF_STRING 
+  VarHeader\iImage = ImageIndex 
+  VarHeader\pszText = @TextColumn 
+  VarHeader\cchTextMax = Len(TextColumn) 
+  SendMessage_(GetHeaderID(Gadget), #HDM_SETITEM, Column, @VarHeader) 
+EndProcedure 
+
+; ======================================================================================== 
+; ======================================================================================== 
+
+Procedure.l GetHeaderImageIndexID(Gadget.l, Column.l) 
+  ; variable on HDITEM 
+  VarHeader.HDITEM\Mask = #HDI_IMAGE | #HDI_FORMAT 
+  VarHeader\fmt = #HDF_IMAGE 
+  VarHeader\iImage = -1 ; to be sure that this value is not an image list icon index 
+  SendMessage_(GetHeaderID(Gadget), #HDM_GETITEM, Column, @VarHeader) 
+  ProcedureReturn VarHeader\iImage 
+EndProcedure 
+
+; ======================================================================================== 
+; ======================================================================================== 
+
+Procedure.l GetHeaderImageAlignment(Gadget.l, Column.l) 
+  ; get alignment of the image 
+  ; return 0 if no image 
+  ; return 1 if on the left 
+  ; return 2 if on the right 
+  
+  ; variable on HDITEM 
+  VarHeader.HDITEM\Mask = #HDI_IMAGE | #HDI_FORMAT 
+  VarHeader\fmt = #HDF_IMAGE 
+  VarHeader\iImage = -1 ; to be sure that this value is not an image list icon index 
+  SendMessage_(GetHeaderID(Gadget), #HDM_GETITEM, Column, @VarHeader) 
+  
+  If VarHeader\iImage ; teste if image exist 
+    If VarHeader\fmt & #HDF_BITMAP_ON_RIGHT 
+      result = #ImageOnTheRight 
+    Else 
+      result = #ImageOnTheLeft 
+    EndIf 
+  Else 
+    result = #NoImage 
+  EndIf 
+  ProcedureReturn result 
+EndProcedure 
+
+; ;======================================================================================== 
+; ;======================================================================================== 
+
+Procedure MyCallBack(Window, message, wParam, lParam) 
+  ReturnValue = #PB_ProcessPureBasicEvents 
+  Select message 
+    
+    Case #WM_NOTIFY 
+      *NotifyMsgInfos.NMHEADER = lParam 
+
+      If  *NotifyMsgInfos\hdr\code = #HDN_ITEMCHANGING 
+        If *NotifyMsgInfos\iItem = 0    ; really first column with index 0 
+           ReturnValue = #True 
+        EndIf 
+      EndIf 
+
+      EndSelect 
+  ProcedureReturn ReturnValue 
+EndProcedure 
+
+; ;======================================================================================== 
+; ;======================================================================================== 
+
+If OpenWindow(#MainWindow, 0, 0, 420, 300, " Header image",#PB_Window_ScreenCentered | #PB_Window_SystemMenu) 
+  If CreateGadgetList(WindowID(0)) And ListIconGadget(#ListIconGadget1, 10, 55, 400, 236, "", 0, #PB_ListIcon_MultiSelect) 
+    AddGadgetColumn(#ListIconGadget1, 1, "Column 1", 398 / 4) 
+    AddGadgetColumn(#ListIconGadget1, 2, "Column 2", 398 / 4) 
+    AddGadgetColumn(#ListIconGadget1, 3, "Column 3", 398 / 4) 
+    AddGadgetColumn(#ListIconGadget1, 4, "Column 4", 398 / 4) 
+    
+    For i.b = 1 To 10 
+      AddGadgetItem(#ListIconGadget1, -1, ""  + Chr(10)+"111" + Chr(10) + "222" + Chr(10) + "333" + Chr(10) + "444") 
+    Next i 
+    
+   ButtonGadget(#button, 10,10, 250, 30, "Change Image of the 4th column") 
+   SetWindowCallback(@MyCallBack())  ; to lock size of 1st column 
+  
+    ; To add an image to the header, an Image list must be assigned to the listicon. 
+    ; 2 cases: 
+    ; 
+    ; The image list already exist with small icon (created by PB) 
+    ; If not, you must create it 
+    ; Get image List Handle if exist 
+    Hwnd_ListSmall.l = SendMessage_(GadgetID(#ListIconGadget1), #LVM_GETIMAGELIST, #LVSIL_SMALL, 0)  
+
+    If Hwnd_ListSmall ; Hwnd_ListSmall is no null, the list image exist 
+      
+    Else 
+      ; here the list image does not exist, you create it 
+      ; create the image list, take a look to put max number on image inside the list (last param) 
+      Hwnd_ListSmall = ImageList_Create_(16, 16, #ILC_MASK | #ILC_COLOR32, 0, 30) 
+     If Hwnd_ListSmall 
+        ; assign the image list to the ListIconGadget 
+        SendMessage_(GadgetID(#ListIconGadget1), #LVM_SETIMAGELIST, #LVSIL_SMALL, Hwnd_ListSmall) 
+        ; Because PB use an transpareent ico (index 0 of the list), you must put it if you create the list 
+        TransparentIco.l = CatchImage(#Image, ?TransparentIco) 
+        IndexTransparentIco = ImageList_AddIcon_(Hwnd_ListSmall, TransparentIco) 
+        FreeImage(#Image) 
+      EndIf 
+      
+      ; Load the images from the DataSection 
+      ; add the image To the list. Be carefull, in that example, only ico format ! 
+      ; get the index image from the list. You will use this index to display the icon 
+      ArrowL.l = CatchImage(#Image, ?FlecheGIco) 
+      IndexArrowL = ImageList_AddIcon_(Hwnd_ListSmall, ArrowL) 
+      FreeImage(#Image) ; you can destroy the image because there is a copy inside the list 
+      
+      ArrowR.l = CatchImage(#Image, ?FlecheDIco) 
+      IndexArrowR = ImageList_AddIcon_(Hwnd_ListSmall, ArrowR) 
+      FreeImage(#Image) 
+      
+      CroixB.l = CatchImage(#Image, ?CroixBleueIco) 
+      IndexCroixB = ImageList_AddIcon_(Hwnd_ListSmall, CroixB) 
+      FreeImage(#Image) 
+      
+      PBIco.l = CatchImage(#Image, ?PB_Ico) 
+      IndexPBIco = ImageList_AddIcon_(Hwnd_ListSmall, PBIco) 
+      FreeImage(#Image) 
+      
+      Number4Ico.l = CatchImage(#Image, ?Number_4Ico) 
+      IndexNumber4Ico = ImageList_AddIcon_(Hwnd_ListSmall, Number4Ico) 
+      FreeImage(#Image) 
+
+      ; ;============== first column  Image to the right ======================== 
+      SetHeaderImage(#ListIconGadget1, IndexArrowL, 1, #HDF_BITMAP_ON_RIGHT) 
+      ; ;============== 2nd  column Image to the left =========================== 
+      SetHeaderImage(#ListIconGadget1, IndexPBIco, 2, 0) 
+      ; ;============== 3th  column Image to the left =========================== 
+      SetHeaderImage(#ListIconGadget1, IndexArrowR, 3, 0) 
+      ; ;============== 4th  column Image to the right =========================== 
+      SetHeaderImage(#ListIconGadget1, IndexCroixB, 4, #HDF_BITMAP_ON_RIGHT)      
+      ; ; ======================================================================= 
+
+      EndIf 
+    
+    Repeat 
+      Select WaitWindowEvent() 
+        
+        Case #PB_Event_Gadget 
+          Select EventGadget() 
+            Case #button 
+              SetHeaderImage(#ListIconGadget1, IndexNumber4Ico, 4, #HDF_BITMAP_ON_RIGHT)  
+          EndSelect            
+        
+           Case #PB_Event_CloseWindow 
+    ; destroy the imagelist 
+             ImageList_Destroy_(Hwnd_ListSmall) 
+             End 
+      EndSelect 
+    ForEver 
+
+
+  EndIf 
+EndIf 
+End 
+
+
+DataSection 
+  
+TransparentIco : 
+Data.l $00010000, $10100001, $00010000, $05680008, $00160000, $00280000 
+Data.l $00100000, $00200000, $00010000, $00000008, $01400000, $00000000 
+Data.l $00000000, $00000000, $00000000, $EA000000, $454500FF, $00000045 
+Data.l $CE000000, $C90000FF, $9D0000FF, $B40000FE, $FE9300FF, $FD1300FF 
+Data.l $FFC700FF, $E50000FF, $FFEB00FF, $000000FF, $FFFF0000, $000000FF 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $02020000, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $02020202 
+Data.l $02020202, $02020202, $02020202, $02020202, $02020202, $FFFF0202 
+Data.l $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202 
+Data.l $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202, $FFFF0202 
+Data.b 2, 2, -1, -1, 2, 2, -1, -1, 2, 2, -1, -1, 2, 2 
+  
+FlecheGIco : 
+Data.l $00010000, $10100001, $00010000, $03680018, $00160000, $00280000 
+Data.l $00100000, $00200000, $00010000, $00000018, $03400000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $FFFF0000, $DBE3F8FF, $F2B7C6F1 
+Data.l $C9F3B8C9, $B9C9F3B9, $F2B9C9F3, $C9F2B8C9, $B3C8F5B8, $F4B3C8F5 
+Data.l $C6F3B2C8, $B0C4F2B1, $FFD9E3F6, $FFFFFFFF, $AAC0F3FF, $FBB7CBF9 
+Data.l $CEFAB9CE, $BCCEFABC, $FBBBCEF9, $CFFAB9CF, $B6CDFBB8, $F9B2CDFB 
+Data.l $C9F9B0CB, $AEC8F7AD, $FFB0C5F2, $FFFFFFFF, $ADC3F6FF, $FCBED0FC 
+Data.l $D3FDC2D3, $C2D5FCC3, $FBC2D5FC, $D4FBC1D5, $BAD4FCBD, $FCB7D3FC 
+Data.l $CEFBB3D1, $AECAFAAF, $FFB1C8F3, $FFFFFFFF, $B1C7F6FF, $FCC2D3FC 
+Data.l $D6FCC5D6, $C5D6FCC5, $FCC3D5FD, $6185C2D5, $C2D5FC4D, $FBB2CFFB 
+Data.l $CFFBB2CF, $B1CBFAB2, $FFB3C8F5, $FFFFFFFF, $B7CAF5FF, $FBC8D6FB 
+Data.l $D6FCC8D6, $C5D6FCC5, $85C3D5FD, $61854D61, $4D61854D, $FBB6CEFB 
+Data.l $CEFBB6CE, $B6CDFBB6, $FFB9CBF3, $FFFFFFFF, $B8CBF6FF, $FDC9D8FC 
+Data.l $D6FBCAD8, $C1D3FBC8, $854D6185, $61854D61, $B6CEFB4D, $FBB6CEFB 
+Data.l $CDFCB6CE, $B9CDFBB7, $FFBACBF4, $FFFFFFFF, $B8CBF6FF, $FDC9D8FC 
+Data.l $D8FDCAD8, $4D6185CA, $854D6185, $D3FB4D61, $B6CEFBC1, $FBB6CEFB 
+Data.l $CDFCB6CE, $B9CDFBB7, $FFBACBF4, $FFFFFFFF, $BDCEF7FF, $FCCDDBFC 
+Data.l $6185CDDA, $4D61854D, $FB4D6185, $D3FBC1D3, $B6CEFBC1, $FCB9CDFB 
+Data.l $CDFBB7CD, $B9CDFBB9, $FFBCCCF3, $FFFFFFFF, $BED0F8FF, $FDD0DDFC 
+Data.l $D9FDCEDD, $4D6185CA, $854D6185, $CDFB4D61, $B9CDFBB9, $FBBACDFC 
+Data.l $CDFCB9CD, $BACDFCBA, $FFBCCCF3, $FFFFFFFF, $BED0F8FF, $FDD0DDFC 
+Data.l $D9FDCEDD, $C8D6FBCA, $854D6185, $61854D61, $BBCEFD4D, $FBBACDFC 
+Data.l $CDFCB9CD, $BACDFCBA, $FFBCCCF3, $FFFFFFFF, $C4D4F7FF, $FDD4E1FC 
+Data.l $DBFCD1E0, $C9D8FCCD, $85C9D8FC, $61854D61, $4D61854D, $FDBBCEFD 
+Data.l $CEFDBBCE, $BCCEFABB, $FFBCCCF3, $FFFFFFFF, $CAD8F9FF, $FCDAE6FE 
+Data.l $DEFDD8E3, $CEDBFDD1, $FCCAD9FD, $6185C9D8, $C5D5FC4D, $FCC5D3FC 
+Data.l $D0FCC2D3, $BCCDFABE, $FFBACCF4, $FFFFFFFF, $D0DFFCFF, $FEE1EAFE 
+Data.l $E1FCDAE6, $D1E0FDD4, $FDD0DDFC, $DBFCCEDB, $CAD9FDCD, $FCC8D8FB 
+Data.l $D3FCC5D6, $BCCEFAC2, $FFB9C9F3, $FFFFFFFF, $E6EEFCFF, $F9D0DFFC 
+Data.l $D2F7CAD8, $C0D0F7C4, $F5BDCEF7, $CDF5BBCD, $B8CBF6BB, $F7B7CAF5 
+Data.l $C7F5B5C8, $AFC5F4B3, $FFDCE6F9, $0000FFFF, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $01800000, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.b - 1, -1, -128, 1, -1, -1 
+  
+  
+FlecheDIco : 
+Data.l $00010000, $10100001, $00010000, $03680018, $00160000, $00280000 
+Data.l $00100000, $00200000, $00010000, $00000018, $03400000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $FFFF0000, $DBE3F8FF, $F2B7C6F1 
+Data.l $C9F3B8C9, $B9C9F3B9, $F2B9C9F3, $C9F2B8C9, $B3C8F5B8, $F4B3C8F5 
+Data.l $C6F3B2C8, $B0C4F2B1, $FFD9E3F6, $FFFFFFFF, $AAC0F3FF, $FBB7CBF9 
+Data.l $CEFAB9CE, $BCCEFABC, $FBBBCEF9, $CFFAB9CF, $B6CDFBB8, $F9B2CDFB 
+Data.l $C9F9B0CB, $AEC8F7AD, $FFB0C5F2, $FFFFFFFF, $ADC3F6FF, $FCBED0FC 
+Data.l $D3FDC2D3, $C2D5FCC3, $FBC2D5FC, $D4FBC1D5, $BAD4FCBD, $FCB7D3FC 
+Data.l $CEFBB3D1, $AECAFAAF, $FFB1C8F3, $FFFFFFFF, $B1C7F6FF, $FCC2D3FC 
+Data.l $D6FCC5D6, $C5D6FCC5, $85C3D5FD, $D4FC4D61, $BAD4FCBE, $FBB2CFFB 
+Data.l $CFFBB2CF, $B1CBFAB2, $FFB3C8F5, $FFFFFFFF, $B4C8F6FF, $FCC5D5FC 
+Data.l $D5FCC5D5, $C5D5FCC5, $854D6185, $61854D61, $BAD4FC4D, $FBB2CFFB 
+Data.l $CEFBB2CF, $B5CDFAB6, $FFB5C9F3, $FFFFFFFF, $B8CBF6FF, $FDC9D8FC 
+Data.l $D8FDCAD8, $CAD8FDCA, $85C5D5FC, $61854D61, $4D61854D, $FBBDD3FB 
+Data.l $CDFCB6CE, $B9CDFBB7, $FFBACBF4, $FFFFFFFF, $B8CBF6FF, $FDC9D8FC 
+Data.l $D8FDCAD8, $CAD8FDCA, $FBC1D3FB, $6185C1D3, $4D61854D, $FB4D6185 
+Data.l $CDFCB6CE, $B9CDFBB7, $FFBACBF4, $FFFFFFFF, $BDCEF7FF, $FCCDDBFC 
+Data.l $D8FCCDDA, $C9D8FCC9, $FBC1D3FB, $D3FBC1D3, $4D6185C1, $854D6185 
+Data.l $CDFB4D61, $B9CDFBB9, $FFBCCCF3, $FFFFFFFF, $BED0F8FF, $FDD0DDFC 
+Data.l $D9FDCEDD, $C8D6FBCA, $FDC9D8FC, $6185BBCE, $4D61854D, $FC4D6185 
+Data.l $CDFCB7CD, $BACDFCBA, $FFBCCCF3, $FFFFFFFF, $BED0F8FF, $FDD0DDFC 
+Data.l $D9FDCEDD, $C8D6FBCA, $85C8D6FB, $61854D61, $4D61854D, $FBBACDFC 
+Data.l $CDFCB9CD, $BACDFCBA, $FFBCCCF3, $FFFFFFFF, $C4D4F7FF, $FDD4E1FC 
+Data.l $DBFCD1E0, $C9D8FCCD, $854D6185, $61854D61, $BED0FC4D, $FDBBCEFD 
+Data.l $CEFDBBCE, $BCCEFABB, $FFBCCCF3, $FFFFFFFF, $CAD8F9FF, $FCDAE6FE 
+Data.l $DEFDD8E3, $CEDBFDD1, $85C9D8FC, $D6FB4D61, $C5D5FCC8, $FCC5D3FC 
+Data.l $D0FCC2D3, $BCCDFABE, $FFBACCF4, $FFFFFFFF, $D0DFFCFF, $FEE1EAFE 
+Data.l $E1FCDAE6, $D1E0FDD4, $FDD0DDFC, $DBFCCEDB, $CAD9FDCD, $FCC8D8FB 
+Data.l $D3FCC5D6, $BCCEFAC2, $FFB9C9F3, $FFFFFFFF, $E6EEFCFF, $F9D0DFFC 
+Data.l $D2F7CAD8, $C0D0F7C4, $F5BDCEF7, $CDF5BBCD, $B8CBF6BB, $F7B7CAF5 
+Data.l $C7F5B5C8, $AFC5F4B3, $FFDCE6F9, $0000FFFF, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $01800000, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.b - 1, -1, -128, 1, -1, -1 
+  
+CroixBleueIco : 
+Data.l $00010000, $10100001, $00010000, $03680018, $00160000, $00280000 
+Data.l $00100000, $00200000, $00010000, $00000018, $FF400000, $0000FFFF 
+Data.l $00000000, $00000000, $00000000, $00000000, $CECECE00, $B6B6B6B6 
+Data.l $B6B6B6B6, $B6B6B6B6, $B6B6B6B6, $B6B6B6B6, $B6B6B6B6, $B6B6B6B6 
+Data.l $B6B6B6B6, $B6B6B6B6, $00CECECE, $00000000, $FFDFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFDFFFFF, $CEB6B6B6, $DFFFCECE, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $FF5725FF, $25FF5725, $5725FF57, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFDFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $FF5725FF, $25FF5725, $5725FF57, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFFFFFF, $5725FFFF, $FF5725FF, $25FF5725, $5725FF57, $FFFFFFFF 
+Data.l $25FFFFFF, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FF5725FF, $25FF5725, $FFFFFF57, $FFFFFFFF 
+Data.l $25FFFFFF, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFF5725, $FFFFFFFF, $FFFFFFFF, $FFFF5725, $FFFFFFFF, $FFFFFFFF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $FFFFFF57, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $FFFFFFFF, $FFFFFFFF, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $FFFFFF57, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFF5725, $FFFFFFFF, $FFFFFFFF, $FFFF5725, $FFFFFFFF, $FFFFFFFF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FF5725FF, $25FF5725, $FFFFFF57, $FFFFFFFF 
+Data.l $25FFFFFF, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $FFFFFFFF, $5725FFFF, $FF5725FF, $25FF5725, $5725FF57, $FFFFFFFF 
+Data.l $25FFFFFF, $5725FF57, $B6FFFFFF, $FFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $FF5725FF, $25FF5725, $5725FF57, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $B6FFFFFF, $DFFFB6B6, $5725FFFF, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $FF5725FF, $25FF5725, $5725FF57, $FF5725FF 
+Data.l $25FF5725, $5725FF57, $CEFFDFFF, $0000CECE, $FFDFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFDFFFFF, $00000000, $01800000, $0080FF00, $0000FF00 
+Data.l $0000FF00, $0000FF00, $0000FF00, $0000FF00, $0000FF00, $0000FF00 
+Data.l $0000FF00, $0000FF00, $0000FF00, $0000FF00, $0000FF00, $0000FF00 
+Data.b 0, -1, -128, 3, 0, -1 
+  
+PB_Ico : 
+Data.l $00010000, $20200002, $00000010, $02E80000, $00260000, $10100000 
+Data.l $00000010, $01280000, $030E0000, $00280000, $00200000, $00400000 
+Data.l $00010000, $00000004, $02800000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $80000080, $80000000, $00800080 
+Data.l $00800000, $80800080, $80800000, $C0C00080, $000000C0, $FF0000FF 
+Data.l $FF000000, $00FF00FF, $00FF0000, $FFFF00FF, $FFFF0000, $000000FF 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $11111111, $11111111 
+Data.l $00000000, $00000000, $11111101, $11111111, $00000010, $00000000 
+Data.l $99999900, $99999999, $00000099, $00000000, $99990900, $99999999 
+Data.l $00009099, $00000000, $00900000, $00000000, $00000000, $00000000 
+Data.l $00090000, $00000000, $00000000, $00000000, $90000000, $00000000 
+Data.l $00000000, $00000000, $09000000, $00000000, $00000000, $00000000 
+Data.l $11110000, $00111191, $00000000, $00000000, $11010000, $10111119 
+Data.l $00000000, $00000000, $99000000, $99999999, $00000090, $00000000 
+Data.l $00000000, $00000900, $00000000, $00000000, $00000000, $00900000 
+Data.l $00000000, $00000000, $00000000, $00090000, $00000000, $00000000 
+Data.l $00000000, $90000000, $00000000, $00000000, $00000000, $19111111 
+Data.l $00000010, $00000000, $00000000, $11111101, $00000091, $00000000 
+Data.l $00000000, $99999900, $00000099, $00000000, $00000000, $99990900 
+Data.l $00009099, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $FFFF0000, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00F0FFFF, $00F8FF0F, $00FCFF07, $00FEFF03 
+Data.l $7FFFFF01, $BFFFFFFF, $DFFFFFFF, $EFFFFFFF, $00FFFFFF, $80FFFF3F 
+Data.l $C0FFFF1F, $FEFFFF07, $FFFFFFFF, $FFFFFF7F, $FFFFFFBF, $F0FFFFDF 
+Data.l $F8FFFF07, $FCFFFF03, $FEFFFF03, $FFFFFF01, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $0028FFFF, $00100000, $00200000 
+Data.l $00010000, $00000004, $00C00000, $00000000, $00000000, $00000000 
+Data.l $00000000, $00000000, $00000000, $80000080, $80000000, $00800080 
+Data.l $00800000, $80800080, $80800000, $C0C00080, $000000C0, $FF0000FF 
+Data.l $FF000000, $00FF00FF, $00FF0000, $FFFF00FF, $FFFF0000, $000000FF 
+Data.l $00000000, $00000000, $00000000, $00000000, $00000000, $11000000 
+Data.l $10111111, $09000000, $99999999, $00000000, $00000090, $00000000 
+Data.l $00000009, $00000000, $00119111, $00000000, $90999909, $00000000 
+Data.l $00900000, $00000000, $00090000, $00000000, $90111100, $00000000 
+Data.l $99990900, $00000000, $00000000, $00000000, $00000000, $00000000 
+Data.l $00000000, $FFFF0000, $FFFF0000, $FFFF0000, $1FC00000, $0FE00000 
+Data.l $FFF70000, $FFFB0000, $3FF00000, $1FF80000, $7FFF0000, $BFFF0000 
+Data.b 0, 0, -4, 31, 0, 0, -2, 15, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0, -1, -1, 0, 0 
+  
+Number_4Ico : 
+Data.l $00010000, $10100001, $00010000, $03680018, $00160000, $00280000 
+Data.l $00100000, $00200000, $00010000, $00000018, $03400000, $00000000 
+Data.l $00000000, $00000000, $00000000, $00000000, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $FFFF0000, $D4E3FFFF, $E62A63E6 
+Data.l $63E62862, $2763E627, $E72563E7, $63E82163, $1D62E91F, $E81860E9 
+Data.l $5DE9165F, $0D5EEA0F, $FFD4E3FF, $FFFFFFFF, $346DF4FF, $F53A70F5 
+Data.l $74F43872, $3574F536, $F53374F5, $73F62E74, $2873F72B, $F62270F7 
+Data.l $6CF61E6E, $146DF717, $FF0865F8, $FFFFFFFF, $3F74F5FF, $F64579F6 
+Data.l $7BF6447B, $407CF741, $F73C7BF6, $7BF7377C, $2E7AF733, $F82878F8 
+Data.l $74F82377, $1973F81D, $FF0C6BF9, $FFFFFFFF, $477AF6FF, $F74D7FF7 
+Data.l $81F64B80, $4581F748, $FF4181F7, $FFFFFFFF, $337DF7FF, $F82E7AF7 
+Data.l $76F82778, $1C76F820, $FF106EFA, $FFFFFFFF, $4F7FF7FF, $F75183F7 
+Data.l $82F64F83, $4982F64C, $FF4581F7, $FFFFFFFF, $347CF7FF, $F82E7AF7 
+Data.l $76F82778, $1C75F821, $FF136FF9, $FFFFFFFF, $5683F7FF, $F65384F6 
+Data.l $FFFF5184, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $F72F78F7 
+Data.l $74F82776, $1F73F823, $FF1670F9, $FFFFFFFF, $5886F7FF, $F75684F7 
+Data.l $FFFF5283, $497EF6FF, $FF437CF6, $FFFFFFFF, $3375F6FF, $F62E74F6 
+Data.l $6FF6276F, $1E6FF622, $FF196BF7, $FFFFFFFF, $5C89F7FF, $F75784F7 
+Data.l $7FF65282, $FFFFFF4E, $FF4379F6, $FFFFFFFF, $3070F5FF, $F62E6FF6 
+Data.l $6AF6286C, $216AF622, $FF1E68F8, $FFFFFFFF, $618BF8FF, $F65784F7 
+Data.l $7DF65281, $FFFFFF4E, $FF4275F5, $FFFFFFFF, $316DF5FF, $F52D6BF4 
+Data.l $67F52968, $2266F524, $FF2166F6, $FFFFFFFF, $6790F8FF, $F75986F7 
+Data.l $7EF65483, $4A79F650, $FFFFFFFF, $FFFFFFFF, $346CF4FF, $F4306AF4 
+Data.l $66F52C68, $2765F528, $FF2665F7, $FFFFFFFF, $6D96F8FF, $F75E8AF8 
+Data.l $81F75986, $4E7DF653, $FF4879F6, $FFFFFFFF, $386FF5FF, $F4346CF4 
+Data.l $69F4316A, $2E68F42F, $FF2A66F6, $FFFFFFFF, $7A9FF9FF, $F86690F8 
+Data.l $87F8618D, $5684F75B, $F65180F7, $7AF64C7C, $4577F649, $F54175F5 
+Data.l $71F53E73, $3A71F53C, $FF346CF6, $FFFFFFFF, $8BACF9FF, $F8729AF8 
+Data.l $91F86D96, $638EF767, $F7628DF7, $8BF75F8B, $5E8AF760, $F75B88F7 
+Data.l $83F75785, $4F80F654, $FF4077F7, $FFFFFFFF, $D4E3FFFF, $F87299F8 
+Data.l $93F86E97, $6590F869, $F8648FF8, $8FF8628E, $628DF864, $F7608CF8 
+Data.l $87F75C8A, $5384F759, $FFD4E3FF, $0000FFFF, $FFFFFF00, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF, $FFFFFFFF 
+Data.l $FFFFFFFF, $FFFFFFFF, $00FFFFFF, $01800000, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.l $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF, $0000FFFF 
+Data.b  -1, -1, -128, 1, -1, -1 
+
+EndDataSection
+
+; IDE Options = PureBasic v4.01 (Windows - x86)
+; Folding = -
+; EnableXP
