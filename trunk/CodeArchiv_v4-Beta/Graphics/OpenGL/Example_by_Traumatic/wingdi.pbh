@@ -1,0 +1,4 @@
+; field selection bits
+#DM_BITSPERPEL      = $00040000
+#DM_PELSWIDTH       = $00080000
+#DM_PELSHEIGHT      = $00100000

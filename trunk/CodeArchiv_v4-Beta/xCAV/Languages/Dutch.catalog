@@ -1,0 +1,225 @@
+CAV - Catalog File v1.0 
+Author: Roland 'Riz' Schreurs
+-------------------------------------------------------------- 
+C.A.V.  - de CodeArchiefViewer
+Aantal beschikbare code voorbeelden:
+Zoek naar
+Bron:
+Auteur:
+Datum:
+Volledige tekst:
+Herstelt alle zoek termen naar lege- of 'alle' velden.
+Start zoeken
+Zoek resultaten
+Weergave code
+Forum draad
+Laad code
+Alle
+Engels forum
+Duits forum
+Overige
+januari
+februari
+maart
+april
+mei
+juni
+juli
+augustus
+september
+oktober
+november
+december
+Herstel zoeken
+Kies sleutelwoord om te zoeken:
+PB sleutelwoord
+PB functie
+ASM instructie
+Annuleren
+Zoek op volledige tekst bestaand uit afzonderlijke woorden, gecombineerd met +/- of complete zinnen omsloten door aanhalingstekens.
+Hier kunt u een klein venster openen, waarin u eenvoudig PB sleutelwoorden, PB instructies en ASM instructies selecteert.
+CodeArchiefViewer is geïnitialiseerd...
+CodeArchief wordt doorzocht...
+Bron, auteur en datum wordt gedetecteerd...
+PureBasic en ASM sleutelwoorden worden geladen...
+PureBasic instructies worden geladen...
+Hoofdvenster wordt geïnitialiseerd...
+Kies auteur om te zoeken:
+Auteur
+Project
+Afsluiten
+Opties
+Voorkeuren
+Help
+Over
+Over C.A.V. - de CodeArchiefViewer...
+Geschreven door
+ en
+Versie: v1.0 / Juli 2005
+Gepresenteerd door www.PureArea.net
+email
+Alle rechten voorbehouden.
+Inhoud van het CodeArchief
+Naam
+Beschrijving
+Systeem
+Demo
+Weergave volledig CodeArchief
+Voorkeuren
+Weergave vertaling van de mappennamen
+Weergave beschrijving van de broncodes
+Gebruik originele PureBasic IDE en stel het pad in:
+Voorkeur vensters worden geïnitialiseerd...
+Opslaan
+Toepassen
+Annuleren
+Kies uw gewenste PB editor
+Programma taal
+Fout
+Taal bestand
+ kan niet geladen worden!
+Positie van het hoofdvenster opslaan
+Samenvouwen mappen 
+Map
+Alle programma opties automatisch opslaan bij afsluiten programma
+Mappen vertakking
+Invoer van zoektermen / zoekresultaten
+Zoekt naar systeem (compatibiliteit) en toont resultaat
+Controleert Demo geschiktheid en toont resultaat
+Bezig met zoeken...
+Melding
+Geen overeenkomstige codes gevonden.
+Dank en groeten aan de volgende PureBasic programmeurs:
+Gepresenteerd door
+Sorry, voor deze code is geen forum link beschikbaar.
+Ctrl
+Terug
+Top10 Auteurs
+Top20 Auteurs
+Top50 Auteurs
+Plaats
+Auteur
+Codes
+Toon codes van deze auteur
+Mijn Schotse vriend & GeoWorld ontwikkelaar
+voor
+voor hun enorm waardevolle hulp op PureArea.net
+natuurlijk alle andere PB ontwikkelaars
+Indien u 
+, wilt gebruiken dan dient de zin omsloten worden door twee 
+.
+Tussen twee 
+ moet een zin ingevoerd worden.
+Binnen een zin omsloten door 
+ zijn geen + en - tekens toegestaan.
++/- for AND or NOT identification of a search term are only allowed immediately in front of the searchterm.
+Fout in zoekterm bestaand uit volledige tekst
+voor hun hulp bij het maken van een PB3.92+ geschikt CodeArchief
+Behalve een maand dient u ook een jaar te kiezen.
+Behalve een dag dient u ook een maand en jaar te kiezen.
+De selectie van de dag bevat een fout, gelieve te corrigeren.
+Ondersteunde WinAPI functies worden geladen...
+WinAPI functie
+Frans forum
+PB constante
+PureBasic constanten worden geladen...
+springt naar het volgende invoerveld
+start onmiddelijk de zoekfunctie
+Sorry, het opslaan van de voorkeuren is mislukt.
+Searches for PB codes, which correspond to the given search terms on the left, and will display the search results.
+Choose the source of the PB codes: 'All', english, german of french forum as well 'Other'.
+Here the complete or partial name of the author (must be saved on 2nd line of the example code) can be entered.
+Opent een klein venster, dat het mogelijk maakt te kiezen uit alle auteurnamen gevonden in de code.
+Choose the day on which wanted codes were released (only possible in combination with month/year).
+Choose the month in which wanted codes were released (only possible in combination with year).
+Choose the year in which wanted codes were released.
+In this overview all codes are displayed, which correspond to the selection or search settings done before.
+Here will be displayed the code choosen before.
+Here all codes, which are included in the CodeArchive, will be displayed in a tree structure sorted by topic.
+Weergave van volledige code, gekozen aan de linker kant.
+Opent de forum draad van de geselecteerde code, mits de bron een correcte URL bevat.
+Laadt de aan de linker kant geselecteerde code in de ingestelde editor.
+Calls again the overview of all codes in the tree structure sorted by topic.
+Collapse all codes showed on the left to the initial tree structure.
+Opent de PureBasic support en bestel site www.PureArea.net in uw internet browser.
+Ga terug van de volledige code weergave naar de vorige selectie.
+Geen ballonteksten voor vertakkingen, zoekresultaten en code
+Lokaal Nederlands bestand
+gemaakt door
+Meer informatie
+Meer informatie over de huidige C.A.V. versie
+Zoektermen geoptimaliseerd voor PureBasic
+Aantal tot nu toe bekende zoektermen:
+PB sleutelwoorden
+PB functies/instructies
+InlineASM instructies
+PB constanten
+WinAPI functies
+Auteurs van PB codes
+Afsluiten C.A.V.
+Huidige instellingen/zoektermen opslaan?
+... vraag om bevestiging voor het opslaan
+Een enter in het invoerveld van volledige tekst zoeken:
+Algemeen
+Uitvoering
+Windows
+Maak snelkoppelingen aan voor C.A.V.
+op het Bureaublad
+in SnelStarten
+Weergave ballonteksten voor knoppen in hoofdvenster.
+ToolTips
+Gebruiker
+Stel de gewenste editor in
+Gebruik alternatieve editor (bijv. jaPBe) en stel het pad in:
+Code tester met uw PB compiler
+Code
+Test
+Opmerking
+Test geselecteerde code
+Test alle codes
+Roep verwerker
+OK
+Fout
+Kan de PB compiler niet vinden langs het volgende pad:
+Pas op, dit pad is vastgesteld aan de hand van het pad
+van de originele PureBasic editor (zie voorkeuren).
+Ga door met Code test
+De compiler test is geannuleerd.
+Laatst compileerde code:
+Nee.
+Kan de editor niet vinden langs het volgende pad:
+Dit pad wordt gebruikt in de voorkeuren.
+Code viewer
+Gebruik syntax-accentuering
+Syntax-accentuering
+Constanten
+Herstel standaard kleuren
+Stel de achtergrondkleur in van de code viewer
+AchtergrondKleur
+Commentaren
+Start with 'Test all codes' from selected code
+Start de gecompileerde code (programma verloop wordt onderbroken)
+Het tijdelijke exe-bestand kan niet gevonden worden:
+Normale tekst kleur
+Bureaublad snelkoppeling is met succes aangemaakt.
+Het aanmaken van de snelkoppeling naar het bureaublad is mislukt.
+Snelkoppeling succesvol aangemaakt in snelstarten.
+Creating of the shortcut in quicklaunch failed.
+Run debugger while code-testing
+When test-code gets started:
+Wacht tot het einde
+Niet wachten
+Ja
+Nee
+Dubbel klik om C.A.V. te activeren
+Ervoor
+Erna
+Laatste versie:
+Ondersteuning voor InlineASM bij het testen van code
+Exact
+Voor
+Na
+Here will be adjusted, if the codes to find should [exactly] match the selected date or were posted [before] or [after] that date.
+Kan de online-help [CAV.chm] niet openen!
+Kleur voor zoektermen
+

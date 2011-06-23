@@ -1,0 +1,239 @@
+CAV - Catalog File v1.1
+Author: write your name here
+--------------------------------------------------------------
+C.A.V. - the CodeArchiveViewer
+Number of example codes available:
+Search for
+Source:
+Author:
+Date:
+Fulltext:
+Reset all search terms to empty or 'All' fields.
+Start Search
+Search results
+Show code
+Show forum thread
+Show code in editor
+All
+English forum
+German forum
+Other
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Reset search
+Choose keyword for searching:
+PB keyword
+PB function
+ASM command
+Cancel
+Fulltext search with single words, combined with +/- or complete quote-enclosed phrases.
+Hereby you can open a small window, where you can easily select PB keywords, PB commands and ASM commands.
+CodeArchiveViewer is initialized...
+CodeArchive will be scanned...
+Source, author and date will be detected...
+PureBasic and ASM keywords will be loaded...
+PureBasic commands will be loaded...
+Main window will be initialized...
+Choose author for searching:
+Author
+Project
+Exit
+Options
+Preferences
+Help
+About
+About C.A.V. - the CodeArchiveViewer tool...
+Written by
+ and
+Version: v1.1 / May 2007
+Presented by www.PureArea.net
+e-mail
+All Rights reserved.
+Contents of the CodeArchive
+Name
+Description
+OS
+Demo
+Show complete CodeArchive
+Preferences
+Show translation of the directory names
+Show description of the sources
+Use original PureBasic IDE and set path:
+Preferences windows will be initialized...
+Save
+Use
+Cancel
+Please choose your prefered PB editor
+Program language
+Error
+Language file
+ couldn't be loaded!
+Save position of the main window
+Collapse directory tree
+Directory
+Save all program options automatically at program end
+Directory tree
+Input of search terms / Search results
+Search for OS (compatibility for Operating System) and show results
+Check for Demo suitability and show result
+Searching in progress...
+Note
+Couldn't found any matching codes.
+Thanks and greetings to following PureBasic coders:
+Presented by
+Sorry, there isn't a forum link available for this code.
+Ctrl
+Back
+Top10 Authors
+Top20 Authors
+Top50 Authors
+Place
+Author
+Codes
+Show codes of the author
+my scottish friend & GeoWorld developer
+for
+for their invaluable help at PureArea.net
+of course all other PB developers
+If you want to use 
+, then the phrase must be enclosed by two 
+.
+Between two 
+ there must be entered a phrase.
+Within a phrase enclosed by 
+ aren't allowed any + and -.
++/- for AND or NOT identification of a search term are only allowed immediately in front of the searchterm.
+Error in fulltext searchterm
+for their help to create a PB3.92+ compatible CodeArchiv
+Please choose a year beside a month.
+Please choose month and year beside a day.
+The selection of the day has an error, please correct it.
+Supported WinAPI functions will be loaded...
+WinAPI function
+French forum
+PB constant
+PureBasic constants will be loaded...
+jump to the next input field
+immediately start the search function
+Sorry, saving of the preferences failed.
+Searches for PB codes, which correspond to the given search terms on the left, and will display the search results.
+Choose the source of the PB codes: 'All', english, german of french forum as well 'Other'.
+Here the complete or partial name of the author (must be saved on 2nd line of the example code) can be entered.
+Opens a small window, which allows you to choose from all author names found in the codes.
+Choose the day on which wanted codes were released (only possible in combination with month/year).
+Choose the month in which wanted codes were released (only possible in combination with year).
+Choose the year in which wanted codes were released.
+In this overview all codes are displayed, which correspond to the selection or search settings done before.
+Here will be displayed the code choosen before.
+Here all codes, which are included in the CodeArchive, will be displayed in a tree structure sorted by topic.
+Display the full code choosen on the left side.
+Opens the forum thread for the selected code, if a correct URL was included in the source.
+Load the selected code on the left into the set editor.
+Calls again the overview of all codes in the tree structure sorted by topic.
+Collapse all codes showed on the left to the initial tree structure.
+Opens the PureBasic support and order site www.PureArea.net in your internet browser.
+Return from the full code display to the former selection.
+No tooltips for tree, search results and code display
+Locale file
+created by
+More Informations
+More informations about the current C.A.V. version
+Search terms optimized for PureBasic
+Number of currently known search terms:
+PB keywords
+PB functions/commands
+InlineASM commands
+PB constants
+WinAPI functions
+Authors of PB codes
+Exiting C.A.V.
+Save current settings/search terms?
+... ask before saving
+Return in input field of fulltext search:
+General
+Operation
+Windows
+Create shortcuts for C.A.V.
+on Desktop
+in QuickLaunch
+Show tooltips for controls in main window
+ToolTips
+User
+Set prefered editor
+Use alternate editor (e.g. jaPBe) and set path:
+Code tester with your PB compiler
+Code
+Test
+Remark
+Test selected code
+Test all codes
+Call editor
+OK
+Error
+Couldn't found the PB compiler at following path:
+Please be aware, that this path is determined from the path
+of the original PureBasic editor (see at preferences).
+Continure Code test
+The compiler test was canceled.
+Last compiled code:
+No.
+Couldn't found the editor at following path:
+This path will be set in the preferences.
+Code viewer
+Use syntax-highlighting
+Syntax-Highlighting
+Constants
+Set back to standard colors
+Set background color of the code viewer
+BackgroundColor
+Comments
+Start with 'Test all codes' from selected code
+Run the compiled code (programm flow will be hold)
+The temporary exe-file couldn't be found:
+Normal text color
+Desktop shortcut sucessfully created.
+Creating of the desktop shortcut failed.
+Shortcut in the quicklaunch sucessfully created.
+Creating of the shortcut in quicklaunch failed.
+Run debugger while code-testing
+When test-code gets started:
+Wait until end
+Don't wait
+Yes
+No
+Double click for activating C.A.V.
+Before
+After
+Last built:
+Support for InlineASM while code-testing
+Exactly
+Before
+After
+Here will be adjusted, if the codes to find should [exactly] match the selected date or were posted [before] or [after] that date.
+Couldn't open the online-help [CAV.chm] !
+Color for search terms
+Use BubbleHelp instead of normal ToolTips
+Windows special
+for their help while converting the CodeArchiv to PB v4
+Also search in the code filenames at fulltext-search
+Show only Demo compatible codes
+Demo-compatible codes of them:
+demo-compatible:
+Forum links
+Links to PureBasic forums
+English forum
+German forum
+French forum
+PureBasic-Lounge.de
+Question
+Really quit the code check?

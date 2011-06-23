@@ -1,0 +1,16 @@
+PureBasic-ASM.vbs Script
+************************
+
+The VB-Script is written by Jack and taken from english PureBasic forum
+(http://purebasic.myforums.net/viewtopic.php?t=8937&highlight=)
+
+Jack wrote:
+I keep this vbscript on my desktop, and whenever I want asm output 
+I just drag and-drop onto the script. 
+
+
+Note:
+The path to your PureBasic compiler must be adapted...
+
+
+Release: 31-Dec-2003 (included by Andre in the CodeArchive)

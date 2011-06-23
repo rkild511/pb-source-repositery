@@ -1,0 +1,96 @@
+Liebe PureBasic Gemeinde!
+
+Das PureBasic-CodeArchiv beinhaltet die gesammelten Programmcodes aus den
+englischen, deutschen und französischen PureBasic-Foren sowie der 
+PureBasic-Lounge und weiteren Einsendungen.
+
+Ich habe versucht, die Codes so gut als möglich in eine geeignete
+Verzeichnis-Struktur zu bringen und mit der Html-Oberfläche (bitte
+über CodeArchiv.html aufrufen) eine sowohl online wie offline nutzbare
+Übersicht der gesammelten Codes zu schaffen. Nutzen Sie einfach die
+Suchfunktion Ihres Browsers (STRG + F).
+
+Mit "C.A.V. - dem CodeArchivViewer" ist jetzt auch ein bequemes 
+Suchen im CodeArchiv im Offline-Modus möglich. Mehr dazu steht in 
+der mitgelieferten Anleitung.
+
+Mein Dank gilt an dieser Stelle Oliver Baum, der dieses Projekt
+ursprünglich im Jahr 2002 ins Leben gerufen hatte. Ebenso natürlich
+vielen Dank an alle Autoren, die ihre Codes der Allgemeinheit zur
+Verfügung stellen.
+
+Alle PureBasic-Programmierer, die in dieser Sammlung ihren Code
+wiedererkennen, dürfen mir dies gerne mitteilen, damit ich die
+entsprechende Information ergänzen kann.
+
+Ebenso bin ich natürlich für alle "Neuzusendungen" dankbar,
+genauso wie Ergänzungen, Anmerkungen, Kritik, Lob usw.... :)
+Meine Email-Adresse: andre@purearea.net
+
+
+Deutscheinsiedel, 6. Mai 2007
+
+Andre Beer - PureBasic Team
+www.PureArea.net
+
+
++------------------------------------------------------------------+
+| Einige Anmerkungen zu dieser Version v4 Beta:                    |
++------------------------------------------------------------------+
+. Die meisten Codes sind kompatibel zu PureBasic v4.
+. Es wurde in den Codes jetzt auch eine Angabe zur Lauffähigkeit
+  auf den von PureBasic unterstützten Betriebssystemen sowie der
+  PureBasic-Demo ergänzt.
+. Mit dem C.A.V. in Version 1.1 ist jetzt ein komfortables
+  Offline-Browsen im CodeArchiv möglich.
+
+ Ich benötige Hilfe:
+ -------------------
+. beim Aktualisierungen der französischen Ausgabe dieser Liesmich-Datei
+. beim Übersetzen der Hilfe-Datei zu C.A.V. in andere Sprachen -
+  derzeit ist Deutsch enthalten sowie Englisch in einer angefangenen
+  Fassung.
+. beim Aktualisierungen vorhandener bzw. Hinzufügen weiterer Locale-
+  Dateien für die individuelle Sprachanpassung von C.A.V.
+  Deutsch, Englisch und Französisch sind fest integriert - Holländisch,
+  Spanisch, Italienisch und Portugiesisch sind in einer älteren Version
+  vorhanden. Die Datei BaseLanguage.catalog finden Sie in CodeArchiv\xCAV
+. beim Hinzufügen neuer Codes, derzeit stammen die Beispielcodes
+  vorwiegend aus den Jahren 2002-2005. Da ist noch viel Potential
+  in den PureBasic-Foren! 
+  Wie ein Code korrekt für die CodeArchiv aufbereitet wird (d.h. die
+  nötigen Angaben für Quelle, Autor, usw. ergänzt werden), steht im
+  Kapitel "Technisches" im CAV-Handbuch.
+. bei der Konvertierung bereits gesammelter Codes in eine PB v4 kompatible
+  Fassung - eine regelmäßig aktualisierte Liste veröffentliche ich hier: 
+  http://www.purearea.net/temp/CodeArchiv_zu_ueberarbeiten/CodesToConvert.html
+
+  => Einsendungen bitte per Email an: andre@purearea.net - Vielen Dank!
+
+
+
++------------------------------------------------------------------+
+| Geschichte des PureBasic-CodeArchiv's:                           |
++------------------------------------------------------------------+
+Mai 2003    Erste Version des Code-Archiv's veröffentlicht
+15.06.2003  Version 1.1 mit knapp 500 Codes veröffentlicht
+06.07.2003  Version 1.2 mit knapp 550 Codes veröffentlicht
+16.07.2003  Version 1.3 mit fast 600 Codes veröffentlicht
+24.08.2003  Version 1.4 mit 698 Beispiel-Codes veröffentlicht
+28.09.2003  Version 1.5 mit 800 Beispiel-Codes veröffentlicht
+01.11.2003  Version 1.6 mit 914 Beispiel-Codes veröffentlicht
+30.11.2003  Version 1.7 mit 1090 Beispiel-Codes veröffentlicht (Dank an cnesm!)
+18.01.2004  Version 1.8 mit 1302 Beispiel-Codes veröffentlicht (Danke an Denis, Erik und Florian!)
+              Diese Version enthält außerdem folgende Neuerungen:
+              - zusätzlich zu den 'NEW' Bildern gibt es jetzt auch 
+               'UPDATED' Bilder, die auf Änderungen hinweisen
+              - es wurden deutsche Beschreibungen bei einem Großteil 
+                der Codes ergänzt
+              - ein Include-Verzeichnis für .pbi-Dateien wurde begonnen
+17.07.2005  Preview-Version der v2.0 mit der ersten Version des 
+            CAV sowie Update der vorhandenen 1317 Beispiel-Codes veröffentlicht 
+06.05.2007 "Beta"-Ausgabe des CodeArchiv v4 mit 1894 Beispiel-Codes veröffentlicht
+             Für diese Ausgabe wurden alle Beispielcodes an PB v4 angepasst und 
+             mehr als 500 weitere Codes (vorwiegend der Jahre 2004/05) in einer 
+             PB v4-kompatiblen Fassung hinzugefügt sowie eine neue Version des 
+             C.A.V. integriert 

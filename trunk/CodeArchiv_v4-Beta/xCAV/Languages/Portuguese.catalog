@@ -1,0 +1,225 @@
+CAV - Catalog File v1.0 
+Author: Cesar Baptista
+-------------------------------------------------------------- 
+C.A.V. - the CodeArchiveViewer
+Total do código fonte disponível:
+Procurar por
+Fonte:
+Autor:
+Data:
+Texto completo:
+Limpar todos os campos de procura.
+Procurar
+Resultados
+Mostrar Código
+Mostrar conversa do forum
+Mostrar código no editor
+Todos
+Forum Inglês
+Forum Alemão
+Outro
+Janeiro
+Fevereiro
+Março
+Abril
+Maio
+Junho
+Julho
+Agosto
+Setembro
+Outubro
+Novembro
+Dezembro
+Limpar Procura
+Escolha a chave de procura:
+Palavra Chave PB 
+Função PB
+Comando ASM 
+Cancelar
+Procura do texto com palavras simples, combinadas com +/- ou palavras completas entre aspas.
+Aqui pode abrir a janela e seleccionar Palavras Chave PB, Comandos PB e Comandos ASMcommands.
+'CodeArchiveViewer' está a inicializar...
+'CodeArchive' será monitorizado...
+Código, autor e data serão agora detectados...
+Palavras Chave 'PureBasic'/'ASM' serão apresentadas...
+Comandos 'PureBasic' serão apresentados...
+A janela principal será apresentada...
+Escolha por autor:
+Autor
+Projecto
+Sair
+Opções
+Preferências
+Ajuda
+Acerca de
+Acerca da Ferramenta 'C.A.V. - the CodeArchiveViewer'...
+Escrito por
+ e
+Versão: v1.0 / Julho de 2005
+Situado em www.PureArea.net
+Email
+Todos os direitos reservados.
+Índice do 'CodeArchive'
+Name
+Descrição
+OS
+Demonstração
+Mostrar o 'CodeArchive' completo
+Preferências
+Mostrar transcrições dos nomes do grupo
+Mostrar descrição do código fonte
+Usar o 'PureBasic IDE' original:
+A janela de configuração será apresentada...
+Gravar
+Usar
+Cancelar
+Escolha o seu editor de 'PureBasic'
+Linguagem
+Erro
+Language file
+ não foi possivel ser apresentado!
+Gravar posição da janela principal
+Recolher todo o código fonte
+Grupo
+Gravar as configurações do programa ao sair
+Àrvore de grupos
+Inserção dos termos de procura / Resultados da procura
+Procurar pela compatibilidade do Sistema Operativo e mostrar resultados
+Verificar a demonstração e mostrar resultado
+Por favor, aguarde...
+Nota
+Não foram encontrados registos.
+Obrigado aos seguintes programadores de 'PureBasic':
+Apresentado por
+Desculpe, não existe nenhuma discussão do forum para este código fonte.
+Tecla CTRL
+Voltar
+Primeiros 10 Autores
+Primeiros 20 Autores
+Primeiros 50 Autores
+Localização
+Autor
+Código fonte
+Mostrar código fonte do autor
+o meu amigo escoçês e programador 'GeoWorld'
+para
+pela sua ajuda em PureArea.net
+para todos os outros programadores de PB
+Se quiser usar 
+, então a frase deve estar entre duas 
+.
+entre duas 
+ terá de inserir um frase.
+dentro da frase incluida por 
+ não é permitido o + e -.
++/- para identificação do 'AND' ou 'NOT' de um termo de procura só será permitido imediatamente em frente do mesmo.
+Erro na procura por texto completo
+pela sua ajuda ao criar o 'CodeArchiv' compativel com o PB3.92+
+Por favor, escolha um mês/ano.
+Por favor, escolha um dia/mês/ano.
+A selecção do dia não se encontra correcta.
+As funções API do Windows serão apresentadas...
+Função API do Windows
+Forum Françês
+Constante PB
+As constantes do 'PureBasic' serão apresentadas...
+saltar para o próximo campo de inserção
+começar imediamente a função de procura
+Erro ao gravar as configurações.
+Procurar pelo código fonte, o que corresponde aos dados inseridos à esquerda, e mostrará os respectivos resultados.
+Procurar pelo código fonte: 'Todos', Forum Inglês, Alemão ou Françês bem como 'Outros'.
+Insira aqui o nome completo ou parcial do autor.
+Abre uma janela para escolha do nome do autor do código fonte.
+Escolhe o dia em que o código fonte foi lançado (em combinação com o mês/ano).
+Escolhe o mês em que o código fonte foi lançado (em combinação com o ano).
+Escolhe o ano em que o código fonte foi lançado.
+Todo o código fonte será aqui apresentado, o que corresponde à procura feita anteriormente.
+Aqui será apresentado o código fonte escolhido previamente.
+Aqui está todo o código fonte do 'CodeArchive', que será apresentado em árvore ordenado por tópicos.
+Mostrar o código fonte escolhido no lado esquerdo.
+Abrir o tema de discussão do forum seleccionado se uma hiperligação estiver incluida no código fonte.
+Mostrar o código fonte escolhido no lado esquerdo no editor.
+Voltará a apresentar todo o código fonte do 'CodeArchive' em árvore ordenado por tópicos.
+Recolher todo o código fonte.
+Abrir o site 'www.PureArea.net' no seu browser.
+Retornar do código fonte para a selecção.
+Sem ajuda.
+Localizar ficheiro
+criado por
+Mais informação
+Mais informação acerca da versão corrente do 'C.A.V.'
+Porcurar por termos optimizados para o 'PureBasic'
+Total de termos conhecidos:
+Palavras Chave PB
+Funções e Comandos PB
+Comandos ASM
+Constantes PB 
+Funções API do Windows
+Autores do código fonte
+Saindo do 'C.A.V.'
+Gravar os termos actuais de procura ?
+... perguntar antes de gravar
+Retornar o campo 'Texto Completo' da procura:
+Genérico
+Operação
+Windows
+Criar atalhos para o 'C.A.V.'
+no Ambiente de Trabalho
+na Barra rápida de Atalhos
+Mostrar ajuda para os objectos da janela principal
+Ajuda
+Utilizador
+Escolher Editor principal
+Escolher Editor alternativo:
+Testar o código fonte no compilador PB
+Código
+Teste
+Remarcar
+Testar código fonte seleccionado
+Testar todo o código fonte
+Chamar o Editor
+Continuar
+Erro
+O compilador PB não foi encontrado em:
+Please be aware, that this path is determined from the path
+of the original PureBasic editor (see at preferences).
+Continuar o teste do código fonte
+O compilador foi cancelado.
+Último código fonte compilado:
+Não.
+O Editor não foi encontrado em:
+O caminho será gravado no ficheiro de configuração.
+Visualizador do código fonte
+Usar código destacado
+Código destacado
+Constantes
+Cores iniciais
+Seleccionar cor de fundo do visualizador do código fonte
+Cor de fundo
+Commentários
+Começar com 'Testar todo o código fonte', apartir do texto seleccionado
+Correr o código fonte compilado (o fluxo do programa ficará em espera)
+O executável temporário não foi encontrado:
+Cor normal do texto
+Atalho no Ambiente de Trabalho criado correctamente.
+O Atalho no Ambiente de Trabalho não foi criado correctamente.
+Atalho na Barra rápida de Atalhos criado correctamente.
+O Atalho na Barra rápida de Atalhos não foi criado correctamente.
+Correr o depurador enquanto testa o código fonte
+Quando o teste do código fonte começar:
+Esperar até ao fim
+Não esperar
+Sim
+Não
+Clicar duas vezes para activar o 'C.A.V.'
+Antes
+Depois
+Última versão:
+Suporte para ASM enquanto testa o código fonte
+Exactamente
+Antes
+Depois
+Serão feitos ajustamentos se o codigo fonte exactamente/antes/depois a/de/de encontrar coincidir com a data seleccionada.
+Não foi possivel abrir o ficheiro de ajuda [CAV.chm] !
+Cor dos termos a procurar
+

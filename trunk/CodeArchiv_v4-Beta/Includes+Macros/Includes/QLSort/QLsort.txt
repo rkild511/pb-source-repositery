@@ -1,0 +1,50 @@
+Linked List QuickSort - optimized version (03 Apr 2003)
+-------------------------------------------------------
+
+This Sort has three parts:
+
+(1) SortListR() is the actual QuickSort. It can be used (included)
+    for any linked list.
+
+(2) SortList() is a small startup procedure that you modify for
+    your list (name and type). 
+
+(3) ByNameAscending() is an example for the comparison function. 
+    You have to write one or more of these functions, depending on
+    the sorting methods you want to use in a program. 
+    No generic functions are available, because the comparison
+    procedure handles two original elements of your list with all 
+    fields of the structure. 
+
+For details see comments in QLsort.pbi 
+
+The sort command is (example): SortMyList(@ByNameAscending())
+
+That means, you have only one parameter: the comparison function
+(by pointer). Everything else (which fields to compare, ascending
+or descending) is in the comparison procedure(s) you write. 
+
+Your comparison may ..
+* handle any type of variable (integer, float, strings..)
+* handle any field in the structure 
+* do any kind of conversions (upper/lower case, special characters etc.)
+* or even test serveral fields in one pass (e.g. sort by Name AND City).
+
+Of course, there must be one comparison procedure for each case that 
+is required in the program. However, this keeps the sorting procedure 
+simple, and the user defined comparison functions are usually trivial
+and transparent, because the original elements and structures are used.
+
+
+Testing
+-------
+The test generates 10,000 random numbers as strings, and does the 
+following jobs:
+   sort random numbers ascending, report the time
+   sort the result descending, report the time
+   show the result (saved as text file)
+   delete the file
+
+Freeware by Horst Schaeffer
+horst.schaeffer@gmx.net
+http://home.mnet-online.de/horst.muc/pb/

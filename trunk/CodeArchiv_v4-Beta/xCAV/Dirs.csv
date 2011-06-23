@@ -1,0 +1,162 @@
+Database;Datenbank;Base de données
+Encode+Decode;Ver- & Entschlüsseln;Coder & Décoder
+Files+Dirs;Dateien & Verzeichnisse;Fichiers & Répertoires
+Fonts;Schriftarten;Polices
+Gadgets;Gadgets;Gadgets
+Games;Spiele;Jeux
+Graphics;Grafik;Graphiques
+Input+Output;Ein- und Ausgabe;Entrées & Sorties
+Internet&Co;Internet & Co.;Internet & Co
+Maths;Mathematik;Maths
+Memory-Handling;Speicherverwaltung;Mémoire-Manipulation
+Menu+ToolBar+StatusBar;Menü & ToolBar & StatusBar;Menu & Barre d'outils & StatusBar
+Music+Movie;Musik & Movie;Musique & Vidéo
+Other;Sonstiges;Autre
+Packer;Packen & Entpacken;Compresser & Décompresser
+Printer;Drucker;Imprimante
+Requester;Requester;Requête
+Search+Sort;Suchen & Sortieren;Recherche & Tri
+String-Handling;String-Handling;Chaînes-Manipulation
+Time+Date;Zeit- & Datumsfunktionen;Temps & Date
+Windows;Fenster;Fenêtres
+Windows_System;Windows-System;Système Windows
+WindowsAPI-Examples;WindowsAPI-Beispiele;API Windows-Exemples
+Checksum;Prüfsummen;
+Directory_Content;Verzeichnis-Inhalt;Contenu du dossier
+Drives+System;Laufwerke & System;Drive & Système
+File_Info;Datei - Info;Fichier - Info
+File_Read+Write;Datei lesen & schreiben;Lecture & écriture d'un fichier
+Get_Path;Pfad ermitteln;Obtention du chemin
+Includes+Macros;Include & Macro - Dateien;Inclure & Macro Fichiers
+Other;Sonstiges;Autre
+Pack-Unpack_Split;Dateien packen & entpacken & splitten;Compression & Décompression et fractionnement de fichiers
+Preferences;Voreinstellungen;Préférences
+ButtonGadget;Schalter;Bouton
+Colors+Fonts;Farben & Zeichensätze;Couleurs & Polices
+ComboBox;Auswahlbox;Liste déroulante
+EditorGadget;Editorfeld;Editeur
+GadgetDemo;;Démo de gadgets
+Gadget_Events&Settings;Gadget - Ereignisse & Einstellungen;Evénements des gadgets
+Gadget_Examples_Manual;Beispiele aus der PB-Anleitung;Exemples des Gadgets de la doc
+HyperlinkGadget;;Hyperliens
+ImageGadget;Bild-Darstellung;Image
+ProgressBar;Fortschrittsanzeige;Barre de progression
+Resize;Vergrößern & Verkleinern;Redimensionner
+RichEdit;RichEdit-Editor;Editeur [RichEdit]
+Splitter_by_Franco;;Splitter par Franco
+StringGadget;Eingabefeld;Saisie de texte
+FrameRate;Bilder pro Sekunde;Images par seconde
+GameDesign;Spiele-Design;Conception de Jeux
+LittleGames;Mini-Spiele;Mini jeux
+TileStudio-Exporter;;Fonctions pour Tile Studio
+Anim;Animationen;Animation
+Colors;Farben;Couleurs
+Demos;;Démos
+Rings_ItCanBeDone;;Rings : Cela peut être fait
+Drawing;Zeichnen;Dessiner
+Circles;Kreise;Cercles
+Curves;Kurven;Courbes
+Lines;Linien;Lignes
+Text;;Texte
+Triangles;Dreiecke;Triangles
+DrawingBuffer;;Tampon mémoire de dessin
+Effects;Effekte;Effets
+AlmondBread;Mandelbrot;
+FireEffects;Feuereffekte;Effets de feu
+FPS;Frames pro Sekunde;Vues par seconde
+Fractals;Fraktale;Fractales
+Moving;Bewegen;Déplacements
+Rotate;Rotieren;Rotations
+Scrolling;Scrollen;Scrolling
+Stars;Sterne;Etoiles
+Wormhole;Wurmloch;Trou de ver
+XMas-Card_by_Kale;Weihnachtskarte von Kale;Cartes de Noël par Kale
+Graphs;Diagramme;Graphique
+Icons;Piktogramme;Icônes
+Image;Bild;Image
+Gfx-Formats;Grafikformate;Formats graphiques
+ImageViewer;Bildanzeiger;Visionneuse d'images
+Example_by_Traumatic;Beispiel von Traumatic;Exemple de Traumatic
+InsideTheCube;;A l'intérieur du cube
+TextureDemo;;Démo de texte
+Sprites&Screen;Sprites & Bildschirm;Sprites et écrans
+ButtonsOnScreen;;Boutons sur l'écran
+Screenmode;Bildschirmmodus;Mode d'affichage
+SpriteAnimated;Animierte Sprites;Sprites animés
+SpriteCollisions;Sprite-Kollisionen;Collisions de sprites
+Console;Konsole;Console
+XtendedConsole;;Console étendue
+Editor;;Editeur
+EventHandling;Ereignis-Verarbeitung;Traitement des événements
+Focus;Fokus;Focus
+Get&Send_Keys;Tastendrücke senden und empfangen;Réception et envoi de clées
+Keyboard;Tastaturabfrage;Clavier
+Mouse;Mausabfrage;Souris
+Ports;Anschlüsse;Ports
+Browser+Html;;Navigateur + Html
+Client+Server;;Client & Serveur
+Download;;Téléchargement
+Email;;Message électronique
+InternetConnect;;Connection Internet
+LocalNetwork;Lokales Netzwerk;Réseau local
+Send_Key;Tastendruck senden;Envoi de caractères
+Check;Prüfung;Test
+Convert;Konvertierung;Conversion
+Eval;Eingabe-Auswertung;Évaluation d'entrée
+Geometry;Geometrie;Géométrie
+Variables;Variablen;
+Arrays;;Tableaux
+ASM;Assembler;Assembleur
+Data;;Données
+LinkedLists+Structures;Verknüpfte Listen + Strukturen;Listes chaînées & structures
+Menu_Examples_Manual;Beispiele aus der PB-Anleitung;Exemples de Menu de la Doc
+StatusBar;Statusleiste;Barre d'état
+ToolBar;Werkzeugleiste;Barre d'outils
+Beep;;Bip
+Movie;Video;Video
+OtherFormats;Andere Formate;Autres formats
+Speech;Sprache;Paraole
+BarCode;;Code barre
+DLL-Programming;DLL-Programmierung;Programmation avec des Dll
+Fun;Spaß-Programme;Amusement
+Installer;Installationsprogramme;Installer
+OOP;Objektorientierte Programmierung;Programmation orientée objet
+Programming_Tools;Hilfsprogramme zur Programmierung;Programmes d'aide à la programmation
+Compiler;;Compilation
+ReadmePacker;;Lecture de données compressées
+Speedtest;Geschwindigkeitstest;Test de rapidité
+ColorRequester;Farben-Requester;Fenêtre de sélection des couleurs
+FileRequester;Datei-Requester;Fenêtre de sélection des fichiers
+FontRequester;Zeichensatz-Requester;Fenêtre de sélection des polices
+Input;Eingabe;Entrée
+MessageRequester;Nachrichten-Requester;
+RequesterPositions;Requester-Positionen;Position des fenêtres Requester
+Requester_Examples_Manual;Beispiele aus der PB-Anleitung;Exemples de requêtes de la Doc
+Search;Suchen;Recherche
+Sort;Sortieren;Tri
+Compare;Vergleichen;Comparaison
+Count;Zählen;Comptage
+Calendar;Kalender;Calendrier
+Clock;Uhr;Orloge
+AboutBox;Über-Fenster;Fenêtre A props de
+ColorWindow;Fenster mit Farbeffekten;Fenêtre en couleur
+Dialogs;Dialoge;Dialogue
+FX;Fenstereffekte;Fenêtre avec effets
+MultipleWindows;Mehrere Fenster;Fenêtres multiples
+Owned+ChildWindows;'Owned' und 'Child'-Fenster;Fenêtres enfant et propriétaire
+ResizeWindow;Größenveränderbare Fenster;Redimensionnement des fenêtres
+ToolWindows;Tool-Fenster;Fenêtres outils
+Window_Events;Fenster-Ereignisse;Evenements des fenêtres
+Window_Skins;Fenster-Skins;Habillage/apparence des fenêtres
+Desktop;Windows-Oberfläche;Bureau
+Hardware;;Matériel
+Processes;Prozesse;Processus
+Registry;;Registre
+RunProgram;Programm starten;Exécution de programmes
+Screenshots;Bildschirmfotos;Copie d'écran
+Settings;Einstellungen;Réglages
+Sounds;;Sons
+Taskbar;;Barre de tâche
+Tasks&Processes;Tasks & Prozesse;Tâches et processus
+Timer;Zeitsteuerung;Timer
+WindowsAnims+Icons;Windows-Animationen + Icons;Fenêtres animées + Icônes

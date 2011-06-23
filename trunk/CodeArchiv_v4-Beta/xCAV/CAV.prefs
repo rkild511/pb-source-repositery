@@ -1,0 +1,68 @@
+;  CAV Preferences File
+; 
+PreferenceVersion = 1
+; 
+[General]
+SaveWindowPos = 0
+WindowX = 0
+WindowY = 0
+AutoSavePrefs = 0
+AskSavePrefs = 1
+ShowToolTipps = 1
+NoMainToolTipps = 1
+OnlyDemoCompatibleCodes = 0
+; 
+[Language]
+CurrentLanguage = Deutsch
+; 
+[CodeViewer]
+EditorBackgroundColor = 14811135
+SearchTermBackgroundColor = 6605055
+UseSyntaxHighlighting = 1
+SyntaxHighlight_Standard = 0
+SyntaxHighlight_PBKeywords = 6710784
+SyntaxHighlight_PBFunctions = 6710784
+SyntaxHighlight_ASMCommands = 7490450
+SyntaxHighlight_Constants = 7490450
+SyntaxHighlight_Comments = 11184640
+; 
+[Windows]
+UseBubbleHelp = 1
+; 
+[External]
+UsePureBasicIDE = 1
+EditorPath = C:\Programming\PureBasic\PureBasic.exe
+EditorPathAlternate = 
+; 
+[FileTreeSettings]
+ShowDirDescription = 1
+ShowFileDescription = 1
+; 
+[SearchInputSettings]
+ReturnHandler = 1
+SearchForum = 0
+SearchAuthor = 
+SeachDateRange = 0
+SeachDay = 0
+SeachMonth = 0
+SeachYear = 0
+SearchFullText = 
+; 
+[SearchResultSettings]
+SearchOS = 1
+SearchDemo = 1
+SearchFileNames = 1
+ShowDesc = 1
+; 
+[CodeTesterSettings]
+CompileRun = 0
+WaitForEnd = 1
+EnableDebugger = 0
+EnableInlineASM = 0
+StartFromHere = 0
+; 
+[ForumLinks]
+ForumEnglish = http://forums.purebasic.com/
+ForumGerman = http://www.pure-board.de/
+ForumFrench = http://forums.purebasic.fr/
+ForumLounge = http://www.purebasic-lounge.de/
