@@ -7,14 +7,31 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-06-25 16:37" user="Thyphoon" host="GRAAL"/>
+    <lastopen date="2011-06-25 19:22" user="Thyphoon" host="GRAAL"/>
   </section>
-  <section name="files"/>
+  <section name="files">
+    <file name="main.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="bded6db61a33e1e3c327ad2fcaa6f954"/>
+    </file>
+    <file name="GoScintilla_PB4.4\GoScintilla.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
+      <fingerprint md5="effc5579dd6f961bfe144c0d4bbb643e"/>
+    </file>
+    <file name="GoScintilla_PB4.4\GoScintilla_HeaderFile.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
+      <fingerprint md5="fe5a3f0507917fe2598994a24d19d366"/>
+    </file>
+  </section>
   <section name="targets">
-    <target name="Default Target" enabled="1" default="1">
-      <inputfile value=""/>
-      <outputfile value=""/>
-      <options xpskin="1" debug="1"/>
+    <target name="Thothbox main prog" enabled="1" default="1">
+      <inputfile value="main.pb"/>
+      <outputfile value="C:\Program Files (x86)\PureBasic\Thothbox.exe"/>
+      <executable value="C:\Program Files (x86)\PureBasic\Thothbox.exe"/>
+      <options unicode="1" thread="1" xpskin="1" debug="1"/>
+      <icon enable="1">
+        gfx\ibis.ico
+      </icon>
     </target>
   </section>
 </project>
