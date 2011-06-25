@@ -1,0 +1,118 @@
+ENGLISH
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+*****************************************************************************
+*
+*  PureBASIC PurePunch Contest #3!
+*  July 2009
+*
+*  link : http://www.purebasic.fr/english/viewtopic.php?p=291392#291392
+*
+*****************************************************************************
+
+I received and took care of several remarks to enhance the idea.
+
+Several categories are seing light (one winner per category):
+
+      1° Application/Utility/System
+      2° Game
+      3° Demo
+      4° PurePunch Cruncher : the idea is to take a previous contest PurePunch and enhance it, or reduce its size Smile
+      5° Beginner
+
+
+The rules :
+
+      1° The program will be created using Purebasic 4.31 without userlib.
+      2° The program source will only have 20 lines of 80 characters max per line or max 50 lines, with only one instruction per line, correctly indented (comments accepted). This last option should be privilegied for smallest codes.
+      3° To be unique, either a complete creation, or bringing something new to an existing code.
+      4° Must not to be harmful
+      5° Possibility to add a graphic file (only one image, or sprite, or texture...), maximum size 512 pixels width by 512 pixels height, 32 bits. Post it on the forum or on another site which must be reachable during the contest length, or included in a full project archive posted in the forum.
+      6° Possibility to add a sound file (and only one) maximum size 1Mb. Post it on another site which must be reachable during the contest length, or included in a full project archive posted in the forum.
+      7° It will be possible to add a line (not accounted), at the beginning of the source, to alert the user of a program specificity (for example, a delay or a particular subsystem). This line must be like
+      Code:
+      MessageRequester("Information","txt",#PB_MessageRequester_Ok)
+      8° Two months delay to create the best PurePunch!
+
+
+At the end of this period (September, the 1st), a poll will be created to vote for the best code. Do your best and it'll be yours!
+
+Post the code on this forum, after adding and completing the following header:
+
+Code:
+;*****************************************************************************
+;*
+;* PurePunch Contest #3
+;*
+;* Name     : 
+;* Author   :
+;* Category :
+;* Date     :
+;* Notes    :
+;*
+;*****************************************************************************
+
+Good luck to all competitors!
+
+
+
+FRENCH
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+******************************************************************************
+*
+*  Compétition PureBASIC PurePunch n°3
+*  Juillet 2009
+* 
+*  lien : http://www.purebasic.fr/french/viewtopic.php?p=100437#100437
+*
+******************************************************************************
+
+J'ai tenu compte de plusieurs remarques afin d'améliorer le concept.
+
+Plusieurs catégories voient le jour (un gagnant par catégorie):
+
+      1° Application/Utilitaire/Système
+      2° Jeu
+      3° Démo
+      4° PurePunch Cruncher : consiste à reprendre un PurePunch des compétitions précédentes, et à en réduire la taille ou à l'améliorer! Smile
+      5° Débutant
+
+
+Les règles :
+
+      1° Le programme sera fait en Purebasic 4.31 sans l'ajout de bibliothèque utilisateur (userlib).
+      2° Le source du programme aura soit au maximum 20 lignes de 80 caractères par ligne ; soit 50 lignes maximum, avec une instruction par ligne, et correctement indenté (commentaires acceptés). Cette dernière possibilité devra être privilégiée pour les petits codes.
+      3° Etre original, c'est à dire soit être une création complète, soit apporter quelque chose de nouveau à un code existant.
+      4° Ne pas être néfaste
+      5° Possibilité de joindre une (et une seule) image d'une taille maximale de 512 pixels de large sur 512 pixels de haut, en 32 bits. La poster sur le forum ou sur un site accessible durant toute la durée de la compétition, ou la joindre à l'archive complète du projet liée dans le post sur le forum.
+      6° Possibilité de joindre un fichier sonore (et un seul) d'une taille maximale de 1Mo. Le poster sur un site accessible durant toute la durée de la compétition, ou le joindre à l'archive complète du projet liée dans le post sur le forum.
+      7° Il sera possible d'ajouter une ligne (non décomptée) en début de source avertissant l'utilisateur d'une spécificité du programme (comme par exemple une attente ou la nécessité d'utiliser un subsystem particulier). Celle-ci devra être de la forme
+      Code:
+      MessageRequester("Information","txt",#PB_MessageRequester_Ok)
+
+      8° Un délai de deux mois pour créer le meilleur PurePunch!
+
+
+A la fin de la période (1er septembre), un vote sera mis en place afin d'élire le meilleur code. Faites de votre mieux et ce sera le vôtre!
+
+Poster le code dans le forum après y avoir ajouté et complété l'entête suivant :
+
+Code:
+;*****************************************************************************
+;*
+;* PurePunch Contest #3
+;*
+;* Name     : 
+;* Author   :
+;* Category :
+;* Date     :
+;* Notes    :
+;*
+;*****************************************************************************
+
+Bonne chance à tous les compétiteurs! Smile
