@@ -126,6 +126,6 @@ EndIf
 End
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
 ; CursorPosition = 92
-; FirstLine = 82
+; FirstLine = 71
 ; Folding = -
 ; EnableThread
