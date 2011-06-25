@@ -17,14 +17,30 @@ UsePNGImageDecoder()
 
 ;Initialise the Scintilla library for Windows.
 CompilerIf  #PB_Compiler_OS = #PB_OS_Windows 
-  ;-TODO best way to found Scintilla.dll
-  Define path.s="C:\Program Files (x86)\PureBasic\Compilers\Scintilla.dll"
-  If InitScintilla()=0
-    If FileSize(path)
-      If InitScintilla(path)=0
-        MessageRequester("ERROR", "No found Scintilla.dll", #PB_MessageRequester_Ok)
-      EndIf  
-    EndIf
+  ;try to found Scintilla.dll
+  Procedure.s findScintillaDll(path.s)
+    Protected ex.i,find.s
+    ex=ExamineDirectory(#PB_Any, path, "*.*") 
+    If ex
+      While NextDirectoryEntry(ex)
+        If DirectoryEntryType(ex) = #PB_DirectoryEntry_File And DirectoryEntryName(ex)="Scintilla.dll"
+          ProcedureReturn path+DirectoryEntryName(ex)
+        ElseIf DirectoryEntryName(ex)<>"." And DirectoryEntryName(ex)<>".."
+          find=findScintillaDll(path+DirectoryEntryName(ex)+"\")
+          If find<>"" 
+            ProcedureReturn find
+          EndIf
+        EndIf
+      Wend
+      FinishDirectory(ex)
+     EndIf
+   ProcedureReturn ""
+  EndProcedure
+  Define path.s;="C:\Program Files (x86)\PureBasic\Compilers\Scintilla.dll"
+  path=findScintillaDll(GetCurrentDirectory())
+  If InitScintilla(path)=0
+    MessageRequester("ERROR", "No found Scintilla.dll", #PB_MessageRequester_Ok)
+    End
   EndIf
 CompilerEndIf
 
@@ -253,6 +269,11 @@ Procedure refreachWindow(mode.l)
       HideGadget(#mode_searchWindow,#True)
       HideGadget(#mode_prefsWindow,#True)
       ColorSetGadgetState(#gdt_historic,0)
+    ;Case #mode_submitWindow
+    ;  HideGadget(#mode_viewWindow,#False)
+    ;  HideGadget(#mode_searchWindow,#True)
+    ;  HideGadget(#mode_prefsWindow,#True)
+    ;  HideGadget(#mo
     Case #mode_prefsWindow
       HideGadget(#mode_viewWindow,#True)
       HideGadget(#mode_searchWindow,#True)
@@ -285,6 +306,10 @@ Procedure commitNewCode(file.s)
       CloseFile(0)
       GOSCI_SetText(#gdt_code, txt)
       gp\page=#mode_viewWindow
+
+      SetGadgetText(#gdt_title,"")
+      SetGadgetText(#gdt_author,"")
+      ClearGadgetItems(#gdt_historic)
     EndIf
   Else
     MessageRequester("Error", "Read file error :"+#LFCR$+file, #PB_MessageRequester_Ok)
@@ -366,8 +391,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 352
-; FirstLine = 312
+; CursorPosition = 33
+; FirstLine = 4
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
