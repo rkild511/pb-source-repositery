@@ -6,20 +6,20 @@
 
 #prg_name$="Thothbox"
 #prg_version$="0.1"
-MessageRequester("Information", GetCurrentDirectory(), #PB_MessageRequester_Ok)
-
-If CreateFile(0, GetTemporaryDirectory()+#prg_name$+"_debug.txt") 
-    WriteStringN(0,GetEnvironmentVariable("PB_TOOL_Preferences"))
-    WriteStringN(0,"CountProgramParameters:"+Str(CountProgramParameters()))
-  For z=0 To CountProgramParameters()-1
-    WriteStringN(0,"-------------------------------")
-    WriteStringN(0,ProgramParameter(z))
-    
-  Next
-  CloseFile(0)
-  RunProgram(GetTemporaryDirectory()+#prg_name$+"_debug.txt")
-  
-EndIf
+; MessageRequester("Information", GetCurrentDirectory(), #PB_MessageRequester_Ok)
+; 
+; If CreateFile(0, GetTemporaryDirectory()+#prg_name$+"_debug.txt") 
+;     WriteStringN(0,GetEnvironmentVariable("PB_TOOL_Preferences"))
+;     WriteStringN(0,"CountProgramParameters:"+Str(CountProgramParameters()))
+;   For z=0 To CountProgramParameters()-1
+;     WriteStringN(0,"-------------------------------")
+;     WriteStringN(0,ProgramParameter(z))
+;     
+;   Next
+;   CloseFile(0)
+;   RunProgram(GetTemporaryDirectory()+#prg_name$+"_debug.txt")
+;   
+; EndIf
 IncludePath "GoScintilla_PB4.4"
 XIncludeFile "GoScintilla.pbi"
 
@@ -83,8 +83,6 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
       MenuItem(0, "About")
 
   EndIf
-
-  
 
   ;-mode_searchWindow Gadgets
   ContainerGadget(#mode_searchWindow,0,0,WindowWidth(0),WindowHeight(0))
@@ -289,7 +287,7 @@ Repeat
         Case 0
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
-          txt+"Jean-Yves Lerique / GallyHC"+#LFCR$
+          txt+"GallyHC"+#LFCR$
           txt+"Jésahel Benoist / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
@@ -329,8 +327,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 291
-; FirstLine = 286
+; CursorPosition = 85
+; FirstLine = 57
 ; Folding = -
 ; EnableXP
 ; UseIcon = ibis.ico
