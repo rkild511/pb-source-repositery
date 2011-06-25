@@ -289,7 +289,7 @@ Repeat
         Case 0
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
-          txt+"GallyHC"+#LFCR$
+          txt+"Jean-Yves Lerique / GallyHC"+#LFCR$
           txt+"Jésahel Benoist / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
@@ -329,8 +329,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 325
-; FirstLine = 275
+; CursorPosition = 291
+; FirstLine = 286
 ; Folding = -
 ; EnableXP
 ; UseIcon = ibis.ico
