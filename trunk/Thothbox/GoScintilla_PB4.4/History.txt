@@ -1,0 +1,62 @@
+GoScintilla.
+============
+
+
+	7th Jan 2010.
+	--------------
+		Version 1.0.
+
+			-	Fixed a bug with the Lexer and added a second version of the 'Block comments' advanced demo.
+
+
+	1st Dec 2009.
+	--------------
+		Version 1.0 beta 5.
+
+			-	Added function : GOSCI_GetNextSymbolByteLength(id, *bytePtr.ASCII, numBytesRemaining).
+				Use this function from within a user-defined line styling function in order to determine the number of bytes in the 'symbol' pointed to by the 						*bytePtr parameter.
+
+
+	30th Nov 2009.
+	--------------
+		Version 1.0 beta 4.
+
+			This update has been motivated by a desire to allow for automatic code folding of multi-word keywords such as "Function" and "End Function" etc.
+			GoScintilla's lexer will only work with single word keywords and thus cannot natively support combinations such as "End Function" as representing a 					close-fold terminal.
+			
+Extending GoScintilla's lexer to allow this is not an option as it will slow things down (in my judgement) too much. Instead, we can make use of a user-				defined line styling function to supplement the lexer's capabilities.
+
+			-	Added functions : GOSCI_DecFoldLevel(id) and GOSCI_IncFoldLevel(id) to be used within a user-defined line styling function only.
+
+			-	Added an additional demo program "Multiword" to demonstrate how to use a very simple user-defined line styling function together with the new 						functions to implement code folding on the aforementioned "Function" and "End Function" etc.
+
+
+	28th Nov 2009.
+	--------------
+		Version 1.0 beta 3.
+
+			-	Added functions : GOSCI_GetLexerState(id) and GOSCI_SetLexerState(id, state).
+				At present these can be used to disable/enable syntax styling only.
+
+
+	27th Nov 2009.
+	--------------
+		Version 1.0 beta 2.
+
+			-	Fixed a bug with GOSCI_Create()  (it wasn't returning any value!)
+
+			-	Added function : GOSCI_ReplaceSelectedText(id, text$, blnScrollCaretIntoView=#False).
+
+			-	Modified the GOSCI_SetText() function by the addition of an optional parameter; clearUndoStack (default #False).
+				Set to non-zero to have the undo stack cleared so that this operation cannot be undone.
+
+			-	Added a new get/set attribute : #GOSCI_WRAPLINES.
+				Turn wrapping lines on/off.
+
+			-	Added a new get/set attribute : #GOSCI_WRAPLINESVISUALMARKER.
+				Give wrapped lines a visual marker.
+
+			-	By default, all delimiter characters are also regarded as separators. This can now be over-ruled when adding deleimiter keywords by using the new 
+				#GOSCI_NONSEPARATINGDELIMITER flag.
+
+				This was added to allow one type of delimiter to be styled as part of another delimiter (e.g. #Constant$ in which both # and $ are delimiters and 				the styling attributed to # is to be applied to the entire symbol. This will require $ to be marked as a non-separating delimiter).
