@@ -1,0 +1,1114 @@
+#DM_PELSWIDTH = $00080000
+#DM_PELSHEIGHT = $00100000
+#DM_BITSPERPEL = $00040000
+
+#CDS_FULLSCREEN = $00000004
+#DISP_CHANGE_FAILED = -1
+
+
+; Constants
+#GL_VERSION_1_1 = 1
+#GL_ACCUM = $0100
+#GL_LOAD = $0101
+#GL_RETURN = $0102
+#GL_MULT = $0103
+#GL_ADD = $0104
+#GL_NEVER = $0200
+#GL_LESS = $0201
+#GL_EQUAL = $0202
+#GL_LEQUAL = $0203
+#GL_GREATER = $0204
+#GL_NOTEQUAL = $0205
+#GL_GEQUAL = $0206
+#GL_ALWAYS = $0207
+#GL_CURRENT_BIT = $00000001
+#GL_POINT_BIT = $00000002
+#GL_LINE_BIT = $00000004
+#GL_POLYGON_BIT = $00000008
+#GL_POLYGON_STIPPLE_BIT = $00000010
+#GL_PIXEL_MODE_BIT = $00000020
+#GL_LIGHTING_BIT = $00000040
+#GL_FOG_BIT = $00000080
+#GL_DEPTH_BUFFER_BIT = $00000100
+#GL_ACCUM_BUFFER_BIT = $00000200
+#GL_STENCIL_BUFFER_BIT = $00000400
+#GL_VIEWPORT_BIT = $00000800
+#GL_TRANSFORM_BIT = $00001000
+#GL_ENABLE_BIT = $00002000
+#GL_COLOR_BUFFER_BIT = $00004000
+#GL_HINT_BIT = $00008000
+#GL_EVAL_BIT = $00010000
+#GL_LIST_BIT = $00020000
+#GL_TEXTURE_BIT = $00040000
+#GL_SCISSOR_BIT = $00080000
+#GL_ALL_ATTRIB_BITS = $000fffff
+#GL_POINTS = $0000
+#GL_LINES = $0001
+#GL_LINE_LOOP = $0002
+#GL_LINE_STRIP = $0003
+#GL_TRIANGLES = $0004
+#GL_TRIANGLE_STRIP = $0005
+#GL_TRIANGLE_FAN = $0006
+#GL_QUADS = $0007
+#GL_QUAD_STRIP = $0008
+#GL_POLYGON = $0009
+#GL_ZERO = 0
+#GL_ONE = 1
+#GL_SRC_COLOR = $0300
+#GL_ONE_MINUS_SRC_COLOR = $0301
+#GL_SRC_ALPHA = $0302
+#GL_ONE_MINUS_SRC_ALPHA = $0303
+#GL_DST_ALPHA = $0304
+#GL_ONE_MINUS_DST_ALPHA = $0305
+#GL_DST_COLOR = $0306
+#GL_ONE_MINUS_DST_COLOR = $0307
+#GL_SRC_ALPHA_SATURATE = $0308
+#GL_TRUE = 1
+#GL_FALSE = 0
+#GL_CLIP_PLANE0 = $3000
+#GL_CLIP_PLANE1 = $3001
+#GL_CLIP_PLANE2 = $3002
+#GL_CLIP_PLANE3 = $3003
+#GL_CLIP_PLANE4 = $3004
+#GL_CLIP_PLANE5 = $3005
+#GL_BYTE = $1400
+#GL_UNSIGNED_BYTE = $1401
+#GL_SHORT = $1402
+#GL_UNSIGNED_SHORT = $1403
+#GL_INT = $1404
+#GL_UNSIGNED_INT = $1405
+#GL_FLOAT = $1406
+#GL_2_BYTES = $1407
+#GL_3_BYTES = $1408
+#GL_4_BYTES = $1409
+#GL_DOUBLE = $140A
+#GL_NONE = 0
+#GL_FRONT_LEFT = $0400
+#GL_FRONT_RIGHT = $0401
+#GL_BACK_LEFT = $0402
+#GL_BACK_RIGHT = $0403
+#GL_FRONT = $0404
+#GL_BACK = $0405
+#GL_LEFT = $0406
+#GL_RIGHT = $0407
+#GL_FRONT_AND_BACK = $0408
+#GL_AUX0 = $0409
+#GL_AUX1 = $040A
+#GL_AUX2 = $040B
+#GL_AUX3 = $040C
+#GL_NO_ERROR = 0
+#GL_INVALID_ENUM = $0500
+#GL_INVALID_VALUE = $0501
+#GL_INVALID_OPERATION = $0502
+#GL_STACK_OVERFLOW = $0503
+#GL_STACK_UNDERFLOW = $0504
+#GL_OUT_OF_MEMORY = $0505
+#GL_2D = $0600
+#GL_3D = $0601
+#GL_3D_COLOR = $0602
+#GL_3D_COLOR_TEXTURE = $0603
+#GL_4D_COLOR_TEXTURE = $0604
+#GL_PASS_THROUGH_TOKEN = $0700
+#GL_POINT_TOKEN = $0701
+#GL_LINE_TOKEN = $0702
+#GL_POLYGON_TOKEN = $0703
+#GL_BITMAP_TOKEN = $0704
+#GL_DRAW_PIXEL_TOKEN = $0705
+#GL_COPY_PIXEL_TOKEN = $0706
+#GL_LINE_RESET_TOKEN = $0707
+#GL_EXP = $0800
+#GL_EXP2 = $0801
+#GL_CW = $0900
+#GL_CCW = $0901
+#GL_COEFF = $0A00
+#GL_ORDER = $0A01
+#GL_DOMAIN = $0A02
+#GL_CURRENT_COLOR = $0B00
+#GL_CURRENT_INDEX = $0B01
+#GL_CURRENT_NORMAL = $0B02
+#GL_CURRENT_TEXTURE_COORDS = $0B03
+#GL_CURRENT_RASTER_COLOR = $0B04
+#GL_CURRENT_RASTER_INDEX = $0B05
+#GL_CURRENT_RASTER_TEXTURE_COORDS = $0B06
+#GL_CURRENT_RASTER_POSITION = $0B07
+#GL_CURRENT_RASTER_POSITION_VALID = $0B08
+#GL_CURRENT_RASTER_DISTANCE = $0B09
+#GL_POINT_SMOOTH = $0B10
+#GL_POINT_SIZE = $0B11
+#GL_POINT_SIZE_RANGE = $0B12
+#GL_POINT_SIZE_GRANULARITY = $0B13
+#GL_LINE_SMOOTH = $0B20
+#GL_LINE_WIDTH = $0B21
+#GL_LINE_WIDTH_RANGE = $0B22
+#GL_LINE_WIDTH_GRANULARITY = $0B23
+#GL_LINE_STIPPLE = $0B24
+#GL_LINE_STIPPLE_PATTERN = $0B25
+#GL_LINE_STIPPLE_REPEAT = $0B26
+#GL_LIST_MODE = $0B30
+#GL_MAX_LIST_NESTING = $0B31
+#GL_LIST_BASE = $0B32
+#GL_LIST_INDEX = $0B33
+#GL_POLYGON_MODE = $0B40
+#GL_POLYGON_SMOOTH = $0B41
+#GL_POLYGON_STIPPLE = $0B42
+#GL_EDGE_FLAG = $0B43
+#GL_CULL_FACE = $0B44
+#GL_CULL_FACE_MODE = $0B45
+#GL_FRONT_FACE = $0B46
+#GL_LIGHTING = $0B50
+#GL_LIGHT_MODEL_LOCAL_VIEWER = $0B51
+#GL_LIGHT_MODEL_TWO_SIDE = $0B52
+#GL_LIGHT_MODEL_AMBIENT = $0B53
+#GL_SHADE_MODEL = $0B54
+#GL_COLOR_MATERIAL_FACE = $0B55
+#GL_COLOR_MATERIAL_PARAMETER = $0B56
+#GL_COLOR_MATERIAL = $0B57
+#GL_FOG = $0B60
+#GL_FOG_INDEX = $0B61
+#GL_FOG_DENSITY = $0B62
+#GL_FOG_START = $0B63
+#GL_FOG_END = $0B64
+#GL_FOG_MODE = $0B65
+#GL_FOG_COLOR = $0B66
+#GL_DEPTH_RANGE = $0B70
+#GL_DEPTH_TEST = $0B71
+#GL_DEPTH_WRITEMASK = $0B72
+#GL_DEPTH_CLEAR_VALUE = $0B73
+#GL_DEPTH_FUNC = $0B74
+#GL_ACCUM_CLEAR_VALUE = $0B80
+#GL_STENCIL_TEST = $0B90
+#GL_STENCIL_CLEAR_VALUE = $0B91
+#GL_STENCIL_FUNC = $0B92
+#GL_STENCIL_VALUE_MASK = $0B93
+#GL_STENCIL_FAIL = $0B94
+#GL_STENCIL_PASS_DEPTH_FAIL = $0B95
+#GL_STENCIL_PASS_DEPTH_PASS = $0B96
+#GL_STENCIL_REF = $0B97
+#GL_STENCIL_WRITEMASK = $0B98
+#GL_MATRIX_MODE = $0BA0
+#GL_NORMALIZE = $0BA1
+#GL_VIEWPORT = $0BA2
+#GL_MODELVIEW_STACK_DEPTH = $0BA3
+#GL_PROJECTION_STACK_DEPTH = $0BA4
+#GL_TEXTURE_STACK_DEPTH = $0BA5
+#GL_MODELVIEW_MATRIX = $0BA6
+#GL_PROJECTION_MATRIX = $0BA7
+#GL_TEXTURE_MATRIX = $0BA8
+#GL_ATTRIB_STACK_DEPTH = $0BB0
+#GL_CLIENT_ATTRIB_STACK_DEPTH = $0BB1
+#GL_ALPHA_TEST = $0BC0
+#GL_ALPHA_TEST_FUNC = $0BC1
+#GL_ALPHA_TEST_REF = $0BC2
+#GL_DITHER = $0BD0
+#GL_BLEND_DST = $0BE0
+#GL_BLEND_SRC = $0BE1
+#GL_BLEND = $0BE2
+#GL_LOGIC_OP_MODE = $0BF0
+#GL_INDEX_LOGIC_OP = $0BF1
+#GL_COLOR_LOGIC_OP = $0BF2
+#GL_AUX_BUFFERS = $0C00
+#GL_DRAW_BUFFER = $0C01
+#GL_READ_BUFFER = $0C02
+#GL_SCISSOR_BOX = $0C10
+#GL_SCISSOR_TEST = $0C11
+#GL_INDEX_CLEAR_VALUE = $0C20
+#GL_INDEX_WRITEMASK = $0C21
+#GL_COLOR_CLEAR_VALUE = $0C22
+#GL_COLOR_WRITEMASK = $0C23
+#GL_INDEX_MODE = $0C30
+#GL_RGBA_MODE = $0C31
+#GL_DOUBLEBUFFER = $0C32
+#GL_STEREO = $0C33
+#GL_RENDER_MODE = $0C40
+#GL_PERSPECTIVE_CORRECTION_HINT = $0C50
+#GL_POINT_SMOOTH_HINT = $0C51
+#GL_LINE_SMOOTH_HINT = $0C52
+#GL_POLYGON_SMOOTH_HINT = $0C53
+#GL_FOG_HINT = $0C54
+#GL_TEXTURE_GEN_S = $0C60
+#GL_TEXTURE_GEN_T = $0C61
+#GL_TEXTURE_GEN_R = $0C62
+#GL_TEXTURE_GEN_Q = $0C63
+#GL_PIXEL_MAP_I_TO_I = $0C70
+#GL_PIXEL_MAP_S_TO_S = $0C71
+#GL_PIXEL_MAP_I_TO_R = $0C72
+#GL_PIXEL_MAP_I_TO_G = $0C73
+#GL_PIXEL_MAP_I_TO_B = $0C74
+#GL_PIXEL_MAP_I_TO_A = $0C75
+#GL_PIXEL_MAP_R_TO_R = $0C76
+#GL_PIXEL_MAP_G_TO_G = $0C77
+#GL_PIXEL_MAP_B_TO_B = $0C78
+#GL_PIXEL_MAP_A_TO_A = $0C79
+#GL_PIXEL_MAP_I_TO_I_SIZE = $0CB0
+#GL_PIXEL_MAP_S_TO_S_SIZE = $0CB1
+#GL_PIXEL_MAP_I_TO_R_SIZE = $0CB2
+#GL_PIXEL_MAP_I_TO_G_SIZE = $0CB3
+#GL_PIXEL_MAP_I_TO_B_SIZE = $0CB4
+#GL_PIXEL_MAP_I_TO_A_SIZE = $0CB5
+#GL_PIXEL_MAP_R_TO_R_SIZE = $0CB6
+#GL_PIXEL_MAP_G_TO_G_SIZE = $0CB7
+#GL_PIXEL_MAP_B_TO_B_SIZE = $0CB8
+#GL_PIXEL_MAP_A_TO_A_SIZE = $0CB9
+#GL_UNPACK_SWAP_BYTES = $0CF0
+#GL_UNPACK_LSB_FIRST = $0CF1
+#GL_UNPACK_ROW_LENGTH = $0CF2
+#GL_UNPACK_SKIP_ROWS = $0CF3
+#GL_UNPACK_SKIP_PIXELS = $0CF4
+#GL_UNPACK_ALIGNMENT = $0CF5
+#GL_PACK_SWAP_BYTES = $0D00
+#GL_PACK_LSB_FIRST = $0D01
+#GL_PACK_ROW_LENGTH = $0D02
+#GL_PACK_SKIP_ROWS = $0D03
+#GL_PACK_SKIP_PIXELS = $0D04
+#GL_PACK_ALIGNMENT = $0D05
+#GL_MAP_COLOR = $0D10
+#GL_MAP_STENCIL = $0D11
+#GL_INDEX_SHIFT = $0D12
+#GL_INDEX_OFFSET = $0D13
+#GL_RED_SCALE = $0D14
+#GL_RED_BIAS = $0D15
+#GL_ZOOM_X = $0D16
+#GL_ZOOM_Y = $0D17
+#GL_GREEN_SCALE = $0D18
+#GL_GREEN_BIAS = $0D19
+#GL_BLUE_SCALE = $0D1A
+#GL_BLUE_BIAS = $0D1B
+#GL_ALPHA_SCALE = $0D1C
+#GL_ALPHA_BIAS = $0D1D
+#GL_DEPTH_SCALE = $0D1E
+#GL_DEPTH_BIAS = $0D1F
+#GL_MAX_EVAL_ORDER = $0D30
+#GL_MAX_LIGHTS = $0D31
+#GL_MAX_CLIP_PLANES = $0D32
+#GL_MAX_TEXTURE_SIZE = $0D33
+#GL_MAX_PIXEL_MAP_TABLE = $0D34
+#GL_MAX_ATTRIB_STACK_DEPTH = $0D35
+#GL_MAX_MODELVIEW_STACK_DEPTH = $0D36
+#GL_MAX_NAME_STACK_DEPTH = $0D37
+#GL_MAX_PROJECTION_STACK_DEPTH = $0D38
+#GL_MAX_TEXTURE_STACK_DEPTH = $0D39
+#GL_MAX_VIEWPORT_DIMS = $0D3A
+#GL_MAX_CLIENT_ATTRIB_STACK_DEPTH = $0D3B
+#GL_SUBPIXEL_BITS = $0D50
+#GL_INDEX_BITS = $0D51
+#GL_RED_BITS = $0D52
+#GL_GREEN_BITS = $0D53
+#GL_BLUE_BITS = $0D54
+#GL_ALPHA_BITS = $0D55
+#GL_DEPTH_BITS = $0D56
+#GL_STENCIL_BITS = $0D57
+#GL_ACCUM_RED_BITS = $0D58
+#GL_ACCUM_GREEN_BITS = $0D59
+#GL_ACCUM_BLUE_BITS = $0D5A
+#GL_ACCUM_ALPHA_BITS = $0D5B
+#GL_NAME_STACK_DEPTH = $0D70
+#GL_AUTO_NORMAL = $0D80
+#GL_MAP1_COLOR_4 = $0D90
+#GL_MAP1_INDEX = $0D91
+#GL_MAP1_NORMAL = $0D92
+#GL_MAP1_TEXTURE_COORD_1 = $0D93
+#GL_MAP1_TEXTURE_COORD_2 = $0D94
+#GL_MAP1_TEXTURE_COORD_3 = $0D95
+#GL_MAP1_TEXTURE_COORD_4 = $0D96
+#GL_MAP1_VERTEX_3 = $0D97
+#GL_MAP1_VERTEX_4 = $0D98
+#GL_MAP2_COLOR_4 = $0DB0
+#GL_MAP2_INDEX = $0DB1
+#GL_MAP2_NORMAL = $0DB2
+#GL_MAP2_TEXTURE_COORD_1 = $0DB3
+#GL_MAP2_TEXTURE_COORD_2 = $0DB4
+#GL_MAP2_TEXTURE_COORD_3 = $0DB5
+#GL_MAP2_TEXTURE_COORD_4 = $0DB6
+#GL_MAP2_VERTEX_3 = $0DB7
+#GL_MAP2_VERTEX_4 = $0DB8
+#GL_MAP1_GRID_DOMAIN = $0DD0
+#GL_MAP1_GRID_SEGMENTS = $0DD1
+#GL_MAP2_GRID_DOMAIN = $0DD2
+#GL_MAP2_GRID_SEGMENTS = $0DD3
+#GL_TEXTURE_1D = $0DE0
+#GL_TEXTURE_2D = $0DE1
+#GL_FEEDBACK_BUFFER_POINTER = $0DF0
+#GL_FEEDBACK_BUFFER_SIZE = $0DF1
+#GL_FEEDBACK_BUFFER_TYPE = $0DF2
+#GL_SELECTION_BUFFER_POINTER = $0DF3
+#GL_SELECTION_BUFFER_SIZE = $0DF4
+#GL_TEXTURE_WIDTH = $1000
+#GL_TEXTURE_HEIGHT = $1001
+#GL_TEXTURE_INTERNAL_FORMAT = $1003
+#GL_TEXTURE_BORDER_COLOR = $1004
+#GL_TEXTURE_BORDER = $1005
+#GL_DONT_CARE = $1100
+#GL_FASTEST = $1101
+#GL_NICEST = $1102
+#GL_LIGHT0 = $4000
+#GL_LIGHT1 = $4001
+#GL_LIGHT2 = $4002
+#GL_LIGHT3 = $4003
+#GL_LIGHT4 = $4004
+#GL_LIGHT5 = $4005
+#GL_LIGHT6 = $4006
+#GL_LIGHT7 = $4007
+#GL_AMBIENT = $1200
+#GL_DIFFUSE = $1201
+#GL_SPECULAR = $1202
+#GL_POSITION = $1203
+#GL_SPOT_DIRECTION = $1204
+#GL_SPOT_EXPONENT = $1205
+#GL_SPOT_CUTOFF = $1206
+#GL_CONSTANT_ATTENUATION = $1207
+#GL_LINEAR_ATTENUATION = $1208
+#GL_QUADRATIC_ATTENUATION = $1209
+#GL_COMPILE = $1300
+#GL_COMPILE_AND_EXECUTE = $1301
+#GL_CLEAR = $1500
+#GL_AND = $1501
+#GL_AND_REVERSE = $1502
+#GL_COPY = $1503
+#GL_AND_INVERTED = $1504
+#GL_NOOP = $1505
+#GL_XOR = $1506
+#GL_OR = $1507
+#GL_NOR = $1508
+#GL_EQUIV = $1509
+#GL_INVERT = $150A
+#GL_OR_REVERSE = $150B
+#GL_COPY_INVERTED = $150C
+#GL_OR_INVERTED = $150D
+#GL_NAND = $150E
+#GL_SET = $150F
+#GL_EMISSION = $1600
+#GL_SHININESS = $1601
+#GL_AMBIENT_AND_DIFFUSE = $1602
+#GL_COLOR_INDEXES = $1603
+#GL_MODELVIEW = $1700
+#GL_PROJECTION = $1701
+#GL_TEXTURE = $1702
+#GL_COLOR = $1800
+#GL_DEPTH = $1801
+#GL_STENCIL = $1802
+#GL_COLOR_INDEX = $1900
+#GL_STENCIL_INDEX = $1901
+#GL_DEPTH_COMPONENT = $1902
+#GL_RED = $1903
+#GL_GREEN = $1904
+#GL_BLUE = $1905
+#GL_ALPHA = $1906
+#GL_RGB = $1907
+#GL_RGBA = $1908
+#GL_LUMINANCE = $1909
+#GL_LUMINANCE_ALPHA = $190A
+#GL_BITMAP = $1A00
+#GL_POINT = $1B00
+#GL_LINE = $1B01
+#GL_FILL = $1B02
+#GL_RENDER = $1C00
+#GL_FEEDBACK = $1C01
+#GL_SELECT = $1C02
+#GL_FLAT = $1D00
+#GL_SMOOTH = $1D01
+#GL_KEEP = $1E00
+#GL_REPLACE = $1E01
+#GL_INCR = $1E02
+#GL_DECR = $1E03
+#GL_VENDOR = $1F00
+#GL_RENDERER = $1F01
+#GL_VERSION = $1F02
+#GL_EXTENSIONS = $1F03
+#GL_S = $2000
+#GL_T = $2001
+#GL_R = $2002
+#GL_Q = $2003
+#GL_MODULATE = $2100
+#GL_DECAL = $2101
+#GL_TEXTURE_ENV_MODE = $2200
+#GL_TEXTURE_ENV_COLOR = $2201
+#GL_TEXTURE_ENV = $2300
+#GL_EYE_LINEAR = $2400
+#GL_OBJECT_LINEAR = $2401
+#GL_SPHERE_MAP = $2402
+#GL_TEXTURE_GEN_MODE = $2500
+#GL_OBJECT_PLANE = $2501
+#GL_EYE_PLANE = $2502
+#GL_NEAREST = $2600
+#GL_LINEAR = $2601
+#GL_NEAREST_MIPMAP_NEAREST = $2700
+#GL_LINEAR_MIPMAP_NEAREST = $2701
+#GL_NEAREST_MIPMAP_LINEAR = $2702
+#GL_LINEAR_MIPMAP_LINEAR = $2703
+#GL_TEXTURE_MAG_FILTER = $2800
+#GL_TEXTURE_MIN_FILTER = $2801
+#GL_TEXTURE_WRAP_S = $2802
+#GL_TEXTURE_WRAP_T = $2803
+#GL_CLAMP = $2900
+#GL_REPEAT = $2901
+#GL_CLIENT_PIXEL_STORE_BIT = $00000001
+#GL_CLIENT_VERTEX_ARRAY_BIT = $00000002
+#GL_CLIENT_ALL_ATTRIB_BITS = $ffffffff
+#GL_POLYGON_OFFSET_FACTOR = $8038
+#GL_POLYGON_OFFSET_UNITS = $2A00
+#GL_POLYGON_OFFSET_POINT = $2A01
+#GL_POLYGON_OFFSET_LINE = $2A02
+#GL_POLYGON_OFFSET_FILL = $8037
+#GL_ALPHA4 = $803B
+#GL_ALPHA8 = $803C
+#GL_ALPHA12 = $803D
+#GL_ALPHA16 = $803E
+#GL_LUMINANCE4 = $803F
+#GL_LUMINANCE8 = $8040
+#GL_LUMINANCE12 = $8041
+#GL_LUMINANCE16 = $8042
+#GL_LUMINANCE4_ALPHA4 = $8043
+#GL_LUMINANCE6_ALPHA2 = $8044
+#GL_LUMINANCE8_ALPHA8 = $8045
+#GL_LUMINANCE12_ALPHA4 = $8046
+#GL_LUMINANCE12_ALPHA12 = $8047
+#GL_LUMINANCE16_ALPHA16 = $8048
+#GL_INTENSITY = $8049
+#GL_INTENSITY4 = $804A
+#GL_INTENSITY8 = $804B
+#GL_INTENSITY12 = $804C
+#GL_INTENSITY16 = $804D
+#GL_R3_G3_B2 = $2A10
+#GL_RGB4 = $804F
+#GL_RGB5 = $8050
+#GL_RGB8 = $8051
+#GL_RGB10 = $8052
+#GL_RGB12 = $8053
+#GL_RGB16 = $8054
+#GL_RGBA2 = $8055
+#GL_RGBA4 = $8056
+#GL_RGB5_A1 = $8057
+#GL_RGBA8 = $8058
+#GL_RGB10_A2 = $8059
+#GL_RGBA12 = $805A
+#GL_RGBA16 = $805B
+#GL_TEXTURE_RED_SIZE = $805C
+#GL_TEXTURE_GREEN_SIZE = $805D
+#GL_TEXTURE_BLUE_SIZE = $805E
+#GL_TEXTURE_ALPHA_SIZE = $805F
+#GL_TEXTURE_LUMINANCE_SIZE = $8060
+#GL_TEXTURE_INTENSITY_SIZE = $8061
+#GL_PROXY_TEXTURE_1D = $8063
+#GL_PROXY_TEXTURE_2D = $8064
+#GL_TEXTURE_PRIORITY = $8066
+#GL_TEXTURE_RESIDENT = $8067
+#GL_TEXTURE_BINDING_1D = $8068
+#GL_TEXTURE_BINDING_2D = $8069
+#GL_VERTEX_ARRAY = $8074
+#GL_NORMAL_ARRAY = $8075
+#GL_COLOR_ARRAY = $8076
+#GL_INDEX_ARRAY = $8077
+#GL_TEXTURE_COORD_ARRAY = $8078
+#GL_EDGE_FLAG_ARRAY = $8079
+#GL_VERTEX_ARRAY_SIZE = $807A
+#GL_VERTEX_ARRAY_TYPE = $807B
+#GL_VERTEX_ARRAY_STRIDE = $807C
+#GL_NORMAL_ARRAY_TYPE = $807E
+#GL_NORMAL_ARRAY_STRIDE = $807F
+#GL_COLOR_ARRAY_SIZE = $8081
+#GL_COLOR_ARRAY_TYPE = $8082
+#GL_COLOR_ARRAY_STRIDE = $8083
+#GL_INDEX_ARRAY_TYPE = $8085
+#GL_INDEX_ARRAY_STRIDE = $8086
+#GL_TEXTURE_COORD_ARRAY_SIZE = $8088
+#GL_TEXTURE_COORD_ARRAY_TYPE = $8089
+#GL_TEXTURE_COORD_ARRAY_STRIDE = $808A
+#GL_EDGE_FLAG_ARRAY_STRIDE = $808C
+#GL_VERTEX_ARRAY_POINTER = $808E
+#GL_NORMAL_ARRAY_POINTER = $808F
+#GL_COLOR_ARRAY_POINTER = $8090
+#GL_INDEX_ARRAY_POINTER = $8091
+#GL_TEXTURE_COORD_ARRAY_POINTER = $8092
+#GL_EDGE_FLAG_ARRAY_POINTER = $8093
+#GL_V2F = $2A20
+#GL_V3F = $2A21
+#GL_C4UB_V2F = $2A22
+#GL_C4UB_V3F = $2A23
+#GL_C3F_V3F = $2A24
+#GL_N3F_V3F = $2A25
+#GL_C4F_N3F_V3F = $2A26
+#GL_T2F_V3F = $2A27
+#GL_T4F_V4F = $2A28
+#GL_T2F_C4UB_V3F = $2A29
+#GL_T2F_C3F_V3F = $2A2A
+#GL_T2F_N3F_V3F = $2A2B
+#GL_T2F_C4F_N3F_V3F = $2A2C
+#GL_T4F_C4F_N3F_V4F = $2A2D
+#GL_EXT_vertex_array = 1
+#GL_EXT_bgra = 1
+#GL_EXT_paletted_texture = 1
+#GL_WIN_swap_hint = 1
+#GL_WIN_draw_range_elements = 1
+#GL_VERTEX_ARRAY_EXT = $8074
+#GL_NORMAL_ARRAY_EXT = $8075
+#GL_COLOR_ARRAY_EXT = $8076
+#GL_INDEX_ARRAY_EXT = $8077
+#GL_TEXTURE_COORD_ARRAY_EXT = $8078
+#GL_EDGE_FLAG_ARRAY_EXT = $8079
+#GL_VERTEX_ARRAY_SIZE_EXT = $807A
+#GL_VERTEX_ARRAY_TYPE_EXT = $807B
+#GL_VERTEX_ARRAY_STRIDE_EXT = $807C
+#GL_VERTEX_ARRAY_COUNT_EXT = $807D
+#GL_NORMAL_ARRAY_TYPE_EXT = $807E
+#GL_NORMAL_ARRAY_STRIDE_EXT = $807F
+#GL_NORMAL_ARRAY_COUNT_EXT = $8080
+#GL_COLOR_ARRAY_SIZE_EXT = $8081
+#GL_COLOR_ARRAY_TYPE_EXT = $8082
+#GL_COLOR_ARRAY_STRIDE_EXT = $8083
+#GL_COLOR_ARRAY_COUNT_EXT = $8084
+#GL_INDEX_ARRAY_TYPE_EXT = $8085
+#GL_INDEX_ARRAY_STRIDE_EXT = $8086
+#GL_INDEX_ARRAY_COUNT_EXT = $8087
+#GL_TEXTURE_COORD_ARRAY_SIZE_EXT = $8088
+#GL_TEXTURE_COORD_ARRAY_TYPE_EXT = $8089
+#GL_TEXTURE_COORD_ARRAY_STRIDE_EXT = $808A
+#GL_TEXTURE_COORD_ARRAY_COUNT_EXT = $808B
+#GL_EDGE_FLAG_ARRAY_STRIDE_EXT = $808C
+#GL_EDGE_FLAG_ARRAY_COUNT_EXT = $808D
+#GL_VERTEX_ARRAY_POINTER_EXT = $808E
+#GL_NORMAL_ARRAY_POINTER_EXT = $808F
+#GL_COLOR_ARRAY_POINTER_EXT = $8090
+#GL_INDEX_ARRAY_POINTER_EXT = $8091
+#GL_TEXTURE_COORD_ARRAY_POINTER_EXT = $8092
+#GL_EDGE_FLAG_ARRAY_POINTER_EXT = $8093
+#GL_DOUBLE_EXT = #GL_DOUBLE
+#GL_BGR_EXT = $80E0
+#GL_BGRA_EXT = $80E1
+#GL_COLOR_TABLE_FORMAT_EXT = $80D8
+#GL_COLOR_TABLE_WIDTH_EXT = $80D9
+#GL_COLOR_TABLE_RED_SIZE_EXT = $80DA
+#GL_COLOR_TABLE_GREEN_SIZE_EXT = $80DB
+#GL_COLOR_TABLE_BLUE_SIZE_EXT = $80DC
+#GL_COLOR_TABLE_ALPHA_SIZE_EXT = $80DD
+#GL_COLOR_TABLE_LUMINANCE_SIZE_EXT = $80DE
+#GL_COLOR_TABLE_INTENSITY_SIZE_EXT = $80DF
+#GL_COLOR_INDEX1_EXT = $80E2
+#GL_COLOR_INDEX2_EXT = $80E3
+#GL_COLOR_INDEX4_EXT = $80E4
+#GL_COLOR_INDEX8_EXT = $80E5
+#GL_COLOR_INDEX12_EXT = $80E6
+#GL_COLOR_INDEX16_EXT = $80E7
+#GL_MAX_ELEMENTS_VERTICES_WIN = $80E8
+#GL_MAX_ELEMENTS_INDICES_WIN = $80E9
+#GL_PHONG_WIN = $80EA
+#GL_PHONG_HINT_WIN = $80EB
+#GL_FOG_SPECULAR_TEXTURE_WIN = $80EC
+#GL_LOGIC_OP = #GL_INDEX_LOGIC_OP
+#GL_TEXTURE_COMPONENTS = #GL_TEXTURE_INTERNAL_FORMAT
+#GLU_VERSION_1_1 = 1
+#GLU_VERSION_1_2 = 1
+#GLU_INVALID_ENUM = 100900
+#GLU_INVALID_VALUE = 100901
+#GLU_OUT_OF_MEMORY = 100902
+#GLU_INCOMPATIBLE_GL_VERSION = 100903
+#GLU_VERSION = 100800
+#GLU_EXTENSIONS = 100801
+#GLU_TRUE = #GL_TRUE
+#GLU_FALSE = #GL_FALSE
+#GLU_SMOOTH = 100000
+#GLU_FLAT = 100001
+#GLU_NONE = 100002
+#GLU_POINT = 100010
+#GLU_LINE = 100011
+#GLU_FILL = 100012
+#GLU_SILHOUETTE = 100013
+#GLU_OUTSIDE = 100020
+#GLU_INSIDE = 100021
+#GLU_TESS_MAX_COORD = 1.0e150
+#GLU_TESS_WINDING_RULE = 100140
+#GLU_TESS_BOUNDARY_ONLY = 100141
+#GLU_TESS_TOLERANCE = 100142
+#GLU_TESS_WINDING_ODD = 100130
+#GLU_TESS_WINDING_NONZERO = 100131
+#GLU_TESS_WINDING_POSITIVE = 100132
+#GLU_TESS_WINDING_NEGATIVE = 100133
+#GLU_TESS_WINDING_ABS_GEQ_TWO = 100134
+#GLU_TESS_BEGIN = 100100
+#GLU_TESS_VERTEX = 100101
+#GLU_TESS_END = 100102
+#GLU_TESS_ERROR = 100103
+#GLU_TESS_EDGE_FLAG = 100104
+#GLU_TESS_COMBINE = 100105
+#GLU_TESS_BEGIN_DATA = 100106
+#GLU_TESS_VERTEX_DATA = 100107
+#GLU_TESS_END_DATA = 100108
+#GLU_TESS_ERROR_DATA = 100109
+#GLU_TESS_EDGE_FLAG_DATA = 100110
+#GLU_TESS_COMBINE_DATA = 100111
+#GLU_TESS_ERROR1 = 100151
+#GLU_TESS_ERROR2 = 100152
+#GLU_TESS_ERROR3 = 100153
+#GLU_TESS_ERROR4 = 100154
+#GLU_TESS_ERROR5 = 100155
+#GLU_TESS_ERROR6 = 100156
+#GLU_TESS_ERROR7 = 100157
+#GLU_TESS_ERROR8 = 100158
+#GLU_TESS_MISSING_BEGIN_POLYGON = #GLU_TESS_ERROR1
+#GLU_TESS_MISSING_BEGIN_CONTOUR = #GLU_TESS_ERROR2
+#GLU_TESS_MISSING_END_POLYGON = #GLU_TESS_ERROR3
+#GLU_TESS_MISSING_END_CONTOUR = #GLU_TESS_ERROR4
+#GLU_TESS_COORD_TOO_LARGE = #GLU_TESS_ERROR5
+#GLU_TESS_NEED_COMBINE_CALLBACK = #GLU_TESS_ERROR6
+#GLU_AUTO_LOAD_MATRIX = 100200
+#GLU_CULLING = 100201
+#GLU_SAMPLING_TOLERANCE = 100203
+#GLU_DISPLAY_MODE = 100204
+#GLU_PARAMETRIC_TOLERANCE = 100202
+#GLU_SAMPLING_METHOD = 100205
+#GLU_U_STEP = 100206
+#GLU_V_STEP = 100207
+#GLU_PATH_LENGTH = 100215
+#GLU_PARAMETRIC_ERROR = 100216
+#GLU_DOMAIN_DISTANCE = 100217
+#GLU_MAP1_TRIM_2 = 100210
+#GLU_MAP1_TRIM_3 = 100211
+#GLU_OUTLINE_POLYGON = 100240
+#GLU_OUTLINE_PATCH = 100241
+#GLU_NURBS_ERROR1 = 100251
+#GLU_NURBS_ERROR2 = 100252
+#GLU_NURBS_ERROR3 = 100253
+#GLU_NURBS_ERROR4 = 100254
+#GLU_NURBS_ERROR5 = 100255
+#GLU_NURBS_ERROR6 = 100256
+#GLU_NURBS_ERROR7 = 100257
+#GLU_NURBS_ERROR8 = 100258
+#GLU_NURBS_ERROR9 = 100259
+#GLU_NURBS_ERROR10 = 100260
+#GLU_NURBS_ERROR11 = 100261
+#GLU_NURBS_ERROR12 = 100262
+#GLU_NURBS_ERROR13 = 100263
+#GLU_NURBS_ERROR14 = 100264
+#GLU_NURBS_ERROR15 = 100265
+#GLU_NURBS_ERROR16 = 100266
+#GLU_NURBS_ERROR17 = 100267
+#GLU_NURBS_ERROR18 = 100268
+#GLU_NURBS_ERROR19 = 100269
+#GLU_NURBS_ERROR20 = 100270
+#GLU_NURBS_ERROR21 = 100271
+#GLU_NURBS_ERROR22 = 100272
+#GLU_NURBS_ERROR23 = 100273
+#GLU_NURBS_ERROR24 = 100274
+#GLU_NURBS_ERROR25 = 100275
+#GLU_NURBS_ERROR26 = 100276
+#GLU_NURBS_ERROR27 = 100277
+#GLU_NURBS_ERROR28 = 100278
+#GLU_NURBS_ERROR29 = 100279
+#GLU_NURBS_ERROR30 = 100280
+#GLU_NURBS_ERROR31 = 100281
+#GLU_NURBS_ERROR32 = 100282
+#GLU_NURBS_ERROR33 = 100283
+#GLU_NURBS_ERROR34 = 100284
+#GLU_NURBS_ERROR35 = 100285
+#GLU_NURBS_ERROR36 = 100286
+#GLU_NURBS_ERROR37 = 100287
+#GLU_CW = 100120
+#GLU_CCW = 100121
+#GLU_INTERIOR = 100122
+#GLU_EXTERIOR = 100123
+#GLU_UNKNOWN = 100124
+#GLU_BEGIN = #GLU_TESS_BEGIN
+#GLU_VERTEX = #GLU_TESS_VERTEX
+#GLU_END = #GLU_TESS_END
+#GLU_ERROR = #GLU_TESS_ERROR
+#GLU_EDGE_FLAG = #GLU_TESS_EDGE_FLAG
+
+Import "Opengl32.lib"
+   glAccum_(a.l,b.f) As "_glAccum@8"
+   glAlphaFunc_(a.l,b.f) As "_glAlphaFunc@8"
+   glAreTexturesResident_(a.l,b.l,c.l) As "_glAreTexturesResident@12"
+   glArrayElement_(a.l) As "_glArrayElement@4"
+   glBegin_(a.l) As "_glBegin@4"
+   glBindTexture_(a.l,b.l) As "_glBindTexture@8"
+   glBitmap_(a.l,b.l,c.f,d.f,e.f,f.f,g.l) As "_glBitmap@28"
+   glBlendFunc_(a.l,b.l) As "_glBlendFunc@8"
+   glCallList_(a.l) As "_glCallList@4"
+   glCallLists_(a.l,b.l,c.l) As "_glCallLists@12"
+   glClear_(a.l) As "_glClear@4"
+   glClearAccum_(a.f,b.f,c.f,d.f) As "_glClearAccum@16"
+   glClearColor_(a.f,b.f,c.f,d.f) As "_glClearColor@16"
+   glClearDepth_(a.d) As "_glClearDepth@8"
+   glClearIndex_(a.f) As "_glClearIndex@4"
+   glClearStencil_(a.l) As "_glClearStencil@4"
+   glClipPlane_(a.l,b.l) As "_glClipPlane@8"
+   glColor3b_(a.b,b.b,c.b) As "_glColor3b@12"
+   glColor3bv_(a.l) As "_glColor3bv@4"
+   glColor3d_(a.d,b.d,c.d) As "_glColor3d@24"
+   glColor3dv_(a.l) As "_glColor3dv@4"
+   glColor3f_(a.f,b.f,c.f) As "_glColor3f@12"
+   glColor3fv_(a.l) As "_glColor3fv@4"
+   glColor3i_(a.l,b.l,c.l) As "_glColor3i@12"
+   glColor3iv_(a.l) As "_glColor3iv@4"
+   glColor3s_(a.w,b.w,c.w) As "_glColor3s@12"
+   glColor3sv_(a.l) As "_glColor3sv@4"
+   glColor3ub_(a.c,b.c,c.c) As "_glColor3ub@12"
+   glColor3ubv_(a.l) As "_glColor3ubv@4"
+   glColor3ui_(a.l,b.l,c.l) As "_glColor3ui@12"
+   glColor3uiv_(a.l) As "_glColor3uiv@4"
+   glColor3us_(a.w,b.w,c.w) As "_glColor3us@12"
+   glColor3usv_(a.l) As "_glColor3usv@4"
+   glColor4b_(a.b,b.b,c.b,d.b) As "_glColor4b@16"
+   glColor4bv_(a.l) As "_glColor4bv@4"
+   glColor4d_(a.d,b.d,c.d,d.d) As "_glColor4d@32"
+   glColor4dv_(a.l) As "_glColor4dv@4"
+   glColor4f_(a.f,b.f,c.f,d.f) As "_glColor4f@16"
+   glColor4fv_(a.l) As "_glColor4fv@4"
+   glColor4i_(a.l,b.l,c.l,d.l) As "_glColor4i@16"
+   glColor4iv_(a.l) As "_glColor4iv@4"
+   glColor4s_(a.w,b.w,c.w,d.w) As "_glColor4s@16"
+   glColor4sv_(a.l) As "_glColor4sv@4"
+   glColor4ub_(a.c,b.c,c.c,d.c) As "_glColor4ub@16"
+   glColor4ubv_(a.l) As "_glColor4ubv@4"
+   glColor4ui_(a.l,b.l,c.l,d.l) As "_glColor4ui@16"
+   glColor4uiv_(a.l) As "_glColor4uiv@4"
+   glColor4us_(a.w,b.w,c.w,d.w) As "_glColor4us@16"
+   glColor4usv_(a.l) As "_glColor4usv@4"
+   glColorMask_(a.c,b.c,c.c,d.c) As "_glColorMask@16"
+   glColorMaterial_(a.l,b.l) As "_glColorMaterial@8"
+   glColorPointer_(a.l,b.l,c.l,d.l) As "_glColorPointer@16"
+   glCopyPixels_(a.l,b.l,c.l,d.l,e.l) As "_glCopyPixels@20"
+   glCopyTexImage1D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l) As "_glCopyTexImage1D@28"
+   glCopyTexImage2D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l) As "_glCopyTexImage2D@32"
+   glCopyTexSubImage1D_(a.l,b.l,c.l,d.l,e.l,f.l) As "_glCopyTexSubImage1D@24"
+   glCopyTexSubImage2D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l) As "_glCopyTexSubImage2D@32"
+   glCullFace_(a.l) As "_glCullFace@4"
+   glDeleteLists_(a.l,b.l) As "_glDeleteLists@8"
+   glDeleteTextures_(a.l,b.l) As "_glDeleteTextures@8"
+   glDepthFunc_(a.l) As "_glDepthFunc@4"
+   glDepthMask_(a.c) As "_glDepthMask@4"
+   glDepthRange_(a.d,b.d) As "_glDepthRange@16"
+   glDisable_(a.l) As "_glDisable@4"
+   glDisableClientState_(a.l) As "_glDisableClientState@4"
+   glDrawArrays_(a.l,b.l,c.l) As "_glDrawArrays@12"
+   glDrawBuffer_(a.l) As "_glDrawBuffer@4"
+   glDrawElements_(a.l,b.l,c.l,d.l) As "_glDrawElements@16"
+   glDrawPixels_(a.l,b.l,c.l,d.l,e.l) As "_glDrawPixels@20"
+   glEdgeFlag_(a.c) As "_glEdgeFlag@4"
+   glEdgeFlagPointer_(a.l,b.l) As "_glEdgeFlagPointer@8"
+   glEdgeFlagv_(a.l) As "_glEdgeFlagv@4"
+   glEnable_(a.l) As "_glEnable@4"
+   glEnableClientState_(a.l) As "_glEnableClientState@4"
+   glEnd_() As "_glEnd@0"
+   glEndList_() As "_glEndList@0"
+   glEvalCoord1d_(a.d) As "_glEvalCoord1d@8"
+   glEvalCoord1dv_(a.l) As "_glEvalCoord1dv@4"
+   glEvalCoord1f_(a.f) As "_glEvalCoord1f@4"
+   glEvalCoord1fv_(a.l) As "_glEvalCoord1fv@4"
+   glEvalCoord2d_(a.d,b.d) As "_glEvalCoord2d@16"
+   glEvalCoord2dv_(a.l) As "_glEvalCoord2dv@4"
+   glEvalCoord2f_(a.f,b.f) As "_glEvalCoord2f@8"
+   glEvalCoord2fv_(a.l) As "_glEvalCoord2fv@4"
+   glEvalMesh1_(a.l,b.l,c.l) As "_glEvalMesh1@12"
+   glEvalMesh2_(a.l,b.l,c.l,d.l,e.l) As "_glEvalMesh2@20"
+   glEvalPoint1_(a.l) As "_glEvalPoint1@4"
+   glEvalPoint2_(a.l,b.l) As "_glEvalPoint2@8"
+   glFeedbackBuffer_(a.l,b.l,c.l) As "_glFeedbackBuffer@12"
+   glFinish_() As "_glFinish@0"
+   glFlush_() As "_glFlush@0"
+   glFogf_(a.l,b.f) As "_glFogf@8"
+   glFogfv_(a.l,b.l) As "_glFogfv@8"
+   glFogi_(a.l,b.l) As "_glFogi@8"
+   glFogiv_(a.l,b.l) As "_glFogiv@8"
+   glFrontFace_(a.l) As "_glFrontFace@4"
+   glFrustum_(a.d,b.d,c.d,d.d,e.d,f.d) As "_glFrustum@48"
+   glGenLists_(a.l) As "_glGenLists@4"
+   glGenTextures_(a.l,b.l) As "_glGenTextures@8"
+   glGetBooleanv_(a.l,b.l) As "_glGetBooleanv@8"
+   glGetClipPlane_(a.l,b.l) As "_glGetClipPlane@8"
+   glGetDoublev_(a.l,b.l) As "_glGetDoublev@8"
+   glGetError_() As "_glGetError@0"
+   glGetFloatv_(a.l,b.l) As "_glGetFloatv@8"
+   glGetIntegerv_(a.l,b.l) As "_glGetIntegerv@8"
+   glGetLightfv_(a.l,b.l,c.l) As "_glGetLightfv@12"
+   glGetLightiv_(a.l,b.l,c.l) As "_glGetLightiv@12"
+   glGetMapdv_(a.l,b.l,c.l) As "_glGetMapdv@12"
+   glGetMapfv_(a.l,b.l,c.l) As "_glGetMapfv@12"
+   glGetMapiv_(a.l,b.l,c.l) As "_glGetMapiv@12"
+   glGetMaterialfv_(a.l,b.l,c.l) As "_glGetMaterialfv@12"
+   glGetMaterialiv_(a.l,b.l,c.l) As "_glGetMaterialiv@12"
+   glGetPixelMapfv_(a.l,b.l) As "_glGetPixelMapfv@8"
+   glGetPixelMapuiv_(a.l,b.l) As "_glGetPixelMapuiv@8"
+   glGetPixelMapusv_(a.l,b.l) As "_glGetPixelMapusv@8"
+   glGetPointerv_(a.l,b.l) As "_glGetPointerv@8"
+   glGetPolygonStipple_(a.l) As "_glGetPolygonStipple@4"
+   glGetString_(a.l) As "_glGetString@4"
+   glGetTexEnvfv_(a.l,b.l,c.l) As "_glGetTexEnvfv@12"
+   glGetTexEnviv_(a.l,b.l,c.l) As "_glGetTexEnviv@12"
+   glGetTexGendv_(a.l,b.l,c.l) As "_glGetTexGendv@12"
+   glGetTexGenfv_(a.l,b.l,c.l) As "_glGetTexGenfv@12"
+   glGetTexGeniv_(a.l,b.l,c.l) As "_glGetTexGeniv@12"
+   glGetTexImage_(a.l,b.l,c.l,d.l,e.l) As "_glGetTexImage@20"
+   glGetTexLevelParameterfv_(a.l,b.l,c.l,d.l) As "_glGetTexLevelParameterfv@16"
+   glGetTexLevelParameteriv_(a.l,b.l,c.l,d.l) As "_glGetTexLevelParameteriv@16"
+   glGetTexParameterfv_(a.l,b.l,c.l) As "_glGetTexParameterfv@12"
+   glGetTexParameteriv_(a.l,b.l,c.l) As "_glGetTexParameteriv@12"
+   glHint_(a.l,b.l) As "_glHint@8"
+   glIndexMask_(a.l) As "_glIndexMask@4"
+   glIndexPointer_(a.l,b.l,c.l) As "_glIndexPointer@12"
+   glIndexd_(a.d) As "_glIndexd@8"
+   glIndexdv_(a.l) As "_glIndexdv@4"
+   glIndexf_(a.f) As "_glIndexf@4"
+   glIndexfv_(a.l) As "_glIndexfv@4"
+   glIndexi_(a.l) As "_glIndexi@4"
+   glIndexiv_(a.l) As "_glIndexiv@4"
+   glIndexs_(a.w) As "_glIndexs@4"
+   glIndexsv_(a.l) As "_glIndexsv@4"
+   glIndexub_(a.c) As "_glIndexub@4"
+   glIndexubv_(a.l) As "_glIndexubv@4"
+   glInitNames_() As "_glInitNames@0"
+   glInterleavedArrays_(a.l,b.l,c.l) As "_glInterleavedArrays@12"
+   glIsEnabled_(a.l) As "_glIsEnabled@4"
+   glIsList_(a.l) As "_glIsList@4"
+   glIsTexture_(a.l) As "_glIsTexture@4"
+   glLightModelf_(a.l,b.f) As "_glLightModelf@8"
+   glLightModelfv_(a.l,b.l) As "_glLightModelfv@8"
+   glLightModeli_(a.l,b.l) As "_glLightModeli@8"
+   glLightModeliv_(a.l,b.l) As "_glLightModeliv@8"
+   glLightf_(a.l,b.l,c.f) As "_glLightf@12"
+   glLightfv_(a.l,b.l,c.l) As "_glLightfv@12"
+   glLighti_(a.l,b.l,c.l) As "_glLighti@12"
+   glLightiv_(a.l,b.l,c.l) As "_glLightiv@12"
+   glLineStipple_(a.l,b.w) As "_glLineStipple@8"
+   glLineWidth_(a.f) As "_glLineWidth@4"
+   glListBase_(a.l) As "_glListBase@4"
+   glLoadIdentity_() As "_glLoadIdentity@0"
+   glLoadMatrixd_(a.l) As "_glLoadMatrixd@4"
+   glLoadMatrixf_(a.l) As "_glLoadMatrixf@4"
+   glLoadName_(a.l) As "_glLoadName@4"
+   glLogicOp_(a.l) As "_glLogicOp@4"
+   glMap1d_(a.l,b.d,c.d,d.l,e.l,f.l) As "_glMap1d@32"
+   glMap1f_(a.l,b.f,c.f,d.l,e.l,f.l) As "_glMap1f@24"
+   glMap2d_(a.l,b.d,c.d,d.l,e.l,f.d,g.d,h.l,i.l,j.l) As "_glMap2d@56"
+   glMap2f_(a.l,b.f,c.f,d.l,e.l,f.f,g.f,h.l,i.l,j.l) As "_glMap2f@40"
+   glMapGrid1d_(a.l,b.d,c.d) As "_glMapGrid1d@20"
+   glMapGrid1f_(a.l,b.f,c.f) As "_glMapGrid1f@12"
+   glMapGrid2d_(a.l,b.d,c.d,d.l,e.d,f.d) As "_glMapGrid2d@40"
+   glMapGrid2f_(a.l,b.f,c.f,d.l,e.f,f.f) As "_glMapGrid2f@24"
+   glMaterialf_(a.l,b.l,c.f) As "_glMaterialf@12"
+   glMaterialfv_(a.l,b.l,c.l) As "_glMaterialfv@12"
+   glMateriali_(a.l,b.l,c.l) As "_glMateriali@12"
+   glMaterialiv_(a.l,b.l,c.l) As "_glMaterialiv@12"
+   glMatrixMode_(a.l) As "_glMatrixMode@4"
+   glMultMatrixd_(a.l) As "_glMultMatrixd@4"
+   glMultMatrixf_(a.l) As "_glMultMatrixf@4"
+   glNewList_(a.l,b.l) As "_glNewList@8"
+   glNormal3b_(a.b,b.b,c.b) As "_glNormal3b@12"
+   glNormal3bv_(a.l) As "_glNormal3bv@4"
+   glNormal3d_(a.d,b.d,c.d) As "_glNormal3d@24"
+   glNormal3dv_(a.l) As "_glNormal3dv@4"
+   glNormal3f_(a.f,b.f,c.f) As "_glNormal3f@12"
+   glNormal3fv_(a.l) As "_glNormal3fv@4"
+   glNormal3i_(a.l,b.l,c.l) As "_glNormal3i@12"
+   glNormal3iv_(a.l) As "_glNormal3iv@4"
+   glNormal3s_(a.w,b.w,c.w) As "_glNormal3s@12"
+   glNormal3sv_(a.l) As "_glNormal3sv@4"
+   glNormalPointer_(a.l,b.l,c.l) As "_glNormalPointer@12"
+   glOrtho_(a.d,b.d,c.d,d.d,e.d,f.d) As "_glOrtho@48"
+   glPassThrough_(a.f) As "_glPassThrough@4"
+   glPixelMapfv_(a.l,b.l,c.l) As "_glPixelMapfv@12"
+   glPixelMapuiv_(a.l,b.l,c.l) As "_glPixelMapuiv@12"
+   glPixelMapusv_(a.l,b.l,c.l) As "_glPixelMapusv@12"
+   glPixelStoref_(a.l,b.f) As "_glPixelStoref@8"
+   glPixelStorei_(a.l,b.l) As "_glPixelStorei@8"
+   glPixelTransferf_(a.l,b.f) As "_glPixelTransferf@8"
+   glPixelTransferi_(a.l,b.l) As "_glPixelTransferi@8"
+   glPixelZoom_(a.f,b.f) As "_glPixelZoom@8"
+   glPointSize_(a.f) As "_glPointSize@4"
+   glPolygonMode_(a.l,b.l) As "_glPolygonMode@8"
+   glPolygonOffset_(a.f,b.f) As "_glPolygonOffset@8"
+   glPolygonStipple_(a.l) As "_glPolygonStipple@4"
+   glPopAttrib_() As "_glPopAttrib@0"
+   glPopClientAttrib_() As "_glPopClientAttrib@0"
+   glPopMatrix_() As "_glPopMatrix@0"
+   glPopName_() As "_glPopName@0"
+   glPrioritizeTextures_(a.l,b.l,c.l) As "_glPrioritizeTextures@12"
+   glPushAttrib_(a.l) As "_glPushAttrib@4"
+   glPushClientAttrib_(a.l) As "_glPushClientAttrib@4"
+   glPushMatrix_() As "_glPushMatrix@0"
+   glPushName_(a.l) As "_glPushName@4"
+   glRasterPos2d_(a.d,b.d) As "_glRasterPos2d@16"
+   glRasterPos2dv_(a.l) As "_glRasterPos2dv@4"
+   glRasterPos2f_(a.f,b.f) As "_glRasterPos2f@8"
+   glRasterPos2fv_(a.l) As "_glRasterPos2fv@4"
+   glRasterPos2i_(a.l,b.l) As "_glRasterPos2i@8"
+   glRasterPos2iv_(a.l) As "_glRasterPos2iv@4"
+   glRasterPos2s_(a.w,b.w) As "_glRasterPos2s@8"
+   glRasterPos2sv_(a.l) As "_glRasterPos2sv@4"
+   glRasterPos3d_(a.d,b.d,c.d) As "_glRasterPos3d@24"
+   glRasterPos3dv_(a.l) As "_glRasterPos3dv@4"
+   glRasterPos3f_(a.f,b.f,c.f) As "_glRasterPos3f@12"
+   glRasterPos3fv_(a.l) As "_glRasterPos3fv@4"
+   glRasterPos3i_(a.l,b.l,c.l) As "_glRasterPos3i@12"
+   glRasterPos3iv_(a.l) As "_glRasterPos3iv@4"
+   glRasterPos3s_(a.w,b.w,c.w) As "_glRasterPos3s@12"
+   glRasterPos3sv_(a.l) As "_glRasterPos3sv@4"
+   glRasterPos4d_(a.d,b.d,c.d,d.d) As "_glRasterPos4d@32"
+   glRasterPos4dv_(a.l) As "_glRasterPos4dv@4";
+   glRasterPos4f_(a.f,b.f,c.f,d.f) As "_glRasterPos4f@16"
+   glRasterPos4fv_(a.l) As "_glRasterPos4fv@4"
+   glRasterPos4i_(a.l,b.l,c.l,d.l) As "_glRasterPos4i@16"
+   glRasterPos4iv_(a.l) As "_glRasterPos4iv@4"
+   glRasterPos4s_(a.w,b.w,c.w,d.w) As "_glRasterPos4s@16"
+   glRasterPos4sv_(a.l) As "_glRasterPos4sv@4"
+   glReadBuffer_(a.l) As "_glReadBuffer@4"
+   glReadPixels_(a.l,b.l,c.l,d.l,e.l,f.l,g.l) As "_glReadPixels@28"
+   glRectd_(a.d,b.d,c.d,d.d) As "_glRectd@32"
+   glRectdv_(a.l,b.l) As "_glRectdv@8"
+   glRectf_(a.f,b.f,c.f,d.f) As "_glRectf@16"
+   glRectfv_(a.l,b.l) As "_glRectfv@8"
+   glRecti_(a.l,b.l,c.l,d.l) As "_glRecti@16"
+   glRectiv_(a.l,b.l) As "_glRectiv@8"
+   glRects_(a.w,b.w,c.w,d.w) As "_glRects@16"
+   glRectsv_(a.l,b.l) As "_glRectsv@8"
+   glRenderMode_(a.l) As "_glRenderMode@4"
+   glRotated_(a.d,b.d,c.d,d.d) As "_glRotated@32"
+   glRotatef_(a.f,b.f,c.f,d.f) As "_glRotatef@16"
+   glScaled_(a.d,b.d,c.d) As "_glScaled@24"
+   glScalef_(a.f,b.f,c.f) As "_glScalef@12"
+   glScissor_(a.l,b.l,c.l,d.l) As "_glScissor@16"
+   glSelectBuffer_(a.l,b.l) As "_glSelectBuffer@8"
+   glShadeModel_(a.l) As "_glShadeModel@4"
+   glStencilFunc_(a.l,b.l,c.l) As "_glStencilFunc@12"
+   glStencilMask_(a.l) As "_glStencilMask@4"
+   glStencilOp_(a.l,b.l,c.l) As "_glStencilOp@12"
+   glTexCoord1d_(a.d) As "_glTexCoord1d@8"
+   glTexCoord1dv_(a.l) As "_glTexCoord1dv@4"
+   glTexCoord1f_(a.f) As "_glTexCoord1f@4"
+   glTexCoord1fv_(a.l) As "_glTexCoord1fv@4"
+   glTexCoord1i_(a.l) As "_glTexCoord1i@4"
+   glTexCoord1iv_(a.l) As "_glTexCoord1iv@4"
+   glTexCoord1s_(a.w) As "_glTexCoord1s@4"
+   glTexCoord1sv_(a.l) As "_glTexCoord1sv@4"
+   glTexCoord2d_(a.d,b.d) As "_glTexCoord2d@16"
+   glTexCoord2dv_(a.l) As "_glTexCoord2dv@4"
+   glTexCoord2f_(a.f,b.f) As "_glTexCoord2f@8"
+   glTexCoord2fv_(a.l) As "_glTexCoord2fv@4"
+   glTexCoord2i_(a.l,b.l) As "_glTexCoord2i@8"
+   glTexCoord2iv_(a.l) As "_glTexCoord2iv@4"
+   glTexCoord2s_(a.w,b.w) As "_glTexCoord2s@8"
+   glTexCoord2sv_(a.l) As "_glTexCoord2sv@4"
+   glTexCoord3d_(a.d,b.d,c.d) As "_glTexCoord3d@24"
+   glTexCoord3dv_(a.l) As "_glTexCoord3dv@4"
+   glTexCoord3f_(a.f,b.f,c.f) As "_glTexCoord3f@12"
+   glTexCoord3fv_(a.l) As "_glTexCoord3fv@4"
+   glTexCoord3i_(a.l,b.l,c.l) As "_glTexCoord3i@12"
+   glTexCoord3iv_(a.l) As "_glTexCoord3iv@4"
+   glTexCoord3s_(a.w,b.w,c.w) As "_glTexCoord3s@12"
+   glTexCoord3sv_(a.l) As "_glTexCoord3sv@4"
+   glTexCoord4d_(a.d,b.d,c.d,d.d) As "_glTexCoord4d@32"
+   glTexCoord4dv_(a.l) As "_glTexCoord4dv@4"
+   glTexCoord4f_(a.f,b.f,c.f,d.f) As "_glTexCoord4f@16"
+   glTexCoord4fv_(a.l) As "_glTexCoord4fv@4"
+   glTexCoord4i_(a.l,b.l,c.l,d.l) As "_glTexCoord4i@16"
+   glTexCoord4iv_(a.l) As "_glTexCoord4iv@4"
+   glTexCoord4s_(a.w,b.w,c.w,d.w) As "_glTexCoord4s@16"
+   glTexCoord4sv_(a.l) As "_glTexCoord4sv@4"
+   glTexCoordPointer_(a.l,b.l,c.l,d.l) As "_glTexCoordPointer@16"
+   glTexEnvf_(a.l,b.l,c.f) As "_glTexEnvf@12"
+   glTexEnvfv_(a.l,b.l,c.l) As "_glTexEnvfv@12"
+   glTexEnvi_(a.l,b.l,c.l) As "_glTexEnvi@12"
+   glTexEnviv_(a.l,b.l,c.l) As "_glTexEnviv@12"
+   glTexGend_(a.l,b.l,c.d) As "_glTexGend@16"
+   glTexGendv_(a.l,b.l,c.l) As "_glTexGendv@12"
+   glTexGenf_(a.l,b.l,c.f) As "_glTexGenf@12"
+   glTexGenfv_(a.l,b.l,c.l) As "_glTexGenfv@12"
+   glTexGeni_(a.l,b.l,c.l) As "_glTexGeni@12"
+   glTexGeniv_(a.l,b.l,c.l) As "_glTexGeniv@12"
+   glTexImage1D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l) As "_glTexImage1D@32"
+   glTexImage2D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l,i.l) As "_glTexImage2D@36"
+   glTexParameterf_(a.l,b.l,c.f) As "_glTexParameterf@12"
+   glTexParameterfv_(a.l,b.l,c.l) As "_glTexParameterfv@12"
+   glTexParameteri_(a.l,b.l,c.l) As "_glTexParameteri@12"
+   glTexParameteriv_(a.l,b.l,c.l) As "_glTexParameteriv@12"
+   glTexSubImage1D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l) As "_glTexSubImage1D@28"
+   glTexSubImage2D_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l,i.l) As "_glTexSubImage2D@36"
+   glTranslated_(a.d,b.d,c.d) As "_glTranslated@24"
+   glTranslatef_(a.f,b.f,c.f) As "_glTranslatef@12"
+   glVertex2d_(a.d,b.d) As "_glVertex2d@16"
+   glVertex2dv_(a.l) As "_glVertex2dv@4"
+   glVertex2f_(a.f,b.f) As "_glVertex2f@8"
+   glVertex2fv_(a.l) As "_glVertex2fv@4"
+   glVertex2i_(a.l,b.l) As "_glVertex2i@8"
+   glVertex2iv_(a.l) As "_glVertex2iv@4"
+   glVertex2s_(a.w,b.w) As "_glVertex2s@8"
+   glVertex2sv_(a.l) As "_glVertex2sv@4"
+   glVertex3d_(a.d,b.d,c.d) As "_glVertex3d@24"
+   glVertex3dv_(a.l) As "_glVertex3dv@4"
+   glVertex3f_(a.f,b.f,c.f) As "_glVertex3f@12"
+   glVertex3fv_(a.l) As "_glVertex3fv@4"
+   glVertex3i_(a.l,b.l,c.l) As "_glVertex3i@12"
+   glVertex3iv_(a.l) As "_glVertex3iv@4"
+   glVertex3s_(a.w,b.w,c.w) As "_glVertex3s@12"
+   glVertex3sv_(a.l) As "_glVertex3sv@4"
+   glVertex4d_(a.d,b.d,c.d,d.d) As "_glVertex4d@32"
+   glVertex4dv_(a.l) As "_glVertex4dv@4"
+   glVertex4f_(a.f,b.f,c.f,d.f) As "_glVertex4f@16"
+   glVertex4fv_(a.l) As "_glVertex4fv@4"
+   glVertex4i_(a.l,b.l,c.l,d.l) As "_glVertex4i@16"
+   glVertex4iv_(a.l) As "_glVertex4iv@4"
+   glVertex4s_(a.w,b.w,c.w,d.w) As "_glVertex4s@16"
+   glVertex4sv_(a.l) As "_glVertex4sv@4"
+   glVertexPointer_(a.l,b.l,c.l,d.l) As "_glVertexPointer@16"
+   glViewport_(a.l,b.l,c.l,d.l) As "_glViewport@16"
+EndImport
+
+
+; Imports
+Import "Glu32.lib"
+   gluErrorString_(a.l) As "_gluErrorString@4"
+   gluErrorUnicodeStringEXT(a.l) As "_gluErrorUnicodeStringEXT@4"
+   gluGetString_(a.l) As "_gluGetString@4"
+   gluOrtho2D_(a.d,b.d,c.d,d.d) As "_gluOrtho2D@32"
+   gluPerspective_(a.d,b.d,c.d,d.d) As "_gluPerspective@32"
+   gluPickMatrix_(a.d,b.d,c.d,d.d,e) As "_gluPickMatrix@36"
+   gluLookAt_(a.d,b.d,c.d,d.d,e.d,f.d,g.d,h.d,i.d) As "_gluLookAt@72"
+   gluProject_(a.d,b.d,c.d,d,e,f,g.l,h.l,i.l) As "_gluProject@48"
+   gluUnProject_(a.d,b.d,c.d,d,e,f,g.l,h.l,i.l) As "_gluUnProject@48"
+   gluScaleImage_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l,i.l) As "_gluScaleImage@36"
+   gluBuild1DMipmaps_(a.l,b.l,c.l,d.l,e.l,f.l) As "_gluBuild1DMipmaps@24"
+   gluBuild2DMipmaps_(a.l,b.l,c.l,d.l,e.l,f.l,g.l) As "_gluBuild2DMipmaps@28"
+   
+   gluNewQuadric_() As "_gluNewQuadric@0"
+   gluDeleteQuadric_(a.l) As "_gluDeleteQuadric@4"
+   gluQuadricNormals_(a.l,b.l) As "_gluQuadricNormals@8"
+   gluQuadricTexture_(a.l,b.c) As "_gluQuadricTexture@8"
+   gluQuadricOrientation_(a.l,b.l) As "_gluQuadricOrientation@8"
+   gluQuadricDrawStyle_(a.l,b.l) As "_gluQuadricDrawStyle@8"
+   gluCylinder_(a.l,b.d,c.d,d.d,e.l,f.l) As "_gluCylinder@36"
+   gluDisk_(a.l,b.d,c.d,d.l,e.l) As "_gluDisk@28"
+   gluPartialDisk_(a.l,b.d,c.d,d.l,e.l,f.d,g.d) As "_gluPartialDisk@44"
+   gluSphere_(a.l,b.d,c.l,d.l) As "_gluSphere@20"
+   gluQuadricCallback_(a.l, b.l, c.l) As "_gluQuadricCallback@12"
+   gluNewTess_() As "_gluNewTess@0"
+   gluDeleteTess_(a.l) As "_gluDeleteTess@4"
+   gluTessBeginPolygon_(a.l,b.l) As "_gluTessBeginPolygon@8"
+   gluTessBeginContour_(a.l) As "_gluTessBeginContour@4"
+   gluTessVertex_(a.l,b,c.l) As "_gluTessVertex@12"
+   gluTessEndContour_(a.l) As "_gluTessEndContour@4"
+   gluTessEndPolygon_(a.l) As "_gluTessEndPolygon@4"
+   gluTessProperty_(a.l,b.l,c.d) As "_gluTessProperty@16"
+   gluTessNormal_(a.l,b.d,c.d,d.d) As "_gluTessNormal@28"
+   gluTessCallback_(a.l, b.l, c.l) As "_gluTessCallback@12"
+   gluGetTessProperty_(a.l,b.l,c.l) As "_gluGetTessProperty@12"
+   gluNewNurbsRenderer_() As "_gluNewNurbsRenderer@0"
+   gluDeleteNurbsRenderer_(a.l) As "_gluDeleteNurbsRenderer@4"
+   gluBeginSurface_(a.l) As "_gluBeginSurface@4"
+   gluBeginCurve_(a.l) As "_gluBeginCurve@4"
+   gluEndCurve_(a.l) As "_gluEndCurve@4"
+   gluEndSurface_(a.l) As "_gluEndSurface@4"
+   gluBeginTrim_(a.l) As "_gluBeginTrim@4"
+   gluEndTrim_(a.l) As "_gluEndTrim@4"
+   gluPwlCurve_(a.l,b.l,c.l,d.l,e.l) As "_gluPwlCurve@20"
+   gluNurbsCurve_(a.l,b.l,c.l,d.l,e.l,f.l,g.l) As "_gluNurbsCurve@28"
+   gluNurbsSurface_(a.l,b.l,c.l,d.l,e.l,f.l,g.l,h.l,i.l,j.l,k.l) As "_gluNurbsSurface@44"
+   gluLoadSamplingMatrices_(a.l,b,c,d) As "_gluLoadSamplingMatrices@16"
+   gluNurbsProperty_(a.l,b.l,c.f) As "_gluNurbsProperty@12"
+   gluGetNurbsProperty_(a.l,b.l,c.l) As "_gluGetNurbsProperty@12"
+   gluNurbsCallback_(a.l, b.l, c.l) As "_gluNurbsCallback@12"
+   gluBeginPolygon_(a.l) As "_gluBeginPolygon@4"
+   gluNextContour_(a.l,b.l) As "_gluNextContour@8"
+   gluEndPolygon_(a.l) As "_gluEndPolygon@4"
+EndImport
+; IDE Options = PureBasic v4.00 (Windows - x86)
+; CursorPosition = 1109
+; FirstLine = 1079
+; Folding = -

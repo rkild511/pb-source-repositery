@@ -1,0 +1,18 @@
+
+material gem
+{
+
+    technique
+    {
+
+
+        pass
+        {
+            ambient 0.878431 0.921569 0.905882 1
+            diffuse 0.0439216 0.0460784 0.0452941 1
+            specular 0.7 0.7 0.7 1 102.6
+            emissive 0 0 0 1
+
+        }
+    }
+}
