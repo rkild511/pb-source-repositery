@@ -32,7 +32,8 @@ Procedure.s FindFile ( Directory.s, File.s )
 EndProcedure 
 
 
-Debug FindFile( "C:\Windows", "actmovie.exe" ) 
+Debug FindFile( "C:\Windows", "notepad.Exe" ) 
 
-; IDE Options = PureBasic v4.02 (Windows - x86)
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 34
 ; Folding = -
