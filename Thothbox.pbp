@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 Beta 3 (Windows - x86)">
+  <section name="config">
+    <options closefiles="1" openmode="0" name="Thothbox"/>
+  </section>
+  <section name="data">
+    <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
+    <log show="1"/>
+    <lastopen date="2011-06-25 16:37" user="Thyphoon" host="GRAAL"/>
+  </section>
+  <section name="files"/>
+  <section name="targets">
+    <target name="Default Target" enabled="1" default="1">
+      <inputfile value=""/>
+      <outputfile value=""/>
+      <options xpskin="1" debug="1"/>
+    </target>
+  </section>
+</project>
