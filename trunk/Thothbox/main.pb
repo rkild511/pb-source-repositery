@@ -1,25 +1,14 @@
-; Thot
+; Thothbox
 ; gui :Yann LEBRUN / Thyphoon
 ; svn : Jésahel Benoist / Djes
 ; web : GallyHC
 ; GoScintilla : Srod
+; Purebasic tools Configuration
+; arguments -send "%FILE"
 
 #prg_name$="Thothbox"
 #prg_version$="0.1"
-; MessageRequester("Information", GetCurrentDirectory(), #PB_MessageRequester_Ok)
-; 
-; If CreateFile(0, GetTemporaryDirectory()+#prg_name$+"_debug.txt") 
-;     WriteStringN(0,GetEnvironmentVariable("PB_TOOL_Preferences"))
-;     WriteStringN(0,"CountProgramParameters:"+Str(CountProgramParameters()))
-;   For z=0 To CountProgramParameters()-1
-;     WriteStringN(0,"-------------------------------")
-;     WriteStringN(0,ProgramParameter(z))
-;     
-;   Next
-;   CloseFile(0)
-;   RunProgram(GetTemporaryDirectory()+#prg_name$+"_debug.txt")
-;   
-; EndIf
+
 IncludePath "GoScintilla_PB4.4"
 XIncludeFile "GoScintilla.pbi"
 
@@ -28,7 +17,15 @@ UsePNGImageDecoder()
 
 ;Initialise the Scintilla library for Windows.
 CompilerIf  #PB_Compiler_OS = #PB_OS_Windows 
-  InitScintilla()
+  ;-TODO best way to found Scintilla.dll
+  Define path.s="C:\Program Files (x86)\PureBasic\Compilers\Scintilla.dll"
+  If InitScintilla()=0
+    If FileSize(path)
+      If InitScintilla(path)=0
+        MessageRequester("ERROR", "No found Scintilla.dll", #PB_MessageRequester_Ok)
+      EndIf  
+    EndIf
+  EndIf
 CompilerEndIf
 
 ;mode and gadget
@@ -50,6 +47,13 @@ Enumeration
   #gdt_historic
   #mode_prefsWindow
 EndEnumeration
+
+Structure globalParameters
+  page.l
+EndStructure
+Global gp.globalParameters
+
+gp\page=#mode_searchWindow
 
 ;some macro to help to desgin window
 ;to put a new gadget under
@@ -264,8 +268,28 @@ Procedure refreachResult()
   AddGadgetItem(#gdt_result,-1,"Pathfinding A*"+Chr(10)+"Game 2D"+Chr(10)+"Windows/Linux/MacOs")
   AddGadgetItem(#gdt_result,-1,"Iso 3D maps"+Chr(10)+"Game 2D"+Chr(10)+"Windows/Linux/MacOs")
   AddGadgetItem(#gdt_result,-1,"get network name"+Chr(10)+"Network"+Chr(10)+"Windows")
-  
 EndProcedure  
+
+Procedure commitNewCode(file.s)
+  Protected txt.s,format.l
+  If FileSize(file)>0 And (LCase(GetExtensionPart(file))="pb" Or LCase(GetExtensionPart(file))="pbi")
+    
+    If ReadFile(0,file)
+      format=ReadStringFormat(0)
+      txt=""
+      While Eof(0) = 0 ; loop as long the 'end of file' isn't reached
+        If format=#PB_Ascii Or format=#PB_UTF8 Or format=#PB_Unicode
+            txt=txt+ReadString(0,format)+ #CRLF$
+        EndIf
+      Wend
+      CloseFile(0)
+      GOSCI_SetText(#gdt_code, txt)
+      gp\page=#mode_viewWindow
+    EndIf
+  Else
+    MessageRequester("Error", "Read file error :"+#LFCR$+file, #PB_MessageRequester_Ok)
+  EndIf
+EndProcedure
 SetGadgetColor(#mode_searchWindow,#PB_Gadget_BackColor,#White)
 SetGadgetColor(#mode_viewWindow,#PB_Gadget_BackColor,#White)
 SetGadgetColor(#mode_prefsWindow,#PB_Gadget_BackColor,#White)
@@ -274,13 +298,26 @@ SetGadgetColor(#gdt_titleTxt,#PB_Gadget_BackColor,#White)
 SetGadgetColor(#gdt_authorTxt,#PB_Gadget_BackColor,#White)
 SetGadgetColor(#gdt_version,#PB_Gadget_BackColor,#White)
 
-Define event.l,quit.b=#False,page.l=#mode_searchWindow
+
+Define event.l,quit.b=#False,file.s,z.l
+;-Parse input parameters
+z=0
+While z<CountProgramParameters()-1
+  If Left(ProgramParameter(z),1)="-" And Left(ProgramParameter(z+1),1)<>"-"
+    Select LCase(ProgramParameter(z))
+      Case "-send"
+        z+1
+        commitNewCode(ProgramParameter(z))
+    EndSelect
+  EndIf
+  z+1
+Wend
 Repeat
   event = WaitWindowEvent()
   
   Select event
     Case #PB_Event_SizeWindow
-      refreachWindow(page) ;resize all gadget
+      refreachWindow(gp\page) ;resize all gadget
       
     Case #PB_Event_Menu
       Select EventMenu()
@@ -306,13 +343,15 @@ Repeat
             refreachResult() ;refreach result gadget
           EndIf
         Case #gdt_result
-          page=#mode_viewWindow
-          refreachWindow(page)
+          gp\page=#mode_viewWindow
+          refreachWindow(gp\page)
           
           ;- Event viewWindow  
+        Case #gdt_historic
+          
         Case #gdt_backSearch
-          page=#mode_searchWindow
-          refreachWindow(page)
+          gp\page=#mode_searchWindow
+          refreachWindow(gp\page)
       EndSelect
     Case #PB_Event_CloseWindow
       quit=1
@@ -327,9 +366,9 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 85
-; FirstLine = 57
-; Folding = -
+; CursorPosition = 352
+; FirstLine = 312
+; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
 ; Executable = C:\Program Files (x86)\PureBasic\Thothbox.exe
