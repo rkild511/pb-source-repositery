@@ -92,6 +92,45 @@ Procedure GetFiles(nil)
   RunProgram("explorer.exe", "repositeries\pb-source-repositery-Read-only", "")
 EndProcedure
 
+
+Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
+  Disabler()
+  txt.s = "Please Wait"
+  Counter = 0
+  svn = RunProgram("svn\bin\svn.exe","mkdir " + Url + " --username " + UserName + " --password " + Password, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  If svn
+    While ProgramRunning(svn)     
+      txt.s = "Please Wait" 
+      Select Counter%400
+        Case 1 To 100
+          txt + "."
+        Case 100 To 200
+          txt + ".."
+        Case 200 To 300
+          txt + "..."
+      EndSelect
+      SetGadgetText(PleaseWaitButton, txt)
+      Delay(10)
+      Counter + 1
+    Wend
+    If ProgramExitCode(svn)
+      Result$ = ""
+      Repeat
+        Error$ = ReadProgramError(svn)
+        If Error$ <> ""
+          Error$ + Chr(13)
+        EndIf
+        Result$ + Error$
+      Until Error$ = ""
+    EndIf
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+  If Result$ <> ""
+    MessageRequester("Error", Result$, #PB_MessageRequester_Ok )
+  EndIf
+  Enabler()
+EndProcedure
+
 ;- Début du code
 
 If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
@@ -125,7 +164,7 @@ EndIf
 
 End
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 92
-; FirstLine = 71
-; Folding = -
+; CursorPosition = 125
+; FirstLine = 96
+; Folding = --
 ; EnableThread
