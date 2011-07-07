@@ -1,3 +1,5 @@
+UsePNGImageDecoder()
+
 ;*****************************************************************************
 ;- CONSTANTS
 
@@ -5,6 +7,11 @@ Enumeration
   #ButtonGetList
   #ButtonGetFiles
   #TreeGadget
+EndEnumeration
+
+Enumeration 
+  #FolderImg
+  #FileImg
 EndEnumeration
 
 Structure Path
@@ -28,7 +35,11 @@ InitNetwork()
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
   ForEach Tree()
-    AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, 0, Tree()\SubLevel)
+    If Tree()\FolderFlag
+      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FolderImg), Tree()\SubLevel)
+    Else
+      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FileImg), Tree()\SubLevel)
+    EndIf
   Next
   ;Open folders
   ForEach Tree()
@@ -287,6 +298,12 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
   ButtonGadget(#ButtonGetList, 10, 10, 430, 20, "Liste des fichiers sur le serveur")  
   TreeGadget(#TreeGadget, 10, 30, 430, 250)
   ButtonGadget(#ButtonGetFiles, 10, 280, 430, 20, "Récupérer les fichiers")
+  If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
+    Debug "Folder img loading failed"  
+  EndIf
+  If LoadImage(#FileImg, "gfx\FileIcon16x16.png") = #False
+    Debug "File img loading failed"  
+  EndIf
   
   Repeat 
     Event = WaitWindowEvent()
@@ -351,8 +368,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 332
-; FirstLine = 298
+; CursorPosition = 64
+; FirstLine = 27
 ; Folding = --
 ; EnableThread
 ; EnableXP
