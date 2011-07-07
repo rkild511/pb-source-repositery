@@ -1,3 +1,6 @@
+;*****************************************************************************
+;- CONSTANTS
+
 Enumeration 
   #ButtonGetList
   #ButtonGetFiles
@@ -11,7 +14,16 @@ Structure Path
   FolderFlag.i
 EndStructure
 
+;*****************************************************************************
+;- LISTS
+
 Global NewList Tree.Path()
+
+;- START
+InitNetwork()
+
+;*****************************************************************************
+;- PROCEDURES
 
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
@@ -32,7 +44,6 @@ Procedure.i IsFolder(Path.s)
     ProcedureReturn #True
   EndIf
 EndProcedure
-
 
 ;Ne sert pas ici, mais ça peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
@@ -202,7 +213,6 @@ Procedure GetFileList(Item, SubLevel, Path.s)
   ;Enabler()  
 EndProcedure
 
-
 ;Télécharge en local une version "lecture seule" sur le serveur
 Procedure GetFiles(nil)
   Disabler()
@@ -230,7 +240,6 @@ Procedure GetFiles(nil)
   Enabler()
   RunProgram("explorer.exe", "repositeries\pb-source-repositery-Read-only", "")
 EndProcedure
-
 
 Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
   Disabler()
@@ -270,7 +279,8 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
   Enabler()
 EndProcedure
 
-;- Début du code
+;*****************************************************************************
+;- MAIN
 
 If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
@@ -307,15 +317,25 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
               Case #PB_EventType_LeftDoubleClick
                 Item = GetGadgetState(#TreeGadget)
                 SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+                Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+                FullPath.s = GetFullPathFromTree(Item, SubLevel)
                 Debug "--------------------"
                 Debug "Item : " + Str(item)
                 Debug "SubLevel : " + Str(SubLevel)
-                Debug "Full name : " + GetFullPathFromTree(Item, SubLevel)
-                If IsFolder(GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel))
+                Debug "Full name : " + FullPath
+                If IsFolder(Name)
                   SetGadgetText(#ButtonGetList, "Please Wait")
-                  GetFileList(Item + 1, SubLevel + 1, GetFullPathFromTree(Item, SubLevel))
+                  GetFileList(Item + 1, SubLevel + 1, FullPath)
                   MakeTreeGadget()                
                   SetGadgetText(#ButtonGetList, "Liste des fichiers sur le serveur")                
+                Else
+                  Filename$ = SaveFileRequester("Where to save " + Name + " ?", Name, "", 0)
+                  If URLDownloadToFile_(0,"https://pb-source-repositery.googlecode.com/svn/trunk/" + FullPath, Filename$, 0, 0) = #S_OK
+                    Debug "Success"  
+                  Else
+                    Debug "Failed"
+                    MessageRequester("Alert", "Can't save the specified file", #PB_MessageRequester_Ok)
+                  EndIf
                 EndIf
                 
             EndSelect
@@ -331,8 +351,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 208
-; FirstLine = 203
+; CursorPosition = 332
+; FirstLine = 298
 ; Folding = --
 ; EnableThread
 ; EnableXP
