@@ -5,10 +5,15 @@ UsePNGImageDecoder()
 
 Enumeration 
   #StringSearch
+  #StringUsername
+  #StringPassword
   #ButtonGetList
+  #ButtonGetFilesReadOnly
   #ButtonGetFiles
   #ButtonSearch
   #ButtonStopSearch
+  #ButtonCommit
+  #ButtonUpdate
   #TreeGadget
 EndEnumeration
 
@@ -28,6 +33,7 @@ EndStructure
 ;- LISTS
 
 Global NewList Tree.Path()
+Global UserName.s, Password.s
 
 ;- START
 InitNetwork()
@@ -76,12 +82,14 @@ EndProcedure
 
 Procedure Disabler()
   DisableGadget(#ButtonGetList, 1)
+  DisableGadget(#ButtonGetFilesReadOnly, 1)  
   DisableGadget(#ButtonGetFiles, 1)
   DisableGadget(#ButtonSearch, 1)
 EndProcedure
 
 Procedure Enabler()
   DisableGadget(#ButtonGetList, 0)
+  DisableGadget(#ButtonGetFilesReadOnly, 0)
   DisableGadget(#ButtonGetFiles, 0)
   DisableGadget(#ButtonSearch, 0)
 EndProcedure
@@ -282,9 +290,10 @@ Procedure Search(*Pattern.s)
 EndProcedure
 
 ;Télécharge en local une version "lecture seule" sur le serveur
-Procedure GetFiles(nil)
-  Disabler()
-  svn = RunProgram("svn\bin\svn.exe","checkout https://pb-source-repositery.googlecode.com/svn/trunk/ repositeries\pb-source-repositery-Read-only", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+Procedure GetFilesReadOnly(nil)
+  
+  svn = RunProgram("svn\bin\svn.exe","checkout http://pb-source-repositery.googlecode.com/svn/trunk/ repositeries\pb-source-repositery-Read-only", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
   If svn
     While ProgramRunning(svn)     
       If AvailableProgramOutput(svn)
@@ -305,8 +314,38 @@ Procedure GetFiles(nil)
     
     CloseProgram(svn) ; Close the connection to the program
   EndIf
-  Enabler()
+  
   RunProgram("explorer.exe", "repositeries\pb-source-repositery-Read-only", "")
+  
+EndProcedure
+
+Procedure GetFiles(nil)
+  
+  svn = RunProgram("svn\bin\svn.exe","checkout https://pb-source-repositery.googlecode.com/svn/trunk/ repositeries\pb-source-repositery --username " + UserName + " --password " + Password, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
+  If svn
+    While ProgramRunning(svn)     
+      If AvailableProgramOutput(svn)
+        Error.s =  ReadProgramError(svn)
+        If Error <> ""
+          Debug Error
+        EndIf
+        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
+      EndIf
+      Delay(10)
+      Counter + 1
+    Wend
+    
+    Error.s =  ReadProgramError(svn)
+    If Error <> ""
+      Debug Error
+    EndIf
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+  
+  RunProgram("explorer.exe", "repositeries\pb-source-repositery", "")
+  
 EndProcedure
 
 Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
@@ -356,7 +395,14 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
   ButtonGadget(#ButtonSearch, 310, 10, 130, 20, "Rechercher")  
   ButtonGadget(#ButtonGetList, 10, 30, 430, 20, "Liste des fichiers sur le serveur")  
   TreeGadget(#TreeGadget, 10, 50, 430, 250)
-  ButtonGadget(#ButtonGetFiles, 10, 300, 430, 20, "Récupérer les fichiers")
+  StringGadget(#StringUsername, 10, 300, 150, 20, "Nom d'utilisateur")
+  StringGadget(#StringPassword, 10, 320, 150, 20, "Mot de passe")
+  ButtonGadget(#ButtonUpdate, 170, 300, 100, 20, "Recevoir MàJ")
+  ButtonGadget(#ButtonCommit, 170, 320, 100, 20, "Envoyer MàJ")
+  ButtonGadget(#ButtonGetFilesReadOnly, 280, 300, 160, 20, "Recevoir dépôt en lecture")
+  ButtonGadget(#ButtonGetFiles, 280, 320, 160, 20, "Recevoir dépôt acc. complet")
+  StringGadget(#StringSearch, 10, 10, 300, 20, "")
+
   If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
     Debug "Folder img loading failed"  
   EndIf
@@ -396,11 +442,25 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
             ButtonGadget(#ButtonSearch, 310, 10, 130, 20, "Rechercher")  
             Enabler()
             
+          Case #ButtonGetFilesReadOnly
+            
+            Disabler()
+            SetGadgetText(#ButtonGetFilesReadOnly, "Please Wait")
+            CreateThread(@GetFilesReadOnly(), nil)
+            SetGadgetText(#ButtonGetFilesReadOnly, "Recevoir dépôt en lecture")
+            Enabler()
+            
           Case #ButtonGetFiles
             
+            Disabler()
+            UserName = GetGadgetText(#StringUserName)
+            Password = GetGadgetText(#StringPassword)
+            ReplaceString(Password, Chr(32), "_")
+            ReplaceString(UserName, Chr(32), "_")
             SetGadgetText(#ButtonGetFiles, "Please Wait")
             CreateThread(@GetFiles(), nil)
-            SetGadgetText(#ButtonGetFiles, "Récupérer les fichiers")
+            SetGadgetText(#ButtonGetFiles, "Recevoir dépôt acc. complet")
+            Enabler()
 
           Case #TreeGadget
             
@@ -447,9 +507,9 @@ EndIf
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 377
-; FirstLine = 369
-; Folding = --
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 303
+; FirstLine = 279
+; Folding = ---
 ; EnableThread
 ; EnableXP
