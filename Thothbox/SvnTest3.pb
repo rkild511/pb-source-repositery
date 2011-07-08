@@ -112,11 +112,11 @@ Procedure.s GetFullPathFromTree(Item, SubLevel)
       If GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel) < SubLevel
         Debug "Parent Item : " + RSet(Str(i),2,"0") + " Parent text : " + GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel)
         Path = GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel) + Path
-        SubLevel = GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel)
-      EndIf            
+        SubLevel = GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel)     
+      EndIf
     Next      
   Else
-    Debug "ITEM DOESN'T HAVE A PARENT"         
+    Debug "Item doesn't have a parent"         
   EndIf
    
   ProcedureReturn Path
@@ -262,6 +262,7 @@ Procedure Search(*Pattern.s)
           ;  Tree()\FolderFlag = #True
           ;  FoldersNb + 1
           ;EndIf
+          ;Directly adding to the TreeGadget to not have to wait for result
           AddGadgetItem(#TreeGadget, Item, Path)
           ;NewItemsNb + 1
           Item + 1
@@ -351,16 +352,16 @@ EndProcedure
 
 If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
-  ButtonGadget(#ButtonGetList, 10, 10, 430, 20, "Liste des fichiers sur le serveur")  
-  TreeGadget(#TreeGadget, 10, 30, 430, 250)
-  ButtonGadget(#ButtonGetFiles, 10, 280, 430, 20, "Récupérer les fichiers")
+  ButtonGadget(#ButtonGetList, 10, 30, 430, 20, "Liste des fichiers sur le serveur")  
+  TreeGadget(#TreeGadget, 10, 50, 430, 250)
+  ButtonGadget(#ButtonGetFiles, 10, 300, 430, 20, "Récupérer les fichiers")
+  ButtonGadget(#ButtonSearch, 10, 10, 200, 20, "Rechercher")  
   If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
     Debug "Folder img loading failed"  
   EndIf
   If LoadImage(#FileImg, "gfx\FileIcon16x16.png") = #False
     Debug "File img loading failed"  
   EndIf
-    ButtonGadget(#ButtonSearch, 10, 10, 200, 20, "Rechercher")  
 
   Repeat 
     Event = WaitWindowEvent()
@@ -383,6 +384,7 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
             
             Pattern.s = "pb"
             CreateThread(@Search(), @Pattern)
+            
           Case #ButtonGetFiles
             
             SetGadgetText(#ButtonGetFiles, "Please Wait")
@@ -398,7 +400,7 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
                 Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
                 FullPath.s = GetFullPathFromTree(Item, SubLevel)
                 Debug "--------------------"
-                Debug "Item : " + Str(item)
+                Debug "Item : " + Str(Item)
                 Debug "SubLevel : " + Str(SubLevel)
                 Debug "Full name : " + FullPath
                 If IsFolder(Name)
@@ -407,6 +409,7 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
                   MakeTreeGadget()                
                   SetGadgetText(#ButtonGetList, "Liste des fichiers sur le serveur")                
                 Else
+                  Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
                   Filename$ = SaveFileRequester("Where to save " + Name + " ?", Name, "", 0)
                   If URLDownloadToFile_(0,"https://pb-source-repositery.googlecode.com/svn/trunk/" + FullPath, Filename$, 0, 0) = #S_OK
                     Debug "Success"  
@@ -429,8 +432,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 64
-; FirstLine = 27
+; CursorPosition = 411
+; FirstLine = 379
 ; Folding = --
 ; EnableThread
 ; EnableXP
