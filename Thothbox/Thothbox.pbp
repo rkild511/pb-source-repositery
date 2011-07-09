@@ -7,20 +7,28 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-06-25 19:22" user="Thyphoon" host="GRAAL"/>
+    <lastopen date="2011-07-08 15:50" user="lebrun_y" host="LEBRUN"/>
   </section>
   <section name="files">
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="bded6db61a33e1e3c327ad2fcaa6f954"/>
+      <fingerprint md5="9fe34762497ffa55b46a7b025442fffc"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="++"/>
       <fingerprint md5="effc5579dd6f961bfe144c0d4bbb643e"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla_HeaderFile.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="fe5a3f0507917fe2598994a24d19d366"/>
+    </file>
+    <file name="svn.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="98aa8ad558a5a962f3d4ee96374c5b62"/>
+    </file>
+    <file name="http.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="80e7e8ca899827e04a84fe3727d9799e"/>
     </file>
   </section>
   <section name="targets">

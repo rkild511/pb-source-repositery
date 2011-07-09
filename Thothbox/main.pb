@@ -9,10 +9,17 @@
 #prg_name$="Thothbox"
 #prg_version$="0.1"
 
+
+#INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
+
+XIncludeFile "http.pbi"
+XIncludeFile "preferences.pbi"
+
+DisableExplicit ; disable because GoScintilla is not EnableExplicit compatible
 IncludePath "GoScintilla_PB4.4"
 XIncludeFile "GoScintilla.pbi"
-
 EnableExplicit
+
 UsePNGImageDecoder()
 
 ;Initialise the Scintilla library for Windows.
@@ -35,7 +42,8 @@ CompilerIf  #PB_Compiler_OS = #PB_OS_Windows
       FinishDirectory(ex)
      EndIf
    ProcedureReturn ""
-  EndProcedure
+ EndProcedure
+ 
   Define path.s;="C:\Program Files (x86)\PureBasic\Compilers\Scintilla.dll"
   path=findScintillaDll(GetCurrentDirectory())
   If InitScintilla(path)=0
@@ -62,6 +70,17 @@ Enumeration
   #gdt_code
   #gdt_historic
   #mode_prefsWindow
+  #gdt_poxyFrame
+  #gdt_usePoxy
+  #gdt_poxyHost
+  #gdt_poxyHostTxt
+  #gdt_poxyPort
+  #gdt_poxyPortTxt
+  #gdt_poxyLogin
+  #gdt_poxyLoginTxt
+  #gdt_poxyPassword
+  #gdt_poxyPasswordTxt
+  #gdt_end
 EndEnumeration
 
 Structure globalParameters
@@ -95,12 +114,16 @@ Macro ColorSetGadgetState(__Gdt,__state)
     EndIf 
   Next i
 EndMacro
+#gdtH=20  ;Gadget height
+#gdtW=10  ;space after a Gadget
+
 
 If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
   If CreateMenu(0, WindowID(0))
     MenuTitle("?")
-      MenuItem(0, "About")
+    MenuItem(0, "About")
+    MenuItem(1, "Preferences")
 
   EndIf
 
@@ -108,9 +131,9 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ContainerGadget(#mode_searchWindow,0,0,WindowWidth(0),WindowHeight(0))
   CatchImage(0,?Logo)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
-  StringGadget(#gdt_search,0,0,250,25,"")
-  TextGadget(#gdt_version,0,0,100,20,"version "+#prg_version$)
-  TextGadget(#gdt_searchTxt,0,0,100,20,"Search")
+  StringGadget(#gdt_search,0,0,250,#gdtH,"")
+  TextGadget(#gdt_version,0,0,100,#gdtH,"version "+#prg_version$)
+  TextGadget(#gdt_searchTxt,0,0,100,#gdtH,"Search")
   If LoadFont(0, "Arial", 16)
     SetGadgetFont(#gdt_searchTxt, FontID(0))   ; Set the loaded Arial 16 font as new standard
   EndIf
@@ -121,13 +144,13 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
   ContainerGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
-  TextGadget(#gdt_titleTxt,50,50,50,20,"Title :")
-  StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,25,"http download memorie")
+  TextGadget(#gdt_titleTxt,50,50,50,#gdtH,"Title :")
+  StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,#gdtH,"http download memorie")
   
-  TextGadget(#gdt_authorTxt,GadgetX(#gdt_titleTxt),GdtDown(#gdt_titleTxt)+10,50,20,"Author :")
-  StringGadget(#gdt_author,GdtRight(#gdt_authorTxt),GadgetY(#gdt_authorTxt),250,25,"Bidule")
+  TextGadget(#gdt_authorTxt,GadgetX(#gdt_titleTxt),GdtDown(#gdt_titleTxt)+10,50,#gdtH,"Author :")
+  StringGadget(#gdt_author,GdtRight(#gdt_authorTxt),GadgetY(#gdt_authorTxt),250,#gdtH,"Bidule")
   
-  ButtonGadget(#gdt_backSearch,0,0,100,20,"Back")
+  ButtonGadget(#gdt_backSearch,0,0,100,#gdtH,"Back")
   GOSCI_Create(#gdt_code, 10, 10, 580, 580, 0, #GOSCI_AUTOSIZELINENUMBERSMARGIN|#GOSCI_ALLOWCODEFOLDING)
   
   ;Set the padding added to the width of the line-number margin.
@@ -236,6 +259,16 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   CloseGadgetList()
   ;-mode_prefsWindow
   ContainerGadget(#mode_prefsWindow,0,0,WindowWidth(0),WindowHeight(0))
+  Frame3DGadget(#gdt_poxyFrame, 10, 10, 400, 150, "Network")
+  CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, "Use a Proxy")
+  TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+20,75,20,"Proxy HTTP :")
+  StringGadget(#gdt_poxyHost,GdtRight(#gdt_poxyHostTxt),GadgetY(#gdt_poxyHostTxt),200,25,"")
+  TextGadget(#gdt_poxyPortTxt,GdtRight(#gdt_poxyHost)+10,GadgetY(#gdt_poxyHost),30,#gdtH,"Port :")
+  SpinGadget(#gdt_poxyPort,GdtRight(#gdt_poxyPortTxt),GadgetY(#gdt_poxyPortTxt),50,#gdtH,0,9999,#PB_Spin_Numeric)
+  TextGadget(#gdt_poxyLoginTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_poxyHostTxt)+#gdtH,50,#gdtH,"Login :")
+  StringGadget(#gdt_poxyLogin,GdtRight(#gdt_poxyLoginTxt),GadgetY(#gdt_poxyLoginTxt),130,#gdtH,"")
+  TextGadget(#gdt_poxyPasswordTxt,GdtRight(#gdt_poxyLogin)+10,GadgetY(#gdt_poxyLogin),50,#gdtH,"Password :")
+  StringGadget(#gdt_poxyPassword,GdtRight(#gdt_poxyPasswordTxt),GadgetY(#gdt_poxyPasswordTxt),130,#gdtH,"")
   CloseGadgetList()
 EndIf
 
@@ -244,10 +277,10 @@ Procedure refreachWindow(mode.l)
   ;-mode_searchWindow Resize
   
   ResizeGadget(#mode_searchWindow,0,0,WindowWidth(0),WindowHeight(0))
-  ResizeGadget(#gdt_logo,(WindowWidth(0)-ImageWidth(0))/2,20,#PB_Ignore,#PB_Ignore)
-  ResizeGadget(#gdt_version,(WindowWidth(0)-ImageWidth(0))/2+ImageWidth(0)+10,GdtDown(#gdt_logo)-20,#PB_Ignore,#PB_Ignore)
+  ResizeGadget(#gdt_logo,(WindowWidth(0)-ImageWidth(0))/2,#gdtH,#PB_Ignore,#PB_Ignore)
+  ResizeGadget(#gdt_version,(WindowWidth(0)-ImageWidth(0))/2+ImageWidth(0)+10,GdtDown(#gdt_logo)-#gdtH,#PB_Ignore,#PB_Ignore)
   tmpX=(WindowWidth(0)-GadgetWidth(#gdt_searchTxt)-GadgetWidth(#gdt_search))/2
-  ResizeGadget(#gdt_searchtxt,tmpX,GdtDown(#gdt_logo)+20,#PB_Ignore,#PB_Ignore)
+  ResizeGadget(#gdt_searchtxt,tmpX,GdtDown(#gdt_logo)+#gdtH,#PB_Ignore,#PB_Ignore)
   ResizeGadget(#gdt_search,tmpX+GadgetWidth(#gdt_searchTxt),GadgetY(#gdt_searchtxt),#PB_Ignore,#PB_Ignore)
   tmpY=GdtDown(#gdt_search)+50
   tmpH=WindowHeight(0)-tmpY-50
@@ -256,7 +289,7 @@ Procedure refreachWindow(mode.l)
   ;-mode_viewWindow Resize
   ResizeGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
   ResizeGadget(#gdt_code,50,150,WindowWidth(0)-100,WindowHeight(0)-200)
-  ResizeGadget(#gdt_compile,GadgetX(#gdt_code),GadgetY(#gdt_code)-20,100,20)
+  ResizeGadget(#gdt_compile,GadgetX(#gdt_code),GadgetY(#gdt_code)-20,100,#gdtH)
   ResizeGadget(#gdt_historic,WindowWidth(0)-GadgetWidth(#gdt_historic)-50,50,#PB_Ignore,GadgetY(#gdt_code)-GadgetY(#gdt_historic))
   
   Select mode
@@ -315,16 +348,21 @@ Procedure commitNewCode(file.s)
     MessageRequester("Error", "Read file error :"+#LFCR$+file, #PB_MessageRequester_Ok)
   EndIf
 EndProcedure
-SetGadgetColor(#mode_searchWindow,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#mode_viewWindow,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#mode_prefsWindow,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#gdt_searchtxt,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#gdt_titleTxt,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#gdt_authorTxt,#PB_Gadget_BackColor,#White)
-SetGadgetColor(#gdt_version,#PB_Gadget_BackColor,#White)
 
-
+;White background for a smart rendering !
+;SetGadgetColor(#mode_searchWindow,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#mode_viewWindow,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#mode_prefsWindow,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#gdt_searchtxt,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#gdt_titleTxt,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#gdt_authorTxt,#PB_Gadget_BackColor,#White)
+;SetGadgetColor(#gdt_version,#PB_Gadget_BackColor,#White)
 Define event.l,quit.b=#False,file.s,z.l
+For z=#mode_searchWindow To #gdt_end-1
+  SetGadgetColor(z,#PB_Gadget_BackColor,#White)
+  SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
+Next
+
 ;-Parse input parameters
 z=0
 While z<CountProgramParameters()-1
@@ -349,15 +387,17 @@ Repeat
         Case 0
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
-          txt+"GallyHC"+#LFCR$
+          txt+"Jean-Yves / GallyHC"+#LFCR$
           txt+"Jésahel Benoist / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
           txt+"thanks to"+#LFCR$
           txt+"srdo : GoScintilla"+#LFCR$
-          txt+"Fred Laboureur : GoScintilla"+#LFCR$
+          txt+"Fred Laboureur : Purebasic"+#LFCR$
           MessageRequester("Information", txt.s, #PB_MessageRequester_Ok)
-
+        Case 1
+          gp\page=#mode_prefsWindow
+          refreachWindow(gp\page)
       EndSelect
     Case #PB_Event_Gadget 
       
@@ -391,8 +431,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 33
-; FirstLine = 4
+; CursorPosition = 15
+; FirstLine = 11
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
