@@ -13,11 +13,12 @@
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
 
 XIncludeFile "http.pbi"
-XIncludeFile "preferences.pbi"
+
 
 DisableExplicit ; disable because GoScintilla is not EnableExplicit compatible
 IncludePath "GoScintilla_PB4.4"
 XIncludeFile "GoScintilla.pbi"
+IncludePath ".\"
 EnableExplicit
 
 UsePNGImageDecoder()
@@ -70,6 +71,7 @@ Enumeration
   #gdt_code
   #gdt_historic
   #mode_prefsWindow
+  #gdt_prefsBack
   #gdt_poxyFrame
   #gdt_usePoxy
   #gdt_poxyHost
@@ -85,10 +87,14 @@ EndEnumeration
 
 Structure globalParameters
   page.l
+  useProxy.b        ;#True or #False if you want to use proxy setting
+  proxy.HTTP_Proxy
 EndStructure
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
+
+XIncludeFile "preferences.pbi"
 
 ;some macro to help to desgin window
 ;to put a new gadget under
@@ -257,11 +263,13 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   AddGadgetItem(#gdt_historic,2,"2004/17/02"+Chr(10)+"Bidule"+Chr(10)+"optimized code")
   AddGadgetItem(#gdt_historic,3,"2004/16/02"+Chr(10)+"Bidule"+Chr(10)+"Pb 3.95 code")
   CloseGadgetList()
-  ;-mode_prefsWindow
+  
+  ;-mode_prefsWindow Gadgets
   ContainerGadget(#mode_prefsWindow,0,0,WindowWidth(0),WindowHeight(0))
-  Frame3DGadget(#gdt_poxyFrame, 10, 10, 400, 150, "Network")
+  ButtonGadget(#gdt_prefsback,0,0,100,#gdtH,"Back")
+  Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsback)+#gdtH, 400, 150, "Network")
   CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, "Use a Proxy")
-  TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+20,75,20,"Proxy HTTP :")
+  TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+#gdtH,75,20,"Proxy HTTP :")
   StringGadget(#gdt_poxyHost,GdtRight(#gdt_poxyHostTxt),GadgetY(#gdt_poxyHostTxt),200,25,"")
   TextGadget(#gdt_poxyPortTxt,GdtRight(#gdt_poxyHost)+10,GadgetY(#gdt_poxyHost),30,#gdtH,"Port :")
   SpinGadget(#gdt_poxyPort,GdtRight(#gdt_poxyPortTxt),GadgetY(#gdt_poxyPortTxt),50,#gdtH,0,9999,#PB_Spin_Numeric)
@@ -363,6 +371,8 @@ For z=#mode_searchWindow To #gdt_end-1
   SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
 Next
 
+LoadPreferences()
+
 ;-Parse input parameters
 z=0
 While z<CountProgramParameters()-1
@@ -417,22 +427,52 @@ Repeat
         Case #gdt_backSearch
           gp\page=#mode_searchWindow
           refreachWindow(gp\page)
+          ;- Event prefsWindows
+        Case #gdt_prefsback
+          gp\page=#mode_searchWindow
+          refreachWindow(gp\page)
+        Case #gdt_usePoxy
+          If GetGadgetState(#gdt_usePoxy)=#PB_Checkbox_Checked
+              gp\useProxy=#True
+              SetGadgetState(#gdt_usePoxy, #PB_Checkbox_Checked)
+              DisableGadget(#gdt_poxyHost,0)
+              DisableGadget(#gdt_poxyPort,0)
+              DisableGadget(#gdt_poxyLogin,0)
+              DisableGadget(#gdt_poxyPassword,0)
+            Else
+              gp\useProxy=#False
+              SetGadgetState(#gdt_usePoxy,#PB_Checkbox_Unchecked)
+              DisableGadget(#gdt_poxyHost,1)
+              DisableGadget(#gdt_poxyPort,1)
+              DisableGadget(#gdt_poxyLogin,1)
+              DisableGadget(#gdt_poxyPassword,1)
+            EndIf
+        Case #gdt_poxyHost
+
+        Case #gdt_poxyPort
+
+        Case #gdt_poxyLogin
+      
+        Case #gdt_poxyPassword
+
       EndSelect
     Case #PB_Event_CloseWindow
       quit=1
   EndSelect
   
 Until quit = 1
+SavePreferences()
+End
 DataSection
   Logo:
-  IncludeBinary "../gfx/thotbox.png"
+  IncludeBinary "gfx/thotbox.png"
 EndDataSection 
 
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 15
-; FirstLine = 11
+; CursorPosition = 431
+; FirstLine = 414
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
