@@ -1,6 +1,7 @@
 ;*********************************************
 ;***** Envoi de fichier par requete HTTP *****
 ;******** Par lepiaf31 le 28/06/2011 *********
+;****** et quelques modif part thyphoon ******
 ;*********************************************
 
 
@@ -28,6 +29,10 @@ Structure HTTP_Query
   List headers.s()
   List postData.s()
   List files.HTTP_file()
+  conn.i          
+  *buffer         ; buffer received data
+  *data           ; complete received data
+  *header         ; received header data
 EndStructure
 
 
@@ -192,7 +197,8 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
 
   ProcedureReturn 0
 EndProcedure
-
+;- Nouvelles fonctions
+;###############################################################################################################
 Procedure HTTP_proxy(*test.HTTP_Query,host.s="",port.i=80,login.s="",password.s="")
   *test\proxy\host=host
   *test\proxy\port=port
@@ -224,10 +230,86 @@ Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
   EndIf
 EndProcedure
 
+Procedure HTTP_receiveRawData(*test.HTTP_Query)
+  Protected *rawdata,time.i,readed.i,size.i
+  If *test\conn
+    *test\buffer = AllocateMemory(2048)
+    *rawdata=AllocateMemory(1)
+    time = ElapsedMilliseconds()
+    Repeat
+      If NetworkClientEvent(*test\conn) = #PB_NetworkEvent_Data
+        
+        readed = ReceiveNetworkData(*test\conn, *test\buffer, 2048)
+        If readed>0
+          Debug readed
+          
+          size=MemorySize(*rawdata)
+          If size=1:size=0:EndIf
+          *rawdata=ReAllocateMemory(*rawdata,size+readed)
+          CopyMemory(*test\buffer,*rawdata+size,readed)
+        Else 
+          Debug "rien"
+        EndIf
+        time = ElapsedMilliseconds()
+        
+      EndIf
+      Delay(100)
+      
+    Until ElapsedMilliseconds() - time >= 3000
+    FreeMemory(*test\buffer):*test\buffer=0;
+    Debug "efface buffer:"+Str(*test\buffer)
+    ProcedureReturn *rawdata
+  EndIf
+EndProcedure
+  
+  ; find the end of the header
+  Procedure HTTP_FindHeader(*mem)
+    Protected z.l
+    For z=0 To MemorySize(*mem)-4
+      If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
+        ProcedureReturn z+4
+      EndIf
+    Next
+    ProcedureReturn 0
+  EndProcedure
+   
+Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
+    Protected  *rawdata,lenght.i
+    HTTP_query(*test, #HTTP_METHOD_GET, url)
+    HTTP_addQueryHeader(*test, "User-Agent", "PB")
+    *test\conn = HTTP_sendQuery(*test)
+    *rawdata=HTTP_receiveRawData(*test)
+    lenght=HTTP_FindHeader(*rawdata) ;found the lenght of the header
+    ;copy file data
+    *test\data=AllocateMemory(MemorySize(*rawdata)-lenght)
+    CopyMemory(*rawdata+lenght,*test\data,MemorySize(*rawdata)-lenght);
+    ;copy header
+    *test\header=AllocateMemory(lenght)
+    CopyMemory(*rawdata,*test\header,lenght); +1 because i don't know why but the data start with 0
+    Debug PeekS(*test\header,MemorySize(*test\header),#PB_Ascii)
+    FreeMemory(*rawdata):*rawdata=0
+    CloseNetworkConnection(*test\conn)
+    ProcedureReturn #True
+  EndProcedure
+  
+  Procedure HTTP_DownloadToFile(*test.HTTP_Query,url.s,file.s)
+    HTTP_DownloadToMem(*test,url.s)
+    If *test\data<>0
+      CreateFile(0,file)
+      WriteData(0,*test\data,MemorySize(*test\data))
+      CloseFile(0)
+      FreeMemory(*test\data):*test\data=0
+      ProcedureReturn #True
+    Else  
+      ProcedureReturn #False  
+    EndIf
+  EndProcedure
+
+
 ;-Exemple !
 CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
-
-Procedure main()
+InitNetwork()
+Procedure test1()
   Protected test.HTTP_Query, string.s, readed.i, conn.i, time.i,*string
   InitNetwork()
   OpenConsole()
@@ -254,11 +336,17 @@ Procedure main()
     EndIf
     Input()
   EndProcedure
-  main()
+  ;test1()
+  
+Define test.HTTP_Query,url.s
+  url="http://www.purebasic.com/images/box.png"
+  HTTP_DownloadToFile(@test,url,GetTemporaryDirectory()+GetFilePart(url))
+  RunProgram(GetTemporaryDirectory()+GetFilePart(url))
+  
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 227
-; FirstLine = 217
-; Folding = --
+; CursorPosition = 346
+; FirstLine = 292
+; Folding = ---
 ; EnableXP
