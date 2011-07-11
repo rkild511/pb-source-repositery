@@ -470,11 +470,10 @@ EndDataSection
 
 
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 400
-; FirstLine = 383
+; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
+; CursorPosition = 18
 ; Folding = --
 ; EnableXP
-; UseIcon = ibis.ico
+; UseIcon = gfx\ibis.ico
 ; Executable = C:\Program Files (x86)\PureBasic\Thothbox.exe
-; Compiler = PureBasic 4.60 Beta 3 (Windows - x86)
+; Compiler = PureBasic 4.60 Beta 2 (Windows - x86)
