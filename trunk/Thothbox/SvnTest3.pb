@@ -361,7 +361,7 @@ EndProcedure
 
 Procedure Commit(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  svn = RunProgram("svn\bin\svn.exe","commit repositeries/pb-source-repositery -m " + GetGadgetText(#StringUpdateComment), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  svn = RunProgram("svn\bin\svn.exe","commit repositeries\pb-source-repositery -m " + GetGadgetText(#StringUpdateComment), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -648,8 +648,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 363
-; FirstLine = 361
+; CursorPosition = 317
+; FirstLine = 295
 ; Folding = ---
 ; EnableThread
 ; EnableXP
