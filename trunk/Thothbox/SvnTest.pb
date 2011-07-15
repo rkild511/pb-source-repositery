@@ -1,8 +1,19 @@
 Enumeration 
   #ButtonGetList
   #ButtonGetFiles
-  #ListViewFiles
+  #TreeGadget
 EndEnumeration
+
+Structure Branch
+  Trunk.i
+  Branch.i
+  Path.s
+  SubPath.s
+EndStructure
+
+Global BaseFolder.s = "http://pb-source-repositery.googlecode.com/svn/trunk/"
+
+Global NewList Tree.Branch()
 
 ;Ne sert pas ici, mais ça peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
@@ -22,7 +33,7 @@ EndProcedure
 Procedure Disabler()
   DisableGadget(#ButtonGetList, 1)
   DisableGadget(#ButtonGetFiles, 1)
-  ClearGadgetItems(#ListViewFiles)
+  ClearGadgetItems(#TreeGadget)
 EndProcedure
 
 Procedure Enabler()
@@ -31,14 +42,15 @@ Procedure Enabler()
 EndProcedure
 
 ;Récupère la liste des fichiers sur le serveur google
-Procedure GetFileList(nil)
-  Disabler()
+Procedure GetFileList(*Trunk.Branch)
+  ;Disabler()
   txt.s = "Please Wait"
   Counter = 0
-  svn = RunProgram("svn\bin\svn.exe", "list http://pb-source-repositery.googlecode.com/svn/trunk/ -R", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open )
+  Debug *CurrentFile\Path
+  svn = RunProgram("svn\bin\svn.exe", "list " + *CurrentFile\Path, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open )
   If svn
     While ProgramRunning(svn)     
-      txt.s = "Please Wait" 
+      txt.s = "Please Wait"
       Select Counter%400
         Case 1 To 100
           txt + "."
@@ -49,7 +61,13 @@ Procedure GetFileList(nil)
       EndSelect
       SetGadgetText(#ButtonGetList, txt)
       If AvailableProgramOutput(svn)
-        AddGadgetItem (#ListViewFiles, -1, ReadProgramString(svn))
+        n.s = ReadProgramString(svn)
+       
+;        AddGadgetItem (#TreeGadget, *CurrentFile\Item, n, 0, *CurrentFile\SubLevel )
+        Debug n
+         AddElement(Tree())
+         Tree()\Index = *CurrentFile\Item
+;         FileList()\Name = *CurrentFile\Name + ReadProgramString(svn)        
       EndIf
       Delay(10)
       Counter + 1
@@ -57,9 +75,8 @@ Procedure GetFileList(nil)
     CloseProgram(svn) ; Close the connection to the program
   EndIf
   SetGadgetText(#ButtonGetList, "Liste des fichiers sur le serveur")
-  Enabler()  
+  ;Enabler()  
 EndProcedure
-
 
 ;Télécharge en local une version "lecture seule" sur le serveur
 Procedure GetFiles(nil)
@@ -80,7 +97,7 @@ Procedure GetFiles(nil)
       EndSelect
       SetGadgetText(#ButtonGetFiles, txt)
       If AvailableProgramOutput(svn)
-        AddGadgetItem (#ListViewFiles, -1, ReadProgramString(svn))
+        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
       EndIf
       Delay(10)
       Counter + 1
@@ -136,8 +153,15 @@ EndProcedure
 If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   ButtonGadget(#ButtonGetList, 10, 10, 430, 20, "Liste des fichiers sur le serveur")  
-  ListViewGadget(#ListViewFiles, 10, 30, 430, 250)
+  TreeGadget(#TreeGadget, 10, 30, 430, 250)
   ButtonGadget(#ButtonGetFiles, 10, 280, 430, 20, "Récupérer les fichiers")  
+  
+  ;Download root files list
+  Define.Tree CurrentFile
+  CurrentFile\Item = 0
+  CurrentFile\SubLevel = 0
+  CurrentFile\Path = BaseFolder + ""
+  CreateThread(@GetFileList(), @CurrentFile)
   
   Repeat 
     Event = WaitWindowEvent()
@@ -149,11 +173,57 @@ If OpenWindow(0, 0, 0, 450, 350, "Google Code Subversion Test", #PB_Window_Syste
         Select EventGadget()
             
           Case #ButtonGetList
-            CreateThread(@GetFileList(), nil)
+            CreateThread(@GetFileList(), @"")
             
           Case #ButtonGetFiles
             CreateThread(@GetFiles(), nil)
             
+          Case #TreeGadget
+            
+            Select EventType()
+                
+              Case #PB_EventType_LeftDoubleClick
+                
+                 CurrentItem = GetGadgetState(#TreeGadget)
+      
+                 CurrentLevel = GetGadgetItemAttribute(#TreeGadget, CurrentItem, #PB_Tree_SubLevel)
+                 Debug currentlevel
+
+      If CurrentLevel > 0            
+         For i = CurrentItem-1 To 0 Step -1         
+            If GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel) < CurrentLevel
+              Debug "ITEM PARENT ID: #" + RSet(Str(i+1),2,"0")
+              Debug GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel)
+             CurrentFile\Path = BaseFolder + GetGadgetItemText(#TreeGadget, CurrentItem, #PB_Tree_SubLevel)
+               Break
+            EndIf            
+         Next      
+      Else
+         Debug "ITEM DOESN'T HAVE A PARENT"         
+         CurrentFile\Path = BaseFolder + GetGadgetItemText(#TreeGadget, CurrentItem, #PB_Tree_SubLevel)
+       EndIf
+                
+;                 
+;                 CurrentFile\Path = BaseFolder
+;                 ;CurrentLevel = GetGadgetItemAttribute(#TreeGadget, CurrentItem, #PB_Tree_SubLevel)
+; 
+; For index = CurrentFile\Item - 1 To 0 Step -1
+;   If GetGadgetItemAttribute(#TreeGadget, index, #PB_Tree_SubLevel) < CurrentLevel
+;     ; index is the parent of CurrentItem
+;     Debug GetGadgetItemText(#TreeGadget, index, #PB_Tree_SubLevel)
+;     Path.s = GetGadgetItemText(#TreeGadget, index, #PB_Tree_SubLevel)
+;     CurrentFile\Path + Path
+;     Break 
+;   EndIf
+; Next index
+;                GetGadgetItemAttribute(#TreeGadget, CurrentFile\Item, #PB_Tree_SubLevel)
+;                  CurrentFile\Path + GetGadgetItemText(#TreeGadget, CurrentFile\Item, #PB_Tree_SubLevel)
+
+                CurrentFile\Item = CurrentItem + 1
+                CurrentFile\SubLevel = ParentSublevel + 1
+                CreateThread(@GetFileList(), @CurrentFile)               
+                
+            EndSelect           
         EndSelect
         
     EndSelect
@@ -164,7 +234,7 @@ EndIf
 
 End
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 125
-; FirstLine = 96
+; CursorPosition = 188
+; FirstLine = 171
 ; Folding = --
 ; EnableThread

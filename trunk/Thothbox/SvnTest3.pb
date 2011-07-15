@@ -107,7 +107,7 @@ EndProcedure
 Procedure Marquee(*Null)
   
   Repeat
-    txt.s = "Please Wait" 
+    txt.s = "Veuillez patienter" 
     Select Counter%400
       Case 1 To 100
         txt + "."
@@ -250,7 +250,7 @@ Procedure Search(*Pattern.s)
    
   ClearGadgetItems(#TreeGadget)
   ClearList(Tree())
-  ;SetGadgetText(#ButtonSearch, "Please Wait")
+  ;SetGadgetText(#ButtonSearch, "Veuillez patienter")
 
   Item = 0
   
@@ -361,7 +361,7 @@ EndProcedure
 
 Procedure Commit(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  svn = RunProgram("svn\bin\svn.exe","commit repositeries\pb-source-repositery -m " + GetGadgetText(#StringUpdateComment), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  svn = RunProgram("svn\bin\svn.exe","commit repositeries\pb-source-repositery -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -422,12 +422,12 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
   
   Disabler()
   
-  txt.s = "Please Wait"
+  txt.s = "Veuillez patienter"
   Counter = 0
   svn = RunProgram("svn\bin\svn.exe","mkdir " + Url + " --username " + UserName + " --password " + Password, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   If svn
     While ProgramRunning(svn)     
-      txt.s = "Please Wait" 
+      txt.s = "Veuillez patienter" 
       Select Counter%400
         Case 1 To 100
           txt + "."
@@ -568,7 +568,7 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             
             Disabler()
             ClearList(Tree())
-            SetGadgetText(#ButtonGetFilesReadOnly, "Please Wait")
+            SetGadgetText(#ButtonGetFilesReadOnly, "Veuillez patienter")
             CreateThread(@GetFilesReadOnly(), nil)
             
           Case #ButtonGetFiles
@@ -577,27 +577,27 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             ClearList(Tree())
             UserName = GetGadgetText(#StringUserName)
             Password = GetGadgetText(#StringPassword)
-            SetGadgetText(#ButtonGetFiles, "Please Wait")
+            SetGadgetText(#ButtonGetFiles, "Veuillez patienter")
             CreateThread(@GetFiles(), nil)
             
           Case #ButtonUpdate
             
             ClearList(Tree())
-            SetGadgetText(#ButtonUpdate, "Please Wait")
+            SetGadgetText(#ButtonUpdate, "Veuillez patienter")
             Update(nil)
             SetGadgetText(#ButtonUpdate, "Recevoir MàJ")            
             
           Case #ButtonCommit
             
             ClearList(Tree())
-            SetGadgetText(#ButtonCommit, "Please Wait")
+            SetGadgetText(#ButtonCommit, "Veuillez patienter")
             Commit(nil)
             SetGadgetText(#ButtonCommit, "Envoyer MàJ")            
             
           Case #ButtonGetList
             
             ClearList(Tree())
-            SetGadgetText(#ButtonGetList, "Please Wait")
+            SetGadgetText(#ButtonGetList, "Veuillez patienter")
             GetFileList(0, 0, "")
             MakeTreeGadget()
             SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")            
@@ -619,18 +619,20 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
                 
                 ;If folder, look into
                 If IsFolder(Name)
-                  SetGadgetText(#ButtonGetList, "Please Wait")
+                  SetGadgetText(#ButtonGetList, "Veuillez patienter")
                   GetFileList(Item + 1, SubLevel + 1, FullPath)
-                  MakeTreeGadget()                
-                  SetGadgetText(#ButtonGetList, "Liste des fichiers sur le serveur")                
+                  MakeTreeGadget()
+                  SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+                  SetGadgetState(#TreeGadget, Item)
+                  SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")                
                 Else
                   ;If file, download it
                   Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
                   Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
                   If URLDownloadToFile_(0,"" + RepositeryURL + "" + FullPath, Filename$, 0, 0) = #S_OK
-                    Debug "Success"  
+                    Debug "Download succeded"  
                   Else
-                    Debug "Failed"
+                    Debug "Download failed"
                     MessageRequester("Alerte", "Enregistrement impossible", #PB_MessageRequester_Ok)
                   EndIf
                 EndIf
@@ -647,9 +649,9 @@ EndIf
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 317
-; FirstLine = 295
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 129
+; FirstLine = 125
 ; Folding = ---
 ; EnableThread
 ; EnableXP

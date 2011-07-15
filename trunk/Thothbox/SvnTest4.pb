@@ -29,6 +29,11 @@ Enumeration
   #FileImg
 EndEnumeration
 
+#SVNConfigProxyHost     = " --config-option servers:global:http-proxy-host="
+#SVNConfigProxyPort     = " --config-option servers:global:http-proxy-port="
+#SVNConfigProxyUserName = " --config-option servers:global:http-proxy-username="
+#SVNConfigProxyPassword = " --config-option servers:global:http-proxy-password="
+
 Structure Path
   Item.i
   Path.s
@@ -42,8 +47,14 @@ EndStructure
 Global NewList Tree.Path()
 Global UserName.s, Password.s
 Global RepositeryURL.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
+Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery"
+Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
+Global ProxyFlag.i = #False
+Global SVNConfigProxyHost.s = "94.23.49.197"
+Global SVNConfigProxyPort.s = "8080"
+Global SVNConfigProxyUserName.s = "anonymous"
+Global SVNConfigProxyPassword.s = "anonymous@anonymous.com"
 
-;- START
 InitNetwork()
 
 ;*****************************************************************************
@@ -107,7 +118,7 @@ EndProcedure
 Procedure Marquee(*Null)
   
   Repeat
-    txt.s = "Please Wait" 
+    txt.s = "Veuillez patienter" 
     Select Counter%400
       Case 1 To 100
         txt + "."
@@ -123,6 +134,7 @@ Procedure Marquee(*Null)
   
 EndProcedure
 
+; Take over a gadget tree to obtain a full path from a sub level item
 Procedure.s GetFullPathFromTree(Item, SubLevel)
   
   Path.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
@@ -156,8 +168,13 @@ Procedure GetFileList(Item, SubLevel, Path.s)
   EndIf
   
   FirstItem = Item
-    
-  svn = RunProgram("svn\bin\svn.exe", "list " + Chr(34) + RepositeryURL + Path + Chr(34), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
+  
+  SvnArgs.s = "list " + Chr(34) + RepositeryURL + Path + Chr(34)
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+    Debug SvnArgs  
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
   If svn
     
     While ProgramRunning(svn)     
@@ -250,12 +267,17 @@ Procedure Search(*Pattern.s)
    
   ClearGadgetItems(#TreeGadget)
   ClearList(Tree())
-  ;SetGadgetText(#ButtonSearch, "Please Wait")
+  ;SetGadgetText(#ButtonSearch, "Veuillez patienter")
 
   Item = 0
   
   CreateRegularExpression(0, *Pattern)
-  svn = RunProgram("svn\bin\svn.exe", "list " + RepositeryURL + " -R", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
+  
+  SvnArgs.s = "list " + RepositeryURL + " -R"
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
   
   If svn
    
@@ -302,7 +324,11 @@ EndProcedure
 ;Télécharge en local une version "lecture seule" sur le serveur
 Procedure GetFilesReadOnly(nil)
   
-  svn = RunProgram("svn\bin\svn.exe","checkout " + RepositeryURL + " repositeries\pb-source-repositery-Read-only", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  SvnArgs.s = "checkout " + RepositeryURL + " " + LocalRepositeryReadOnly
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -325,7 +351,7 @@ Procedure GetFilesReadOnly(nil)
     CloseProgram(svn) ; Close the connection to the program
   EndIf
   
-  RunProgram("explorer.exe", "repositeries\pb-source-repositery-Read-only", "")
+  RunProgram("explorer.exe", LocalRepositeryReadOnly, "")
   
   SetGadgetText(#ButtonGetFilesReadOnly, "Recevoir une copie du dépôt en lecture seule")
   Enabler()
@@ -334,7 +360,12 @@ EndProcedure
 
 Procedure Update(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  svn = RunProgram("svn\bin\svn.exe","update repositeries\pb-source-repositery", "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
+  SvnArgs.s = "update " + LocalRepositery
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -361,7 +392,12 @@ EndProcedure
 
 Procedure Commit(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  svn = RunProgram("svn\bin\svn.exe","commit repositeries\pb-source-repositery -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
+  SvnArgs.s = "commit " + LocalRepositery + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34)
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -388,7 +424,11 @@ EndProcedure
 
 Procedure GetFiles(nil)
   
-  svn = RunProgram("svn\bin\svn.exe","checkout " + RepositeryURL + " repositeries\pb-source-repositery --username " + UserName + " --password " + Password, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  SvnArgs.s = "checkout " + RepositeryURL + " " + LocalRepositery + " --username " + UserName + " --password " + Password
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
   
   If svn
     While ProgramRunning(svn)     
@@ -411,7 +451,7 @@ Procedure GetFiles(nil)
     CloseProgram(svn) ; Close the connection to the program
   EndIf
   
-  RunProgram("explorer.exe", "repositeries\pb-source-repositery", "")
+  RunProgram("explorer.exe", LocalRepositery, "")
   
   SetGadgetText(#ButtonGetFiles, "Recevoir dépôt accès complet")
   Enabler()  
@@ -422,12 +462,18 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
   
   Disabler()
   
-  txt.s = "Please Wait"
+  txt.s = "Veuillez patienter"
   Counter = 0
-  svn = RunProgram("svn\bin\svn.exe","mkdir " + Url + " --username " + UserName + " --password " + Password, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
+  SvnArgs.s = "mkdir " + Url + " --username " + UserName + " --password " + Password
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+  EndIf
+  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  
   If svn
     While ProgramRunning(svn)     
-      txt.s = "Please Wait" 
+      txt.s = "Veuillez patienter" 
       Select Counter%400
         Case 1 To 100
           txt + "."
@@ -568,7 +614,7 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             
             Disabler()
             ClearList(Tree())
-            SetGadgetText(#ButtonGetFilesReadOnly, "Please Wait")
+            SetGadgetText(#ButtonGetFilesReadOnly, "Veuillez patienter")
             CreateThread(@GetFilesReadOnly(), nil)
             
           Case #ButtonGetFiles
@@ -577,27 +623,27 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             ClearList(Tree())
             UserName = GetGadgetText(#StringUserName)
             Password = GetGadgetText(#StringPassword)
-            SetGadgetText(#ButtonGetFiles, "Please Wait")
+            SetGadgetText(#ButtonGetFiles, "Veuillez patienter")
             CreateThread(@GetFiles(), nil)
             
           Case #ButtonUpdate
             
             ClearList(Tree())
-            SetGadgetText(#ButtonUpdate, "Please Wait")
+            SetGadgetText(#ButtonUpdate, "Veuillez patienter")
             Update(nil)
             SetGadgetText(#ButtonUpdate, "Recevoir MàJ")            
             
           Case #ButtonCommit
             
             ClearList(Tree())
-            SetGadgetText(#ButtonCommit, "Please Wait")
+            SetGadgetText(#ButtonCommit, "Veuillez patienter")
             Commit(nil)
             SetGadgetText(#ButtonCommit, "Envoyer MàJ")            
             
           Case #ButtonGetList
             
             ClearList(Tree())
-            SetGadgetText(#ButtonGetList, "Please Wait")
+            SetGadgetText(#ButtonGetList, "Veuillez patienter")
             GetFileList(0, 0, "")
             MakeTreeGadget()
             SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")            
@@ -619,18 +665,20 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
                 
                 ;If folder, look into
                 If IsFolder(Name)
-                  SetGadgetText(#ButtonGetList, "Please Wait")
+                  SetGadgetText(#ButtonGetList, "Veuillez patienter")
                   GetFileList(Item + 1, SubLevel + 1, FullPath)
-                  MakeTreeGadget()                
-                  SetGadgetText(#ButtonGetList, "Liste des fichiers sur le serveur")                
+                  MakeTreeGadget()
+                  SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+                  SetGadgetState(#TreeGadget, Item)
+                  SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")                
                 Else
                   ;If file, download it
                   Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
                   Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
                   If URLDownloadToFile_(0,"" + RepositeryURL + "" + FullPath, Filename$, 0, 0) = #S_OK
-                    Debug "Success"  
+                    Debug "Download succeded"  
                   Else
-                    Debug "Failed"
+                    Debug "Download failed"
                     MessageRequester("Alerte", "Enregistrement impossible", #PB_MessageRequester_Ok)
                   EndIf
                 EndIf
@@ -647,9 +695,9 @@ EndIf
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 363
-; FirstLine = 335
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 62
+; FirstLine = 36
 ; Folding = ---
 ; EnableThread
 ; EnableXP
