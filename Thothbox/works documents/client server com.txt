@@ -1,0 +1,33 @@
+Dans les paramètres de ThothBox il y a l'adresse du serveur qui est stocké
+Exemple: http://koakdesign.info/thothbox.php
+au demarrage de l'application on fait un http://koakdesign.info/thothbox.php?info
+en retour on a un fichier csv avec les infos suivante
+
+serverversion 	; 1.5 					: version du serveur
+active		; 1					; permet d'informer que le serveur est en maintenant
+clientversion	; 2.0					: version du client permet de savoir si on doit télécharger une mise à jour
+Info		;					: permet d'afficher une information dans un requester (genre en maintenance ou on a besoin de fond)
+server		;http://koakdesign.info/thothbox.php	: permet de migrer l'adresse du serveur
+lastupdate	;2011/07/10 12:32:10sec			: date de la dernière mise à jour sur la base de donnée
+codenumber	;250					: nombre de code dans la base de donnée
+filenumber	;890					: nombre de fichier total dans la base de donnée
+databasesize	;20Mo					: voir si c'est possible de retourner la taille de la base de donnée
+
+recherche 
+http://koakdesign.info/thothbox.php?search=keywords&version=10001
+en retour on a un fichier csv avec exemple
+
+Id	;Name		;compatibility	;version
+1	;UseBuffer3D	;10010		;10011
+2	;physic car	;10011		;100111
+
+ensuite un 
+http://koakdesign.info/thothbox.php?codeId=10
+retourne toute les infos sur le code ainsi que le nom et les id de fichiers et son md5 (permet de verifier qu'on ne l'a pas déjà télécharger)
+
+
+http://koakdesign.info/thothbox.php?fileId=14
+téléchargera le fichier avec l'Id 14
+
+
+

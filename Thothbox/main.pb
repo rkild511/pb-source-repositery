@@ -72,6 +72,9 @@ Enumeration
   #gdt_historic
   #mode_prefsWindow
   #gdt_prefsBack
+  #gdt_prefsServer
+  #gdt_prefsServerTxt
+  #gdt_prefsServerTest
   #gdt_poxyFrame
   #gdt_usePoxy
   #gdt_poxyHost
@@ -87,6 +90,7 @@ EndEnumeration
 
 Structure globalParameters
   page.l
+  server.s
   useProxy.b        ;#True or #False if you want to use proxy setting
   proxy.HTTP_Proxy
 EndStructure
@@ -95,6 +99,7 @@ Global gp.globalParameters
 gp\page=#mode_searchWindow
 
 XIncludeFile "preferences.pbi"
+XIncludeFile "network.pbi"
 
 ;some macro to help to desgin window
 ;to put a new gadget under
@@ -267,7 +272,12 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ;-mode_prefsWindow Gadgets
   ContainerGadget(#mode_prefsWindow,0,0,WindowWidth(0),WindowHeight(0))
   ButtonGadget(#gdt_prefsback,0,0,100,#gdtH,"Back")
-  Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsback)+#gdtH, 400, 150, "Network")
+  
+  
+  TextGadget(#gdt_prefsServerTxt,10,GdtDown(#gdt_prefsback)+#gdtH,50,#gdtH,"Server")
+  StringGadget(#gdt_prefsServer,GdtRight(#gdt_prefsServerTxt),GadgetY(#gdt_prefsServerTxt),250,#gdtH,"")
+  ButtonGadget(#gdt_prefsServerTest,GdtRight(#gdt_prefsServer)+#gdtH,GadgetY(#gdt_prefsServerTxt),60,#gdtH,"Test")
+  Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsServerTxt)+#gdtH, 400, 150, "Network")
   CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, "Use a Proxy")
   TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+#gdtH,75,20,"Proxy HTTP :")
   StringGadget(#gdt_poxyHost,GdtRight(#gdt_poxyHostTxt),GadgetY(#gdt_poxyHostTxt),200,25,"")
@@ -431,6 +441,12 @@ Repeat
         Case #gdt_prefsback
           gp\page=#mode_searchWindow
           refreachWindow(gp\page)
+        Case #gdt_prefsServer
+          If EventType()=#PB_EventType_LostFocus
+            gp\server=GetGadgetText(#gdt_prefsServer)
+          EndIf
+        Case #gdt_prefsServerTest
+            servercall()
         Case #gdt_usePoxy
           If GetGadgetState(#gdt_usePoxy)=#PB_Checkbox_Checked
               gp\useProxy=#True
@@ -470,10 +486,11 @@ EndDataSection
 
 
 
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 18
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 448
+; FirstLine = 441
 ; Folding = --
 ; EnableXP
-; UseIcon = gfx\ibis.ico
+; UseIcon = ibis.ico
 ; Executable = C:\Program Files (x86)\PureBasic\Thothbox.exe
-; Compiler = PureBasic 4.60 Beta 2 (Windows - x86)
+; Compiler = PureBasic 4.60 Beta 3 (Windows - x86)
