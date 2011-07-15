@@ -251,7 +251,6 @@ Procedure HTTP_receiveRawData(*test.HTTP_Query)
           Debug "rien"
         EndIf
         time = ElapsedMilliseconds()
-        
       EndIf
       Delay(100)
       
@@ -346,7 +345,7 @@ Define test.HTTP_Query,url.s
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 346
-; FirstLine = 292
+; CursorPosition = 253
+; FirstLine = 232
 ; Folding = ---
 ; EnableXP

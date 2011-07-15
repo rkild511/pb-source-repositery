@@ -1,5 +1,6 @@
 Procedure LoadPreferences()
   If OpenPreferences(#prg_name$+".prefs")
+    gp\server=ReadPreferenceString("server", "http://localhost/thothbox.php")
     gp\useProxy=ReadPreferenceInteger("useProxy", #False)
     gp\proxy\host=ReadPreferenceString("proxyHost", "")
     gp\proxy\port=ReadPreferenceInteger("proxyPort", 80)
@@ -21,6 +22,7 @@ Procedure LoadPreferences()
     DisableGadget(#gdt_poxyPassword,1)
   EndIf
   
+  SetGadgetText(#gdt_prefsServer,gp\server)
   SetGadgetText(#gdt_poxyHost,gp\proxy\host)
   SetGadgetState(#gdt_poxyPort,gp\proxy\port)
   SetGadgetText(#gdt_poxyLogin,gp\proxy\login)
@@ -29,6 +31,7 @@ EndProcedure
 
 Procedure SavePreferences()
   If CreatePreferences(#prg_name$+".prefs")
+    WritePreferenceString("server", gp\server)
     WritePreferenceInteger("useProxy", gp\useProxy)
     WritePreferenceString("proxyHost", gp\proxy\host)
     WritePreferenceInteger("proxyPort", gp\proxy\port)
@@ -40,6 +43,6 @@ Procedure SavePreferences()
   
 EndProcedure
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 16
+; CursorPosition = 24
 ; Folding = -
 ; EnableXP

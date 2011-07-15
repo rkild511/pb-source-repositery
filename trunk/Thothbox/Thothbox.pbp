@@ -7,15 +7,15 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-08 15:50" user="lebrun_y" host="LEBRUN"/>
+    <lastopen date="2011-07-15 17:41" user="lebrun_y" host="LEBRUN"/>
   </section>
   <section name="files">
     <file name="main.pb">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="9fe34762497ffa55b46a7b025442fffc"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="f985e1aa3958f87c260451f0cb8ad3c5"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="++"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="effc5579dd6f961bfe144c0d4bbb643e"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla_HeaderFile.pbi">
@@ -27,8 +27,16 @@
       <fingerprint md5="98aa8ad558a5a962f3d4ee96374c5b62"/>
     </file>
     <file name="http.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="80e7e8ca899827e04a84fe3727d9799e"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="755df741fb6039986ff37ab9461cd860"/>
+    </file>
+    <file name="preferences.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="590f4e1efb4fb9ecffeb700f6b23ae40"/>
+    </file>
+    <file name="network.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="458df2cf043f879f50d24baaf6cd26e1"/>
     </file>
   </section>
   <section name="targets">
@@ -38,7 +46,7 @@
       <executable value="C:\Program Files (x86)\PureBasic\Thothbox.exe"/>
       <options unicode="1" thread="1" xpskin="1" debug="1"/>
       <icon enable="1">
-        gfx\ibis.ico
+        gfx\ibisv2.ico
       </icon>
     </target>
   </section>
