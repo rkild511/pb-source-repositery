@@ -69,6 +69,17 @@ InitNetwork()
 ;*****************************************************************************
 ;- PROCEDURES
 
+Procedure SubversionCall(SvnArgs.s)
+   
+  If ProxyFlag
+    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
+    Debug SvnArgs  
+  EndIf
+  
+  ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
+
+EndProcedure
+
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
   ForEach Tree()
@@ -183,9 +194,9 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   If Item <> 0 
     ;If this is not the root
     
-    ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
     SelectElement(Tree(), Item - 1 )
     While NextElement(tree()) And Tree()\SubLevel >= Sublevel  
+      ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
       DeleteElement(Tree())
     Wend
     
@@ -196,12 +207,8 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   
   FirstItem = Item
   
-  SvnArgs.s = "list " + Chr(34) + RemoteRepositery + Path + Chr(34)
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-    Debug SvnArgs  
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
+  svn = SubversionCall("list " + Chr(34) + RemoteRepositery + Path + Chr(34))
+  
   If svn
     
     While ProgramRunning(svn)     
@@ -300,9 +307,9 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
   If Item <> 0 
     ;If this is not the root
     
-    ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
     SelectElement(Tree(), Item - 1 )
     While NextElement(tree()) And Tree()\SubLevel >= Sublevel  
+      ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
       DeleteElement(Tree())
     Wend
 
@@ -393,17 +400,10 @@ Procedure Search(*Pattern.s)
   ClearGadgetItems(#TreeGadget)
   ClearList(Tree())
   ;SetGadgetText(#ButtonSearch, "Veuillez patienter")
-
-  Item = 0
-  
-  CreateRegularExpression(0, *Pattern)
-  
-  SvnArgs.s = "list " + RemoteRepositery + " -R"
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
-  
+  Item = 0  
+  CreateRegularExpression(0, *Pattern)  
+  svn = SubversionCall("list " + RemoteRepositery + " -R")
+    
   If svn
    
     While ProgramRunning(svn)     
@@ -448,12 +448,8 @@ EndProcedure
 
 ;Télécharge en local une version "lecture seule" sur le serveur
 Procedure GetRepositeryReadOnly(nil)
-  
-  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositery
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+   
+  svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
   
   If svn
     While ProgramRunning(svn)     
@@ -485,12 +481,8 @@ EndProcedure
 
 Procedure Update(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  
-  SvnArgs.s = "update " + LocalRepositery
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+   
+  svn = SubversionCall("update " + LocalRepositery)
   
   If svn
     While ProgramRunning(svn)     
@@ -517,12 +509,8 @@ EndProcedure
 
 Procedure Commit(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
-  
-  SvnArgs.s = "commit " + LocalRepositery + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34)
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+   
+  svn = SubversionCall("commit " + LocalRepositery + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34))
   
   If svn
     While ProgramRunning(svn)     
@@ -548,12 +536,8 @@ Procedure Commit(nil)
 EndProcedure
 
 Procedure GetRepositery(nil)
-  
-  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositery + " --username " + UserName + " --password " + Password
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+   
+  svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery + " --username " + UserName + " --password " + Password)
   
   If svn
     While ProgramRunning(svn)     
@@ -590,11 +574,7 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
   txt.s = "Veuillez patienter"
   Counter = 0
   
-  SvnArgs.s = "mkdir " + Url + " --username " + UserName + " --password " + Password
-  If ProxyFlag
-    SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-  EndIf
-  svn = RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error)
+  svn = SubversionCall("mkdir " + Url + " --username " + UserName + " --password " + Password)
   
   If svn
     While ProgramRunning(svn)     
@@ -707,9 +687,8 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
               Case #PB_EventType_Change 
 
                 If Trim(GetGadgetText(#StringUpdateComment)) = ""
-                  
+                  ;Default comment
                   SetGadgetText(#StringUpdateComment, "Mise à jour " + Str(Date()))
-                  
                 EndIf
                 
             EndSelect
@@ -890,15 +869,13 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
       DisableGadget(#StringUpdateComment, 1)
       DisableGadget(#ButtonCommit, 1)
       DisableGadget(#ButtonUpdate, 1)
-      
     Else
       DisableGadget(#StringPassword, 0)
       DisableGadget(#StringPassword, 0)
       DisableGadget(#ButtonGetRepositery, 0)
       DisableGadget(#StringUpdateComment, 0)
       DisableGadget(#ButtonCommit, 0)
-      DisableGadget(#ButtonUpdate, 0)
-      
+      DisableGadget(#ButtonUpdate, 0)      
     EndIf
     
   Until Event = #PB_Event_CloseWindow
@@ -908,8 +885,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 319
-; FirstLine = 281
+; CursorPosition = 688
+; FirstLine = 842
 ; Folding = ---
 ; EnableThread
 ; EnableXP
