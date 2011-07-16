@@ -1,5 +1,6 @@
 Procedure LoadPreferences()
   If OpenPreferences(#prg_name$+".prefs")
+    gp\language=ReadPreferenceString("language", "français.lng")
     gp\server=ReadPreferenceString("server", "http://localhost/thothbox.php")
     gp\useProxy=ReadPreferenceInteger("useProxy", #False)
     gp\proxy\host=ReadPreferenceString("proxyHost", "")
@@ -8,6 +9,45 @@ Procedure LoadPreferences()
     gp\proxy\password=ReadPreferenceString("proxyPassword", "")
     ClosePreferences()
   EndIf
+  EndProcedure
+  
+  Procedure SavePreferences()
+  If CreatePreferences(#prg_name$+".prefs")
+    WritePreferenceString("language", gp\language)
+    WritePreferenceString("server", gp\server)
+    WritePreferenceInteger("useProxy", gp\useProxy)
+    WritePreferenceString("proxyHost", gp\proxy\host)
+    WritePreferenceInteger("proxyPort", gp\proxy\port)
+    WritePreferenceString("proxyLogin", gp\proxy\login)
+    WritePreferenceString("proxyPassword", gp\proxy\password)
+    ClosePreferences()
+  EndIf
+  
+  
+EndProcedure
+  
+  
+Procedure InitLanguageGadget()
+   If ExamineDirectory(0, GetCurrentDirectory()+"languages\", "*.*")  
+    Define n.l=-1
+    While NextDirectoryEntry(0)
+      If DirectoryEntryType(0) = #PB_DirectoryEntry_File
+        n+1
+        AddGadgetItem(#gdt_prefsLanguage,n,DirectoryEntryName(0))
+        Debug DirectoryEntryName(0)
+        If DirectoryEntryName(0)=gp\language
+          Debug"SELECT"
+          SetGadgetState(#gdt_prefsLanguage,n)
+        EndIf
+        
+      EndIf
+    Wend
+    FinishDirectory(0)
+  EndIf
+EndProcedure  
+  
+Procedure InitGadgets()  
+  
   If gp\useProxy=#True
     SetGadgetState(#gdt_usePoxy, #PB_Checkbox_Checked)
     DisableGadget(#gdt_poxyHost,0)
@@ -27,22 +67,10 @@ Procedure LoadPreferences()
   SetGadgetState(#gdt_poxyPort,gp\proxy\port)
   SetGadgetText(#gdt_poxyLogin,gp\proxy\login)
   SetGadgetText(#gdt_poxyPassword,gp\proxy\password)
+  InitLanguageGadget()
 EndProcedure
 
-Procedure SavePreferences()
-  If CreatePreferences(#prg_name$+".prefs")
-    WritePreferenceString("server", gp\server)
-    WritePreferenceInteger("useProxy", gp\useProxy)
-    WritePreferenceString("proxyHost", gp\proxy\host)
-    WritePreferenceInteger("proxyPort", gp\proxy\port)
-    WritePreferenceString("proxyLogin", gp\proxy\login)
-    WritePreferenceString("proxyPassword", gp\proxy\password)
-    ClosePreferences()
-  EndIf
-  
-  
-EndProcedure
+
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 24
 ; Folding = -
 ; EnableXP

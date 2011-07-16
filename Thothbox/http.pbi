@@ -194,7 +194,7 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
    
     ProcedureReturn connection
   EndIf
-
+  Debug "error to connect:"+*query\host+" port:"+Str(*query\port)
   ProcedureReturn 0
 EndProcedure
 ;- Nouvelles fonctions
@@ -206,6 +206,54 @@ Procedure HTTP_proxy(*test.HTTP_Query,host.s="",port.i=80,login.s="",password.s=
   *test\proxy\password=password
 EndProcedure
 
+
+
+Procedure HTTP_receiveRawData(*test.HTTP_Query)
+  Protected *rawdata,time.i,readed.i,size.i
+  If *test\conn
+    *test\buffer = AllocateMemory(2048)
+    *rawdata=AllocateMemory(1)
+    time = ElapsedMilliseconds()
+    Debug "start"
+    Repeat
+      If NetworkClientEvent(*test\conn) = #PB_NetworkEvent_Data
+        
+        readed = ReceiveNetworkData(*test\conn, *test\buffer, 2048)
+        If readed>0
+          Debug readed
+          
+          size=MemorySize(*rawdata)
+          If size=1:size=0:EndIf
+          *rawdata=ReAllocateMemory(*rawdata,size+readed)
+          CopyMemory(*test\buffer,*rawdata+size,readed)
+          Debug "size:"+Str(readed)
+        Else 
+          Debug "rien"
+        EndIf
+        time = ElapsedMilliseconds()
+      EndIf
+      Delay(100)
+      
+    Until ElapsedMilliseconds() - time >= 3000
+    Debug"end"
+    FreeMemory(*test\buffer):*test\buffer=0;
+    ProcedureReturn *rawdata
+  Else
+    Debug "no Networkconnection"
+  EndIf
+EndProcedure
+  
+  ; find the end of the header
+  Procedure HTTP_FindHeader(*mem)
+    Protected z.l
+    For z=0 To MemorySize(*mem)-4
+      If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
+        ProcedureReturn z+4
+      EndIf
+    Next
+    ProcedureReturn 0
+  EndProcedure
+  
 Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
   ; si on a un proxy
@@ -228,65 +276,30 @@ Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
     Base64Encoder(@string, Len(string), @res, Len(string)*4)
     HTTP_addQueryHeader(*test, "Authorization", "Basic "+res)
   EndIf
+  
+
+  
 EndProcedure
 
-Procedure HTTP_receiveRawData(*test.HTTP_Query)
-  Protected *rawdata,time.i,readed.i,size.i
-  If *test\conn
-    *test\buffer = AllocateMemory(2048)
-    *rawdata=AllocateMemory(1)
-    time = ElapsedMilliseconds()
-    Repeat
-      If NetworkClientEvent(*test\conn) = #PB_NetworkEvent_Data
-        
-        readed = ReceiveNetworkData(*test\conn, *test\buffer, 2048)
-        If readed>0
-          Debug readed
-          
-          size=MemorySize(*rawdata)
-          If size=1:size=0:EndIf
-          *rawdata=ReAllocateMemory(*rawdata,size+readed)
-          CopyMemory(*test\buffer,*rawdata+size,readed)
-        Else 
-          Debug "rien"
-        EndIf
-        time = ElapsedMilliseconds()
-      EndIf
-      Delay(100)
-      
-    Until ElapsedMilliseconds() - time >= 3000
-    FreeMemory(*test\buffer):*test\buffer=0;
-    Debug "efface buffer:"+Str(*test\buffer)
-    ProcedureReturn *rawdata
-  EndIf
+Procedure HTTP_DataProcessing(*test.HTTP_Query,*rawdata)
+  Protected lenght.i
+  lenght=HTTP_FindHeader(*rawdata) ;found the lenght of the header
+  ;copy file Data
+  *test\data=AllocateMemory(MemorySize(*rawdata)-lenght)
+  CopyMemory(*rawdata+lenght,*test\data,MemorySize(*rawdata)-lenght);
+  ;copy header
+  *test\header=AllocateMemory(lenght)
+  CopyMemory(*rawdata,*test\header,lenght); +1 because i don't know why but the data start with 0
+  FreeMemory(*rawdata):*rawdata=0
 EndProcedure
-  
-  ; find the end of the header
-  Procedure HTTP_FindHeader(*mem)
-    Protected z.l
-    For z=0 To MemorySize(*mem)-4
-      If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
-        ProcedureReturn z+4
-      EndIf
-    Next
-    ProcedureReturn 0
-  EndProcedure
-   
+
 Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
     Protected  *rawdata,lenght.i
     HTTP_query(*test, #HTTP_METHOD_GET, url)
     HTTP_addQueryHeader(*test, "User-Agent", "PB")
     *test\conn = HTTP_sendQuery(*test)
     *rawdata=HTTP_receiveRawData(*test)
-    lenght=HTTP_FindHeader(*rawdata) ;found the lenght of the header
-    ;copy file data
-    *test\data=AllocateMemory(MemorySize(*rawdata)-lenght)
-    CopyMemory(*rawdata+lenght,*test\data,MemorySize(*rawdata)-lenght);
-    ;copy header
-    *test\header=AllocateMemory(lenght)
-    CopyMemory(*rawdata,*test\header,lenght); +1 because i don't know why but the data start with 0
-    Debug PeekS(*test\header,MemorySize(*test\header),#PB_Ascii)
-    FreeMemory(*rawdata):*rawdata=0
+    HTTP_DataProcessing(*test,*rawdata)
     CloseNetworkConnection(*test\conn)
     ProcedureReturn #True
   EndProcedure
@@ -309,43 +322,34 @@ Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
 CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 InitNetwork()
 Procedure test1()
-  Protected test.HTTP_Query, string.s, readed.i, conn.i, time.i,*string
-  InitNetwork()
+  Protected test.HTTP_Query, string.s, readed.i, conn.i, time.i,*string,*rawdata
   OpenConsole()
-    HTTP_proxy(@test,"spxy.bpi.fr",3128)
+    ;HTTP_proxy(@test,"proxy.machin.com",3128)
     HTTP_query(@test, #HTTP_METHOD_FILE, "http://www.thyphoon.com/test.php")
-    ;HTTP_createQuery(@test, #HTTP_METHOD_FILE, "/test.php", "www.thyphoon.com")
     HTTP_addQueryHeader(@test, "User-Agent", "PB")
     HTTP_addPostData(@test, "pseudo", "lepiaf31")
     HTTP_addPostData(@test, "nom", "Kevin")
     HTTP_addFile(@test, "datafile", OpenFileRequester("Please choose file to load", "", "*.*", 0))
-    conn = HTTP_sendQuery(@test)
-    If conn
-      *string = AllocateMemory(2048)
-      time = ElapsedMilliseconds()
-      Repeat
-        If NetworkClientEvent(conn) = #PB_NetworkEvent_Data
-         
-          readed = ReceiveNetworkData(conn, *string, 2048)
-          Print(PeekS(*string,readed,#PB_Ascii))
-          time = ElapsedMilliseconds()
-        EndIf
-        Delay(100)
-      Until ElapsedMilliseconds() - time >= 3000
-    EndIf
+    test\conn = HTTP_sendQuery(@test)
+    Debug"receive data"
+    *rawdata=HTTP_receiveRawData(@test)
+    Debug *rawdata
+    HTTP_DataProcessing(@test,*rawdata)
+    CloseNetworkConnection(test\conn)
+    Print(PeekS(test\data,MemorySize(test\data),#PB_Ascii))
     Input()
   EndProcedure
-  ;test1()
-  
-Define test.HTTP_Query,url.s
+  test1()
+  Procedure test2()
+Protected test.HTTP_Query,url.s
   url="http://www.purebasic.com/images/box.png"
   HTTP_DownloadToFile(@test,url,GetTemporaryDirectory()+GetFilePart(url))
   RunProgram(GetTemporaryDirectory()+GetFilePart(url))
-  
+  EndProcedure
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 253
-; FirstLine = 232
+; CursorPosition = 339
+; FirstLine = 295
 ; Folding = ---
 ; EnableXP
