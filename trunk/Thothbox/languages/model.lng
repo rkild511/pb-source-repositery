@@ -1,0 +1,37 @@
+﻿
+[MENU]
+ABOUT = About
+PREFERENCES = Preferences
+[SEARCHWINDOW]
+CANCEL = Cancel
+FAIL = Fail
+GOOD = Good
+GREAT = Great
+OK = Ok
+STRONG = Strong
+VERYSTRONG = Very strong
+VERYWEAK = Very weak
+WEAK = Weak
+[VIEWWINDOW]
+DELETEENTRY = Delete Entry
+DELETEENTRYANSWER = Do you want to delete this Entry ?
+DELETEGROUP = Delete Group
+DELETEGROUPANSWER = Do you want to delete this Group ? All Entry will move to the first Group
+NAME = Name
+NEWDBREQUESTTITLE = Create a New ThyKey Database
+SEARCH = Search
+[PREFSWINDOW]
+? = ?
+ABOUT = About
+CLOSE = Close
+EDIT = Edit
+FILE = File
+LOAD = &Load...
+NEW = New
+NEWENTRY = New Entry
+OPTION = Option
+PREFERENCES = Preferences
+PROPERTY = Database Property
+QUIT = Quit
+SAVEAS = Save As...
+STICKYWINDOW = StickyWindow

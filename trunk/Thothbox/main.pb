@@ -11,7 +11,7 @@
 
 
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
-
+InitNetwork()
 XIncludeFile "http.pbi"
 
 
@@ -75,6 +75,7 @@ Enumeration
   #gdt_prefsServer
   #gdt_prefsServerTxt
   #gdt_prefsServerTest
+  #gdt_prefsLanguage
   #gdt_poxyFrame
   #gdt_usePoxy
   #gdt_poxyHost
@@ -90,15 +91,24 @@ EndEnumeration
 
 Structure globalParameters
   page.l
+  language.s
   server.s
   useProxy.b        ;#True or #False if you want to use proxy setting
   proxy.HTTP_Proxy
+  
+  Map serverInfos.s()
 EndStructure
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
 
 XIncludeFile "preferences.pbi"
+LoadPreferences()
+
+XIncludeFile "multilanguage.pbi"
+SaveLanguageAsModel("languages\model.lng")
+LoadLanguage("languages\"+gp\language)
+
 XIncludeFile "network.pbi"
 
 ;some macro to help to desgin window
@@ -133,8 +143,8 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ;-menu
   If CreateMenu(0, WindowID(0))
     MenuTitle("?")
-    MenuItem(0, "About")
-    MenuItem(1, "Preferences")
+    MenuItem(0, Language("Menu", "About"))
+    MenuItem(1, Language("Menu", "Preferences"))
 
   EndIf
 
@@ -277,6 +287,7 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   TextGadget(#gdt_prefsServerTxt,10,GdtDown(#gdt_prefsback)+#gdtH,50,#gdtH,"Server")
   StringGadget(#gdt_prefsServer,GdtRight(#gdt_prefsServerTxt),GadgetY(#gdt_prefsServerTxt),250,#gdtH,"")
   ButtonGadget(#gdt_prefsServerTest,GdtRight(#gdt_prefsServer)+#gdtH,GadgetY(#gdt_prefsServerTxt),60,#gdtH,"Test")
+  ComboBoxGadget(#gdt_prefsLanguage,GdtRight(#gdt_prefsServerTest)+#gdtH,GadgetY(#gdt_prefsServerTest),200,20)
   Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsServerTxt)+#gdtH, 400, 150, "Network")
   CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, "Use a Proxy")
   TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+#gdtH,75,20,"Proxy HTTP :")
@@ -381,8 +392,8 @@ For z=#mode_searchWindow To #gdt_end-1
   SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
 Next
 
-LoadPreferences()
 
+InitGadgets() 
 ;-Parse input parameters
 z=0
 While z<CountProgramParameters()-1
@@ -446,7 +457,9 @@ Repeat
             gp\server=GetGadgetText(#gdt_prefsServer)
           EndIf
         Case #gdt_prefsServerTest
-            servercall()
+          servercall()
+        Case #gdt_prefsLanguage
+          gp\language=GetGadgetText(#gdt_prefsLanguage)
         Case #gdt_usePoxy
           If GetGadgetState(#gdt_usePoxy)=#PB_Checkbox_Checked
               gp\useProxy=#True
@@ -482,13 +495,15 @@ End
 DataSection
   Logo:
   IncludeBinary "gfx/thotbox.png"
+  
+  XIncludeFile "defaultlanguage.pbi"
 EndDataSection 
 
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 448
-; FirstLine = 441
+; CursorPosition = 107
+; FirstLine = 176
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
