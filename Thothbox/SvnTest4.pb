@@ -69,14 +69,15 @@ InitNetwork()
 ;*****************************************************************************
 ;- PROCEDURES
 
-Procedure SubversionCall(SvnArgs.s)
-   
+Procedure SubversionCall(SvnArgs.s, Path.s = "")
+
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
-    Debug SvnArgs  
   EndIf
+  SvnArgs + " --non-interactive --no-auth-cache"
+  Debug SvnArgs   
   
-  ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
+  ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, Path, #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
 
 EndProcedure
 
@@ -482,7 +483,7 @@ EndProcedure
 Procedure Update(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
-  svn = SubversionCall("update " + LocalRepositery)
+  svn = SubversionCall("update " + LocalRepositery + " --username " + UserName + " --password " + Password)
   
   If svn
     While ProgramRunning(svn)     
@@ -510,7 +511,7 @@ EndProcedure
 Procedure Commit(nil)
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
-  svn = SubversionCall("commit " + LocalRepositery + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34))
+  svn = SubversionCall("commit " + " --username " + UserName + " --password " + Password + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), LocalRepositery )
   
   If svn
     While ProgramRunning(svn)     
@@ -531,6 +532,8 @@ Procedure Commit(nil)
     EndIf
     
     CloseProgram(svn) ; Close the connection to the program
+  Else
+    Debug "Erreur!"
   EndIf
       
 EndProcedure
@@ -697,12 +700,13 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             Select EventType()
                 
-              Case #PB_EventType_Change
+              Case #PB_EventType_LostFocus
                 
                 If FindString(GetGadgetText(#StringUsername), " ")
                   MessageRequester("Alerte", "Votre nom d'utilisateur ne peut contenir d'espace", #PB_MessageRequester_Ok)
                   SetGadgetText(#StringUsername, "")
                 EndIf
+                UserName = GetGadgetText(#StringUsername)
                                 
             EndSelect
             
@@ -710,12 +714,13 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             Select EventType()
                 
-              Case #PB_EventType_Change 
+              Case #PB_EventType_LostFocus 
                 
                 If FindString(GetGadgetText(#StringPassword), " ")
                   MessageRequester("Alerte", "Votre mot de passe ne peut contenir d'espace", #PB_MessageRequester_Ok)
                   SetGadgetText(#StringPassword, "")
                 EndIf
+                Password = GetGadgetText(#StringPassword)
                 
             EndSelect
             
@@ -740,6 +745,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             Disabler()
             ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonGetRepositeryReadOnly, "Veuillez patienter")
             CreateThread(@GetRepositeryReadOnly(), nil)
             
@@ -759,6 +765,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             Disabler()
             ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
             UserName = GetGadgetText(#StringUserName)
             Password = GetGadgetText(#StringPassword)
             SetGadgetText(#ButtonGetRepositery, "Veuillez patienter")
@@ -767,6 +774,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
           Case #ButtonUpdate
             
             ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonUpdate, "Veuillez patienter")
             Update(nil)
             SetGadgetText(#ButtonUpdate, "Recevoir M‡J")            
@@ -774,6 +782,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
           Case #ButtonCommit
             
             ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonCommit, "Veuillez patienter")
             Commit(nil)
             SetGadgetText(#ButtonCommit, "Envoyer M‡J")            
@@ -861,17 +870,18 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
         
     EndSelect
     
-    ;Disable "full access" gadgets if username is not given
+    ;Disable "full access" gadgets if username&password are not given
     If GetGadgetText(#StringUsername) = ""
-      DisableGadget(#StringPassword, 1)
       DisableGadget(#StringPassword, 1)     
+    Else
+      DisableGadget(#StringPassword, 0)
+    EndIf
+    If GetGadgetText(#StringUsername) = "" Or GetGadgetText(#StringPassword) = ""
       DisableGadget(#ButtonGetRepositery, 1)
       DisableGadget(#StringUpdateComment, 1)
       DisableGadget(#ButtonCommit, 1)
       DisableGadget(#ButtonUpdate, 1)
     Else
-      DisableGadget(#StringPassword, 0)
-      DisableGadget(#StringPassword, 0)
       DisableGadget(#ButtonGetRepositery, 0)
       DisableGadget(#StringUpdateComment, 0)
       DisableGadget(#ButtonCommit, 0)
@@ -885,8 +895,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 688
-; FirstLine = 842
+; CursorPosition = 535
+; FirstLine = 510
 ; Folding = ---
 ; EnableThread
 ; EnableXP
