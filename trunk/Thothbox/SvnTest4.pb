@@ -56,7 +56,7 @@ EndStructure
 Global NewList Tree.Path()
 Global UserName.s, Password.s
 Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
-Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery"
+Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery\"
 ;Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
 Global ProxyFlag.i = #False
 Global SVNConfigProxyHost.s = "94.23.49.197"
@@ -317,7 +317,7 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
   If ExamineDirectory(0, LocalRepositery + Path, "*.*")  
     While NextDirectoryEntry(0)
       NewPath.s = DirectoryEntryName(0)
-      If NewPath <> "" And NewPath <> "." And NewPath <> ".."
+      If NewPath <> "" And Left(NewPath, 1) <> "."
         AddElement(Tree())
         Tree()\Item = Item
         Tree()\SubLevel = SubLevel
@@ -634,7 +634,7 @@ EndProcedure
 ;*****************************************************************************
 ;- MAIN
 
-If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
+If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
   StringGadget(#StringRemoteRepositery, 80, 9, 360, 20, RemoteRepositery)
@@ -908,8 +908,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 636
-; FirstLine = 634
+; CursorPosition = 319
+; FirstLine = 281
 ; Folding = ---
 ; EnableThread
 ; EnableXP
