@@ -4,19 +4,22 @@ UsePNGImageDecoder()
 ;- CONSTANTS
 
 Enumeration 
-  #TextRepositery
-  #StringRepositery
-  #ButtonRepositery
+  #TextRemoteRepositery
+  #StringRemoteRepositery
   #StringSearch
-  #TextUsername
-  #TextPassword
-  #StringUsername
-  #StringPassword
-  #StringUpdateComment
-  #ButtonGetList
-  #ButtonGetFilesReadOnly
-  #ButtonGetFiles
   #ButtonSearch
+  #ButtonExploreRemoteRepositery
+  #TextLocalRepositery
+  #StringLocalRepositery
+  #ButtonChangeLocalRepositery
+  #ButtonGetRepositeryReadOnly
+  #ButtonExploreLocalRepositery
+  #TextUsername
+  #StringUsername
+  #TextPassword
+  #StringPassword
+  #ButtonGetRepositery
+  #StringUpdateComment
   #ButtonCommit
   #ButtonUpdate
   #END_OF_THE_GADGETS_TO_DISABLE
@@ -46,7 +49,7 @@ EndStructure
 
 Global NewList Tree.Path()
 Global UserName.s, Password.s
-Global RepositeryURL.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
+Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
 Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery"
 Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
 Global ProxyFlag.i = #False
@@ -127,7 +130,7 @@ Procedure Marquee(*Null)
       Case 200 To 300
         txt + "..."
     EndSelect
-    SetGadgetText(#ButtonGetList, txt)
+    SetGadgetText(#ButtonExploreRemoteRepositery, txt)
     Counter + 1
     Delay(10)
   ForEver
@@ -156,7 +159,7 @@ Procedure.s GetFullPathFromTree(Item, SubLevel)
 EndProcedure
 
 ;Get file list on google servers and construct tree list
-Procedure GetFileList(Item, SubLevel, Path.s)
+Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   ;Disabler()
   
   FoldersNb = 0
@@ -169,7 +172,7 @@ Procedure GetFileList(Item, SubLevel, Path.s)
   
   FirstItem = Item
   
-  SvnArgs.s = "list " + Chr(34) + RepositeryURL + Path + Chr(34)
+  SvnArgs.s = "list " + Chr(34) + RemoteRepositery + Path + Chr(34)
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
     Debug SvnArgs  
@@ -273,7 +276,7 @@ Procedure Search(*Pattern.s)
   
   CreateRegularExpression(0, *Pattern)
   
-  SvnArgs.s = "list " + RepositeryURL + " -R"
+  SvnArgs.s = "list " + RemoteRepositery + " -R"
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
@@ -322,9 +325,9 @@ Procedure Search(*Pattern.s)
 EndProcedure
 
 ;Télécharge en local une version "lecture seule" sur le serveur
-Procedure GetFilesReadOnly(nil)
+Procedure GetRepositeryReadOnly(nil)
   
-  SvnArgs.s = "checkout " + RepositeryURL + " " + LocalRepositeryReadOnly
+  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositeryReadOnly
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
@@ -353,7 +356,7 @@ Procedure GetFilesReadOnly(nil)
   
   RunProgram("explorer.exe", LocalRepositeryReadOnly, "")
   
-  SetGadgetText(#ButtonGetFilesReadOnly, "Recevoir une copie du dépôt en lecture seule")
+  SetGadgetText(#ButtonGetRepositeryReadOnly, "Recevoir une copie du dépôt en lecture seule")
   Enabler()
   
 EndProcedure
@@ -422,9 +425,9 @@ Procedure Commit(nil)
       
 EndProcedure
 
-Procedure GetFiles(nil)
+Procedure GetRepositery(nil)
   
-  SvnArgs.s = "checkout " + RepositeryURL + " " + LocalRepositery + " --username " + UserName + " --password " + Password
+  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositery + " --username " + UserName + " --password " + Password
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
@@ -453,7 +456,7 @@ Procedure GetFiles(nil)
   
   RunProgram("explorer.exe", LocalRepositery, "")
   
-  SetGadgetText(#ButtonGetFiles, "Recevoir dépôt accès complet")
+  SetGadgetText(#ButtonGetRepositery, "Recevoir dépôt accès complet")
   Enabler()  
   
 EndProcedure
@@ -509,24 +512,28 @@ EndProcedure
 ;*****************************************************************************
 ;- MAIN
 
-If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
+If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
-  TextGadget(#TextRepositery, 10, 11, 80, 20, "URL du dépôt")
-  StringGadget(#StringRepositery, 80, 9, 360, 20, RepositeryURL)
+  TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
+  StringGadget(#StringRemoteRepositery, 80, 9, 360, 20, RemoteRepositery)
   StringGadget(#StringSearch, 10, 30, 300, 20, "")
   ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
-  ButtonGadget(#ButtonGetList, 10, 50, 430, 20, "Parcourir le dépôt sur le serveur")
+  ButtonGadget(#ButtonExploreRemoteRepositery, 10, 50, 430, 20, "Explorer le dépôt sur le serveur")
   TreeGadget(#TreeGadget, 10, 70, 430, 250)
-  ButtonGadget(#ButtonGetFilesReadOnly, 10, 320, 430, 20, "Recevoir une copie du dépôt en lecture seule")
-  TextGadget(#TextUsername, 10, 350, 80, 20, "Nom d'utilisateur")
-  StringGadget(#StringUsername, 91, 348, 120, 20, "")
-  TextGadget(#TextPassword, 240, 350, 130, 20, "Mot de passe")
-  StringGadget(#StringPassword, 307, 348, 132, 20, "")
-  ButtonGadget(#ButtonGetFiles, 10, 370, 331, 20, "Recevoir une nouvelle copie de travail du dépôt")
-  ButtonGadget(#ButtonUpdate, 340, 370, 100, 20, "Recevoir MàJ")
-  StringGadget(#StringUpdateComment, 10, 390, 330, 20, "Mise à jour " + Str(Date()))
+  TextGadget(#TextLocalRepositery, 10, 323, 120, 20, "Dépôt local")
+  StringGadget(#StringLocalRepositery, 80, 321, 280, 20, LocalRepositery)
+  ButtonGadget(#ButtonChangeLocalRepositery, 360, 321, 80, 20, "Parcourir")  
+  ButtonGadget(#ButtonGetRepositeryReadOnly, 10, 341, 240, 20, "Recevoir une copie du dépôt en lecture seule") 
+  ButtonGadget(#ButtonExploreLocalRepositery, 250, 341, 190, 20, "Explorer le dépôt local") 
+  TextGadget(#TextUsername, 10, 372, 80, 20, "Nom d'utilisateur")
+  StringGadget(#StringUsername, 91, 370, 120, 20, "")
+  TextGadget(#TextPassword, 239, 372, 65, 20, "Mot de passe")
+  StringGadget(#StringPassword, 307, 370, 132, 20, "")
+  ButtonGadget(#ButtonGetRepositery, 10, 390, 331, 20, "Recevoir une copie de travail du dépôt")
+  ButtonGadget(#ButtonUpdate, 340, 390, 100, 20, "Recevoir MàJ")
+  StringGadget(#StringUpdateComment, 10, 410, 330, 20, "Mise à jour " + Str(Date()))
   GadgetToolTip(#StringUpdateComment, "Commentaire de mise à jour")
-  ButtonGadget(#ButtonCommit, 340, 390, 100, 20, "Envoyer MàJ")
+  ButtonGadget(#ButtonCommit, 340, 410, 100, 20, "Envoyer MàJ")
 
   If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
     Debug "Folder img loading failed"  
@@ -545,13 +552,13 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
         
         Select EventGadget()
             
-          Case  #StringRepositery
+          Case  #StringRemoteRepositery
             
             Select EventType()
                 
               Case #PB_EventType_Change 
                 
-                RepositeryURL = GetGadgetText(#StringRepositery)
+                RemoteRepositery = GetGadgetText(#StringRemoteRepositery)
                 
             EndSelect
             
@@ -594,7 +601,7 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
                 EndIf
                 
             EndSelect
-
+            
           Case #ButtonSearch
             
             Disabler()
@@ -610,21 +617,33 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
             Enabler()
             
-          Case #ButtonGetFilesReadOnly
+          Case #ButtonGetRepositeryReadOnly
             
             Disabler()
             ClearList(Tree())
-            SetGadgetText(#ButtonGetFilesReadOnly, "Veuillez patienter")
-            CreateThread(@GetFilesReadOnly(), nil)
+            SetGadgetText(#ButtonGetRepositeryReadOnly, "Veuillez patienter")
+            CreateThread(@GetRepositeryReadOnly(), nil)
             
-          Case #ButtonGetFiles
+          Case #ButtonChangeLocalRepositery
+            
+            If FileSize(LocalRepositery) = - 2 
+              ;If folder exists
+              LocalRepositery = PathRequester("Dossier du dépôt local", LocalRepositery)
+            Else  
+              ;Else local app folder
+              LocalRepositery = PathRequester("Dossier du dépôt local", GetCurrentDirectory())
+            EndIf
+            
+            SetGadgetText(#StringLocalRepositery, LocalRepositery)
+            
+          Case #ButtonGetRepositery
             
             Disabler()
             ClearList(Tree())
             UserName = GetGadgetText(#StringUserName)
             Password = GetGadgetText(#StringPassword)
-            SetGadgetText(#ButtonGetFiles, "Veuillez patienter")
-            CreateThread(@GetFiles(), nil)
+            SetGadgetText(#ButtonGetRepositery, "Veuillez patienter")
+            CreateThread(@GetRepositery(), nil)
             
           Case #ButtonUpdate
             
@@ -640,13 +659,13 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
             Commit(nil)
             SetGadgetText(#ButtonCommit, "Envoyer MàJ")            
             
-          Case #ButtonGetList
+          Case #ButtonExploreRemoteRepositery
             
             ClearList(Tree())
-            SetGadgetText(#ButtonGetList, "Veuillez patienter")
-            GetFileList(0, 0, "")
+            SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+            GetRemoteFileList(0, 0, "")
             MakeTreeGadget()
-            SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")            
+            SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")            
 
           Case #TreeGadget
             
@@ -665,17 +684,17 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
                 
                 ;If folder, look into
                 If IsFolder(Name)
-                  SetGadgetText(#ButtonGetList, "Veuillez patienter")
-                  GetFileList(Item + 1, SubLevel + 1, FullPath)
+                  SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+                  GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
                   MakeTreeGadget()
                   SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
                   SetGadgetState(#TreeGadget, Item)
-                  SetGadgetText(#ButtonGetList, "Parcourir le dépôt sur le serveur")                
+                  SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
                 Else
                   ;If file, download it
                   Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
                   Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
-                  If URLDownloadToFile_(0,"" + RepositeryURL + "" + FullPath, Filename$, 0, 0) = #S_OK
+                  If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename$, 0, 0) = #S_OK
                     Debug "Download succeded"  
                   Else
                     Debug "Download failed"
@@ -689,6 +708,26 @@ If OpenWindow(0, 0, 0, 450, 420, "Google Code Subversion Test", #PB_Window_Syste
         
     EndSelect
     
+    If GetGadgetText(#StringUsername) = ""
+      DisableGadget(#StringPassword, 1)
+        DisableGadget(#StringPassword, 1)
+
+  DisableGadget(#ButtonGetRepositery, 1)
+  DisableGadget(#StringUpdateComment, 1)
+  DisableGadget(#ButtonCommit, 1)
+  DisableGadget(#ButtonUpdate, 1)
+
+Else
+        DisableGadget(#StringPassword, 0)
+        DisableGadget(#StringPassword, 0)
+
+  DisableGadget(#ButtonGetRepositery, 0)
+  DisableGadget(#StringUpdateComment, 0)
+  DisableGadget(#ButtonCommit, 0)
+  DisableGadget(#ButtonUpdate, 0)
+
+    EndIf
+    
   Until Event = #PB_Event_CloseWindow
   
 EndIf
@@ -696,8 +735,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 62
-; FirstLine = 36
+; CursorPosition = 687
+; FirstLine = 662
 ; Folding = ---
 ; EnableThread
 ; EnableXP
