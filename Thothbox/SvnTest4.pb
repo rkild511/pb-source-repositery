@@ -1,5 +1,11 @@
 UsePNGImageDecoder()
 
+CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+  #PathSeparator = "\"
+CompilerElse 
+  #PathSeparator = "/"
+CompilerEndIf
+  
 ;*****************************************************************************
 ;- CONSTANTS
 
@@ -51,7 +57,7 @@ Global NewList Tree.Path()
 Global UserName.s, Password.s
 Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
 Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery"
-Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
+;Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
 Global ProxyFlag.i = #False
 Global SVNConfigProxyHost.s = "94.23.49.197"
 Global SVNConfigProxyPort.s = "8080"
@@ -68,8 +74,10 @@ Procedure MakeTreeGadget()
   ForEach Tree()
     If Tree()\FolderFlag
       AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FolderImg), Tree()\SubLevel)
+      SetGadgetItemData(#TreeGadget, Tree()\Item, #True)
     Else
       AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FileImg), Tree()\SubLevel)
+      SetGadgetItemData(#TreeGadget, Tree()\Item, #False)
     EndIf
   Next
   ;Open folders
@@ -84,6 +92,8 @@ Procedure.i IsFolder(Path.s)
   LastChar.s = Right(Path, 1)
   If LastChar = "\" Or LastChar = "/"
     ProcedureReturn #True
+  Else
+    ProcedureReturn #False
   EndIf
 EndProcedure
 
@@ -146,7 +156,12 @@ Procedure.s GetFullPathFromTree(Item, SubLevel)
     For i = Item - 1 To 0 Step -1
       If GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel) < SubLevel
         Debug "Parent Item : " + RSet(Str(i),2,"0") + " Parent text : " + GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel)
-        Path = GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel) + Path
+          If GetGadgetItemData(#TreeGadget, i) And IsFolder(GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel)) = #False
+          ;If this is a folder and path separatator is not in the item text
+          Path = GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel) + #PathSeparator + Path
+        Else
+          Path = GetGadgetItemText(#TreeGadget, i, #PB_Tree_SubLevel) + Path
+        EndIf
         SubLevel = GetGadgetItemAttribute(#TreeGadget, i, #PB_Tree_SubLevel)     
       EndIf
     Next      
@@ -164,8 +179,17 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   
   FoldersNb = 0
   NewItemsNb = 0
+  
   If Item <> 0 
-    SelectElement(Tree(), Item - 1)
+    ;If this is not the root
+    
+    ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
+    SelectElement(Tree(), Item - 1 )
+    While NextElement(tree()) And Tree()\SubLevel >= Sublevel  
+      DeleteElement(Tree())
+    Wend
+    
+    SelectElement(Tree(), Item - 1)  
   Else
     ResetList(tree())
   EndIf
@@ -217,6 +241,104 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
 
     CloseProgram(svn) ; Close the connection to the program
     
+    If Item <> FirstItem
+      Debug "First Item : " + Str(FirstItem)
+      Debug "Last Item : " + Str(Item)
+      Debug "Folders Nb : " + Str(FoldersNb)
+      Debug "NewItemsNb : " + Str(NewItemsNb)
+      
+      ;Renumber to the end of the list
+      While NextElement(Tree())
+        Tree()\Item = Item
+        Item + 1
+      Wend
+
+      CompilerIf #PB_Compiler_Debugger
+        Debug "*******"
+        ForEach Tree()
+          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
+        Next
+      CompilerEndIf
+      
+      ;Sort by files/folders the new entries
+      If NewItemsNb > 0
+        SortStructuredList(Tree(), #PB_Sort_Descending, OffsetOf(Path\FolderFlag), #PB_Sort_Integer, FirstItem, FirstItem + NewItemsNb - 1) ;First : sort all
+        ;Sort by names
+        If FoldersNb > 0
+          SortStructuredList(Tree(), #PB_Sort_Ascending|#PB_Sort_NoCase, OffsetOf(Path\Path), #PB_Sort_String, FirstItem, FirstItem + FoldersNb - 1) ; then folders
+        EndIf
+        SortStructuredList(Tree(), #PB_Sort_Ascending|#PB_Sort_NoCase, OffsetOf(Path\Path), #PB_Sort_String, FirstItem + FoldersNb, FirstItem + NewItemsNb - 1) ;and files
+      EndIf
+      CompilerIf #PB_Compiler_Debugger
+        Debug "*******"
+        ForEach Tree()
+          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
+        Next
+      CompilerEndIf
+      Debug "*******"
+      ;Renumber all the list
+      Item = 0
+      ForEach Tree()
+        Tree()\Item = Item
+        Item + 1
+        Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
+      Next
+  
+    EndIf
+      
+  EndIf
+  ;Enabler()  
+EndProcedure
+
+;Get file list on local repositery and construct tree list
+Procedure GetLocalFileList(Item, SubLevel, Path.s)
+  ;Disabler()
+  
+  FoldersNb = 0
+  NewItemsNb = 0
+  
+  If Item <> 0 
+    ;If this is not the root
+    
+    ;Delete all the elements in the current folder (when double click on already explored, to avoid doublons)
+    SelectElement(Tree(), Item - 1 )
+    While NextElement(tree()) And Tree()\SubLevel >= Sublevel  
+      DeleteElement(Tree())
+    Wend
+
+    SelectElement(Tree(), Item - 1)
+  Else
+    ResetList(tree())
+  EndIf
+  
+  FirstItem = Item
+  
+  ;Debug LocalRepositery + Path
+  If ExamineDirectory(0, LocalRepositery + Path, "*.*")  
+    While NextDirectoryEntry(0)
+      NewPath.s = DirectoryEntryName(0)
+      If NewPath <> "" And NewPath <> "." And NewPath <> ".."
+        AddElement(Tree())
+        Tree()\Item = Item
+        Tree()\SubLevel = SubLevel
+        Tree()\Path = NewPath
+        Debug "----"
+        Debug NewPath
+        Debug Item          
+        If DirectoryEntryType(0) <> #PB_DirectoryEntry_File
+          ;If it's a folder
+          Tree()\FolderFlag = #True
+          ;Tree()\Path
+          FoldersNb + 1
+        EndIf
+        ;AddGadgetItem(#TreeGadget, Item, NewPath, 0, SubLevel)
+        NewItemsNb + 1
+        Item + 1
+      EndIf
+      ;Item + 1       
+    Wend
+    FinishDirectory(0)
+   
     If Item <> FirstItem
       Debug "First Item : " + Str(FirstItem)
       Debug "Last Item : " + Str(Item)
@@ -327,7 +449,7 @@ EndProcedure
 ;Télécharge en local une version "lecture seule" sur le serveur
 Procedure GetRepositeryReadOnly(nil)
   
-  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositeryReadOnly
+  SvnArgs.s = "checkout " + RemoteRepositery + " " + LocalRepositery
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
@@ -354,7 +476,7 @@ Procedure GetRepositeryReadOnly(nil)
     CloseProgram(svn) ; Close the connection to the program
   EndIf
   
-  RunProgram("explorer.exe", LocalRepositeryReadOnly, "")
+  RunProgram("explorer.exe", LocalRepositery, "")
   
   SetGadgetText(#ButtonGetRepositeryReadOnly, "Recevoir une copie du dépôt en lecture seule")
   Enabler()
@@ -512,7 +634,7 @@ EndProcedure
 ;*****************************************************************************
 ;- MAIN
 
-If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
+If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
   StringGadget(#StringRemoteRepositery, 80, 9, 360, 20, RemoteRepositery)
@@ -522,6 +644,7 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
   TreeGadget(#TreeGadget, 10, 70, 430, 250)
   TextGadget(#TextLocalRepositery, 10, 323, 120, 20, "Dépôt local")
   StringGadget(#StringLocalRepositery, 80, 321, 280, 20, LocalRepositery)
+  GadgetToolTip(#StringLocalRepositery, "Dossier local du dépôt. Il sera créé s'il n'existe pas.")
   ButtonGadget(#ButtonChangeLocalRepositery, 360, 321, 80, 20, "Parcourir")  
   ButtonGadget(#ButtonGetRepositeryReadOnly, 10, 341, 240, 20, "Recevoir une copie du dépôt en lecture seule") 
   ButtonGadget(#ButtonExploreLocalRepositery, 250, 341, 190, 20, "Explorer le dépôt local") 
@@ -541,7 +664,9 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
   If LoadImage(#FileImg, "gfx\FileIcon16x16.png") = #False
     Debug "File img loading failed"  
   EndIf
-
+  
+  LocalExploration.i = #False
+  
   Repeat
     
     Event = WaitWindowEvent()
@@ -562,6 +687,19 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
                 
             EndSelect
             
+          Case  #StringLocalRepositery
+            
+            Select EventType()
+                
+              Case #PB_EventType_LostFocus
+                
+                LocalRepositery = GetGadgetText(#StringLocalRepositery)
+                If IsFolder(LocalRepositery) = #False
+                  LocalRepositery + #PathSeparator
+                EndIf
+                              
+            EndSelect
+
           Case  #StringUpdateComment
             
             Select EventType()
@@ -605,6 +743,7 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
           Case #ButtonSearch
             
             Disabler()
+            LocalExploration = #False
             FreeGadget(#ButtonSearch)
             ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, "Arrêter la recherche")
             Pattern.s = GetGadgetText(#StringSearch)
@@ -613,6 +752,7 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
           Case #ButtonStopSearch
             
             KillThread(SearchThread)
+            LocalExploration = #False
             FreeGadget(#ButtonStopSearch)
             ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
             Enabler()
@@ -665,8 +805,22 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
             SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
             GetRemoteFileList(0, 0, "")
             MakeTreeGadget()
-            SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")            
-
+            SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")
+            LocalExploration = #False
+            
+          Case #ButtonExploreLocalRepositery
+            
+            If FileSize(LocalRepositery) = -2
+              ClearList(Tree())
+              SetGadgetText(#ButtonExploreLocalRepositery, "Veuillez patienter")
+              GetLocalFileList(0, 0, "")
+              MakeTreeGadget()
+              SetGadgetText(#ButtonExploreLocalRepositery, "Explorer le dépôt local")
+              LocalExploration = #True
+            Else
+              MessageRequester("Alerte", "Le dossier n'existe pas encore." + Chr(13) + Chr(13) + "Peut-être devriez-vous d'abord " + Chr(34) + " Recevoir une copie du dépôt ? " + Chr(34) , #PB_MessageRequester_Ok)
+            EndIf
+              
           Case #TreeGadget
             
             Select EventType()
@@ -676,29 +830,49 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
                 Item = GetGadgetState(#TreeGadget)
                 SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
                 Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+                IsFolder = GetGadgetItemData(#TreeGadget, Item)
                 FullPath.s = GetFullPathFromTree(Item, SubLevel)
                 Debug "--------------------"
                 Debug "Item : " + Str(Item)
                 Debug "SubLevel : " + Str(SubLevel)
                 Debug "Full name : " + FullPath
                 
-                ;If folder, look into
-                If IsFolder(Name)
-                  SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
-                  GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
-                  MakeTreeGadget()
-                  SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
-                  SetGadgetState(#TreeGadget, Item)
-                  SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
+                If LocalExploration
+                  
+                  ;-Local Exploration
+
+                  If IsFolder
+                    ;If folder, look into
+                    SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+                    GetLocalFileList(Item + 1, SubLevel + 1, FullPath)
+                    MakeTreeGadget()
+                    SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+                    SetGadgetState(#TreeGadget, Item)
+                    SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
+                  EndIf
+                    
                 Else
-                  ;If file, download it
-                  Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
-                  Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
-                  If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename$, 0, 0) = #S_OK
-                    Debug "Download succeded"  
+                  
+                  ;-Remote exploration
+                  
+                  If IsFolder
+                    ;If folder, look into
+                    SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+                    GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
+                    MakeTreeGadget()
+                    SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+                    SetGadgetState(#TreeGadget, Item)
+                    SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
                   Else
-                    Debug "Download failed"
-                    MessageRequester("Alerte", "Enregistrement impossible", #PB_MessageRequester_Ok)
+                    ;If file, download it
+                    Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
+                    Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
+                    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename$, 0, 0) = #S_OK
+                      Debug "Download succeded"  
+                    Else
+                      Debug "Download failed"
+                      MessageRequester("Alerte", "Enregistrement impossible", #PB_MessageRequester_Ok)
+                    EndIf
                   EndIf
                 EndIf
                 
@@ -708,24 +882,23 @@ If OpenWindow(0, 0, 0, 450, 430, "Google Code Subversion Test", #PB_Window_Syste
         
     EndSelect
     
+    ;Disable "full access" gadgets if username is not given
     If GetGadgetText(#StringUsername) = ""
       DisableGadget(#StringPassword, 1)
-        DisableGadget(#StringPassword, 1)
-
-  DisableGadget(#ButtonGetRepositery, 1)
-  DisableGadget(#StringUpdateComment, 1)
-  DisableGadget(#ButtonCommit, 1)
-  DisableGadget(#ButtonUpdate, 1)
-
-Else
-        DisableGadget(#StringPassword, 0)
-        DisableGadget(#StringPassword, 0)
-
-  DisableGadget(#ButtonGetRepositery, 0)
-  DisableGadget(#StringUpdateComment, 0)
-  DisableGadget(#ButtonCommit, 0)
-  DisableGadget(#ButtonUpdate, 0)
-
+      DisableGadget(#StringPassword, 1)     
+      DisableGadget(#ButtonGetRepositery, 1)
+      DisableGadget(#StringUpdateComment, 1)
+      DisableGadget(#ButtonCommit, 1)
+      DisableGadget(#ButtonUpdate, 1)
+      
+    Else
+      DisableGadget(#StringPassword, 0)
+      DisableGadget(#StringPassword, 0)
+      DisableGadget(#ButtonGetRepositery, 0)
+      DisableGadget(#StringUpdateComment, 0)
+      DisableGadget(#ButtonCommit, 0)
+      DisableGadget(#ButtonUpdate, 0)
+      
     EndIf
     
   Until Event = #PB_Event_CloseWindow
@@ -735,8 +908,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 687
-; FirstLine = 662
+; CursorPosition = 636
+; FirstLine = 634
 ; Folding = ---
 ; EnableThread
 ; EnableXP
