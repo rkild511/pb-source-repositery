@@ -115,9 +115,9 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
   Output$ = ""
   If svn
     While ProgramRunning(svn)
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Output$ + ReadProgramString(svn) + Chr(13)
-      EndIf
+      Wend
     Wend   
     CloseProgram(svn) ; Close the connection to the program
   EndIf
@@ -214,7 +214,7 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
     
     While ProgramRunning(svn)     
             
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
@@ -237,15 +237,15 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
           Item + 1
         EndIf
         ;Item + 1       
-      EndIf
+      Wend
       Delay(10)
 
     Wend
     
-    Error.s =  ReadProgramError(svn)
-    If Error <> ""
+    Repeat
+      Error.s =  ReadProgramError(svn)
       Debug Error
-    EndIf
+    Until Error = ""
 
     CloseProgram(svn) ; Close the connection to the program
     
@@ -409,7 +409,7 @@ Procedure Search(*Pattern.s)
    
     While ProgramRunning(svn)     
       
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
@@ -434,11 +434,16 @@ Procedure Search(*Pattern.s)
           Item + 1
         EndIf
         ;Item + 1       
-      EndIf
+      Wend
       Delay(10)
       
     Wend
   EndIf
+  
+  Repeat
+    Error.s =  ReadProgramError(svn)
+    Debug Error
+  Until Error = ""
   
   ;MakeTreeGadget()
   FreeGadget(#ButtonStopSearch)
@@ -454,21 +459,21 @@ Procedure GetRepositeryReadOnly(nil)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
         EndIf
         AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
-      EndIf
+      Wend
       Delay(10)
       Counter + 1
     Wend
     
-    Error.s =  ReadProgramError(svn)
-    If Error <> ""
+    Repeat
+      Error.s =  ReadProgramError(svn)
       Debug Error
-    EndIf
+    Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
   EndIf
@@ -487,21 +492,21 @@ Procedure Update(nil)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
         EndIf
         AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
-      EndIf
+      Wend
       Delay(10)
       Counter + 1
     Wend
     
-    Error.s =  ReadProgramError(svn)
-    If Error <> ""
+    Repeat
+      Error.s =  ReadProgramError(svn)
       Debug Error
-    EndIf
+    Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
   EndIf
@@ -515,21 +520,21 @@ Procedure Commit(nil)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
         EndIf
         AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
-      EndIf
+      Wend
       Delay(10)
       Counter + 1
     Wend
     
-    Error.s =  ReadProgramError(svn)
-    If Error <> ""
+    Repeat
+      Error.s =  ReadProgramError(svn)
       Debug Error
-    EndIf
+    Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
   Else
@@ -544,21 +549,21 @@ Procedure GetRepositery(nil)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
+      While AvailableProgramOutput(svn)
         Error.s =  ReadProgramError(svn)
         If Error <> ""
           Debug Error
         EndIf
         AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
-      EndIf
+      Wend
       Delay(10)
       Counter + 1
     Wend
     
-    Error.s =  ReadProgramError(svn)
-    If Error <> ""
+    Repeat
+      Error.s =  ReadProgramError(svn)
       Debug Error
-    EndIf
+    Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
   EndIf
@@ -895,8 +900,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 535
-; FirstLine = 510
+; CursorPosition = 248
+; FirstLine = 99
 ; Folding = ---
 ; EnableThread
 ; EnableXP
