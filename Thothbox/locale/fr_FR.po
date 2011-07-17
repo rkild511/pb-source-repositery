@@ -1,0 +1,26 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Thotbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-17 14:08+0100\n"
+"PO-Revision-Date: 2011-07-17 14:12+0100\n"
+"Last-Translator: djes <djes@free.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: gettext;gettext_noop;t\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SearchPath-0: f:\\Documents\\Code\\PureBasic\\SvnTest\\repositeries\\pb-source-repositery\\Thothbox\n"
+
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:782
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:789
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:804
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:814
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:845
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:859
+msgid "Please wait"
+msgstr "Veuillez patienter"
+
