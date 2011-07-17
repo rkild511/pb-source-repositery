@@ -136,7 +136,7 @@
 ;/////////////////////////////////////////////////////////////////////////////////
 
 
-; IDE Options = PureBasic 4.40 Beta 7 (Windows - x86)
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
 ; ExecutableFormat = Shared Dll
 ; CursorPosition = 91
 ; FirstLine = 71

@@ -460,7 +460,6 @@ EndProcedure
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 157
-; FirstLine = 402
+; CursorPosition = 19
+; FirstLine = 406
 ; Folding = -
-; EnableUnicode

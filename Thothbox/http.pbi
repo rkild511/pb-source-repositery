@@ -1,4 +1,4 @@
-;*********************************************
+﻿;*********************************************
 ;***** Envoi de fichier par requete HTTP *****
 ;******** Par lepiaf31 le 28/06/2011 *********
 ;****** et quelques modif part thyphoon ******
@@ -360,7 +360,5 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 255
-; FirstLine = 241
 ; Folding = ---
 ; EnableXP
