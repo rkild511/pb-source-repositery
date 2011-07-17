@@ -103,12 +103,13 @@ Global gp.globalParameters
 
 gp\page=#mode_searchWindow
 
+XIncludeFile "translator.pbi"
+
 XIncludeFile "preferences.pbi"
 LoadPreferences()
 
-XIncludeFile "multilanguage.pbi"
-SaveLanguageAsModel("languages\model.lng")
-LoadLanguage("languages\"+gp\language)
+
+
 
 XIncludeFile "network.pbi"
 
@@ -144,8 +145,8 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ;-menu
   If CreateMenu(0, WindowID(0))
     MenuTitle("?")
-    MenuItem(0, Language("Menu", "About"))
-    MenuItem(1, Language("Menu", "Preferences"))
+    MenuItem(0, T("About"))
+    MenuItem(1, T("Preferences"))
 
   EndIf
 
@@ -154,19 +155,19 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   CatchImage(0,?Logo)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
   StringGadget(#gdt_search,0,0,250,#gdtH,"")
-  TextGadget(#gdt_version,0,0,100,#gdtH,Language("searchWindow","version")+" "+#prg_version$)
-  TextGadget(#gdt_searchTxt,0,0,100,#gdtH,  Language("searchWindow","search"))
+  TextGadget(#gdt_version,0,0,100,#gdtH,t("version")+" "+#prg_version$)
+  TextGadget(#gdt_searchTxt,0,0,100,#gdtH,  t("search"))
   If LoadFont(0, "Arial", 16)
     SetGadgetFont(#gdt_searchTxt, FontID(0))   ; Set the loaded Arial 16 font as new standard
   EndIf
-  ListIconGadget(#gdt_result,  0,  0, 300, 300, Language("searchWindow","Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
+  ListIconGadget(#gdt_result,  0,  0, 300, 300, T("Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
   GadgetToolTip(#gdt_result, "choose to see code and information")
-  AddGadgetColumn(#gdt_result, 1, Language("searchWindow","Category"), 100)
-  AddGadgetColumn(#gdt_result, 2, Language("searchWindow","Platform"), 250)
+  AddGadgetColumn(#gdt_result, 1, t("Category"), 100)
+  AddGadgetColumn(#gdt_result, 2, t("Platform"), 250)
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
   ContainerGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
-  TextGadget(#gdt_titleTxt,50,50,50,#gdtH,"Title :")
+  TextGadget(#gdt_titleTxt,50,50,50,#gdtH,t("Title")+":")
   StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,#gdtH,"http download memorie")
   
   TextGadget(#gdt_authorTxt,GadgetX(#gdt_titleTxt),GdtDown(#gdt_titleTxt)+10,50,#gdtH,"Author :")
@@ -490,15 +491,16 @@ End
 DataSection
   Logo:
   IncludeBinary "gfx/thotbox.png"
-  
-  XIncludeFile "defaultlanguage.pbi"
+
 EndDataSection 
 
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 26
+; CursorPosition = 169
+; FirstLine = 64
 ; Folding = --
 ; EnableXP
+; UseIcon = ibis.ico
 ; Executable = C:\Program Files (x86)\PureBasic\Thothbox.exe
 ; Compiler = PureBasic 4.60 Beta 3 (Windows - x86)

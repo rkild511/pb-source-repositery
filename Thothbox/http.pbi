@@ -246,12 +246,17 @@ EndProcedure
 ; find the end of the header
 Procedure HTTP_FindHeader(*mem)
   Protected z.l
-  For z=0 To MemorySize(*mem)-4
-    If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
-      ProcedureReturn z+4
-    EndIf
-  Next
-  ProcedureReturn 0
+  If *mem>0
+    For z=0 To MemorySize(*mem)-4
+      If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
+        ProcedureReturn z+4
+      EndIf
+    Next
+  Else 
+    Debug "HTTP_FindHeader : No data to analyse";
+    ProcedureReturn 0
+  EndIf
+  
 EndProcedure
 
 Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
@@ -355,7 +360,7 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 354
-; FirstLine = 300
+; CursorPosition = 255
+; FirstLine = 241
 ; Folding = ---
 ; EnableXP

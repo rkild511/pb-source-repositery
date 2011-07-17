@@ -1,4 +1,5 @@
-language = français.lng
+﻿
+language = fr_FR
 server = http://localhost/thothbox/thothbox.php
 useProxy = 0
 proxyHost = 
