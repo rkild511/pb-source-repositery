@@ -111,7 +111,7 @@ Procedure.i IsFolder(Path.s)
   EndIf
 EndProcedure
 
-;Ne sert pas ici, mais ça peut servir plus tard ;)
+;Ne sert pas ici, mais Ã§a peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
   svn = RunProgram(Prog, Arg, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open )
   Output$ = ""
@@ -449,12 +449,12 @@ Procedure Search(*Pattern.s)
   
   ;MakeTreeGadget()
   FreeGadget(#ButtonStopSearch)
-  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
+  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
   Enabler()
 
 EndProcedure
 
-;Télécharge en local une version "lecture seule" sur le serveur
+;TÃ©lÃ©charge en local une version "lecture seule" sur le serveur
 Procedure GetRepositeryReadOnly(nil)
    
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
@@ -482,7 +482,7 @@ Procedure GetRepositeryReadOnly(nil)
   
   RunProgram("explorer.exe", LocalRepositery, "")
   
-  SetGadgetText(#ButtonGetRepositeryReadOnly, "Recevoir une copie du dépôt en lecture seule")
+  SetGadgetText(#ButtonGetRepositeryReadOnly, t("Receive a read only repositery copy"))
   Enabler()
   
 EndProcedure
@@ -572,7 +572,7 @@ Procedure GetRepositery(nil)
   
   RunProgram("explorer.exe", LocalRepositery, "")
   
-  SetGadgetText(#ButtonGetRepositery, "Recevoir dépôt accès complet")
+  SetGadgetText(#ButtonGetRepositery, t("Receive a repositery work copy "))
   Enabler()  
   
 EndProcedure
@@ -628,31 +628,29 @@ EndProcedure
 ; Here in example, we are forcing to load indonesian locale translation, blank means autodetect locale
 Translator_init("locale\", "fr_FR")
 
-Debug t("search")
-
-If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
+If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
-  TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
+  TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, t("Repositery URL"))
   StringGadget(#StringRemoteRepositery, 80, 9, 360, 20, RemoteRepositery)
   StringGadget(#StringSearch, 10, 30, 300, 20, "")
-  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
-  ButtonGadget(#ButtonExploreRemoteRepositery, 10, 50, 430, 20, "Explorer le dépôt sur le serveur")
+  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
+  ButtonGadget(#ButtonExploreRemoteRepositery, 10, 50, 430, 20, t("Explore remote repositery"))
   TreeGadget(#TreeGadget, 10, 70, 430, 250)
-  TextGadget(#TextLocalRepositery, 10, 323, 120, 20, "Dépôt local")
+  TextGadget(#TextLocalRepositery, 10, 323, 120, 20, t("Local repositery"))
   StringGadget(#StringLocalRepositery, 80, 321, 280, 20, LocalRepositery)
-  GadgetToolTip(#StringLocalRepositery, "Dossier local du dépôt. Il sera créé s'il n'existe pas.")
-  ButtonGadget(#ButtonChangeLocalRepositery, 360, 321, 80, 20, "Parcourir")  
-  ButtonGadget(#ButtonGetRepositeryReadOnly, 10, 341, 240, 20, "Recevoir une copie du dépôt en lecture seule") 
-  ButtonGadget(#ButtonExploreLocalRepositery, 250, 341, 190, 20, "Explorer le dépôt local") 
-  TextGadget(#TextUsername, 10, 372, 80, 20, "Nom d'utilisateur")
+  GadgetToolTip(#StringLocalRepositery, t("Local repositery folder. It'll be created if necessary"))
+  ButtonGadget(#ButtonChangeLocalRepositery, 360, 321, 80, 20, t("Choose"))  
+  ButtonGadget(#ButtonGetRepositeryReadOnly, 10, 341, 240, 20, t("Receive a read only repositery copy")) 
+  ButtonGadget(#ButtonExploreLocalRepositery, 250, 341, 190, 20, t("Explore local repositery")) 
+  TextGadget(#TextUsername, 10, 372, 80, 20, t("User name"))
   StringGadget(#StringUsername, 91, 370, 120, 20, "")
-  TextGadget(#TextPassword, 239, 372, 65, 20, "Mot de passe")
+  TextGadget(#TextPassword, 239, 372, 65, 20, t("Password"))
   StringGadget(#StringPassword, 307, 370, 132, 20, "")
-  ButtonGadget(#ButtonGetRepositery, 10, 390, 331, 20, "Recevoir une copie de travail du dépôt")
-  ButtonGadget(#ButtonUpdate, 340, 390, 100, 20, "Recevoir MàJ")
-  StringGadget(#StringUpdateComment, 10, 410, 330, 20, "Mise à jour " + Str(Date()))
-  GadgetToolTip(#StringUpdateComment, "Commentaire de mise à jour")
-  ButtonGadget(#ButtonCommit, 340, 410, 100, 20, "Envoyer MàJ")
+  ButtonGadget(#ButtonGetRepositery, 10, 390, 331, 20, t("Receive a repositery work copy "))
+  ButtonGadget(#ButtonUpdate, 340, 390, 100, 20, t("Receive update"))
+  StringGadget(#StringUpdateComment, 10, 410, 330, 20, t("Update ") + Str(Date()))
+  GadgetToolTip(#StringUpdateComment, t("Update comment"))
+  ButtonGadget(#ButtonCommit, 340, 410, 100, 20, t("Send update"))
 
   If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
     Debug "Folder img loading failed"  
@@ -704,7 +702,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
 
                 If Trim(GetGadgetText(#StringUpdateComment)) = ""
                   ;Default comment
-                  SetGadgetText(#StringUpdateComment, "Mise à jour " + Str(Date()))
+                  SetGadgetText(#StringUpdateComment, t("Update ") + Str(Date()))
                 EndIf
                 
             EndSelect
@@ -716,7 +714,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
               Case #PB_EventType_LostFocus
                 
                 If FindString(GetGadgetText(#StringUsername), " ")
-                  MessageRequester("Alerte", "Votre nom d'utilisateur ne peut contenir d'espace", #PB_MessageRequester_Ok)
+                  MessageRequester(t("Alert"), t("Your username can't contain space"), #PB_MessageRequester_Ok)
                   SetGadgetText(#StringUsername, "")
                 EndIf
                 UserName = GetGadgetText(#StringUsername)
@@ -730,7 +728,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
               Case #PB_EventType_LostFocus 
                 
                 If FindString(GetGadgetText(#StringPassword), " ")
-                  MessageRequester("Alerte", "Votre mot de passe ne peut contenir d'espace", #PB_MessageRequester_Ok)
+                  MessageRequester(t("Alert"), t("Your password can't contain space"), #PB_MessageRequester_Ok)
                   SetGadgetText(#StringPassword, "")
                 EndIf
                 Password = GetGadgetText(#StringPassword)
@@ -742,7 +740,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             Disabler()
             LocalExploration = #False
             FreeGadget(#ButtonSearch)
-            ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, "Arrêter la recherche")
+            ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, t("Stop search"))
             Pattern.s = GetGadgetText(#StringSearch)
             SearchThread = CreateThread(@Search(), @Pattern)
             
@@ -751,7 +749,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             KillThread(SearchThread)
             LocalExploration = #False
             FreeGadget(#ButtonStopSearch)
-            ButtonGadget(#ButtonSearch, 310, 30, 130, 20, "Rechercher")  
+            ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
             Enabler()
             
           Case #ButtonGetRepositeryReadOnly
@@ -766,10 +764,10 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             If FileSize(LocalRepositery) = - 2 
               ;If folder exists
-              LocalRepositery = PathRequester("Dossier du dépôt local", LocalRepositery)
+              LocalRepositery = PathRequester(t("Local repositery folder"), LocalRepositery)
             Else  
               ;Else local app folder
-              LocalRepositery = PathRequester("Dossier du dépôt local", GetCurrentDirectory())
+              LocalRepositery = PathRequester(t("Local repositery folder"), GetCurrentDirectory())
             EndIf
             
             SetGadgetText(#StringLocalRepositery, LocalRepositery)
@@ -790,15 +788,15 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonUpdate, t("Please wait"))
             Update(nil)
-            SetGadgetText(#ButtonUpdate, "Recevoir MàJ")            
+            SetGadgetText(#ButtonUpdate, t("Receive update"))            
             
           Case #ButtonCommit
             
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
-            SetGadgetText(#ButtonCommit, "Veuillez patienter")
+            SetGadgetText(#ButtonCommit, t("Please wait"))
             Commit(nil)
-            SetGadgetText(#ButtonCommit, "Envoyer MàJ")            
+            SetGadgetText(#ButtonCommit, t("Send update"))            
             
           Case #ButtonExploreRemoteRepositery
             
@@ -806,7 +804,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
             GetRemoteFileList(0, 0, "")
             MakeTreeGadget()
-            SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")
+            SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))
             LocalExploration = #False
             
           Case #ButtonExploreLocalRepositery
@@ -816,10 +814,10 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
               SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
               GetLocalFileList(0, 0, "")
               MakeTreeGadget()
-              SetGadgetText(#ButtonExploreLocalRepositery, "Explorer le dépôt local")
+              SetGadgetText(#ButtonExploreLocalRepositery, t("Explore local repositery"))
               LocalExploration = #True
             Else
-              MessageRequester("Alerte", "Le dossier n'existe pas encore." + Chr(13) + Chr(13) + "Peut-être devriez-vous d'abord " + Chr(34) + " Recevoir une copie du dépôt ? " + Chr(34) , #PB_MessageRequester_Ok)
+              MessageRequester(t("Alert"), t("Folder doesn't exist.") + Chr(13) + Chr(13) + t("Maybe should you try first ") + Chr(34) + t(" to receive a repositery copy ? ") + Chr(34) , #PB_MessageRequester_Ok)
             EndIf
               
           Case #TreeGadget
@@ -849,7 +847,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
                     MakeTreeGadget()
                     SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
                     SetGadgetState(#TreeGadget, Item)
-                    SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
+                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))                
                   EndIf
                     
                 Else
@@ -863,16 +861,16 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
                     MakeTreeGadget()
                     SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
                     SetGadgetState(#TreeGadget, Item)
-                    SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")                
+                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))                
                   Else
                     ;If file, download it
                     Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
-                    Filename$ = SaveFileRequester("Où enregistrer le fichier " + Name + " ?", Name, "", 0)
+                    Filename$ = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
                     If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename$, 0, 0) = #S_OK
                       Debug "Download succeded"  
                     Else
                       Debug "Download failed"
-                      MessageRequester("Alerte", "Enregistrement impossible", #PB_MessageRequester_Ok)
+                      MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
                     EndIf
                   EndIf
                 EndIf
@@ -910,8 +908,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 640
-; FirstLine = 624
+; CursorPosition = 228
+; FirstLine = 196
 ; Folding = ---
+; EnableUnicode
 ; EnableThread
 ; EnableXP
+; EnablePurifier
