@@ -433,8 +433,11 @@ Repeat
            
           EndIf
         Case #gdt_result
-          gp\page=#mode_viewWindow
-          refreachWindow(gp\page)
+          If EventType()=#PB_EventType_LeftClick 
+            getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+          endif
+          ;gp\page=#mode_viewWindow
+          ;refreachWindow(gp\page)
           
           ;- Event viewWindow  
         Case #gdt_historic
@@ -495,8 +498,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 106
-; FirstLine = 84
+; CursorPosition = 437
+; FirstLine = 417
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
