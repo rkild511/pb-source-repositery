@@ -131,6 +131,6 @@ Procedure.s T(msg.s)
 EndProcedure
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 42
-; FirstLine = 21
+; CursorPosition = 61
 ; Folding = --
+; EnableUnicode

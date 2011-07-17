@@ -458,13 +458,9 @@ Procedure.s getLanguageName()
     EndSelect  
 EndProcedure
 
- 
-; jaPBe Version=3.7.2.627
-; Build=0
-; Language=0x0000 Language Neutral
-; FirstLine=0
-; CursorPosition=3
-; EnableXP
-; ExecutableFormat=Windows
-; DontSaveDeclare
-; EOF
+
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 157
+; FirstLine = 402
+; Folding = -
+; EnableUnicode
