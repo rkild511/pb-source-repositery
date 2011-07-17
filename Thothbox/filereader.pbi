@@ -29,7 +29,7 @@ Procedure.s FileReader_readStr(offset)
 EndProcedure
 
 Procedure FileReader(filename.s)
-  Protected buf.OFSTRUCT
+  Protected buf.OFSTRUCT,hFile.i,addr.i
   
   hFile = ReadFile(#PB_Any, filename)
   If hFile
@@ -67,7 +67,7 @@ Procedure FileReader(filename.s)
 EndProcedure
   
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 20
-; FirstLine = 24
+; CursorPosition = 31
+; FirstLine = 13
 ; Folding = -
 ; EnableUnicode

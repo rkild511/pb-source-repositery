@@ -435,7 +435,7 @@ Repeat
         Case #gdt_result
           If EventType()=#PB_EventType_LeftClick 
             getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
-          endif
+          EndIf
           ;gp\page=#mode_viewWindow
           ;refreachWindow(gp\page)
           
@@ -454,7 +454,9 @@ Repeat
             gp\server=GetGadgetText(#gdt_prefsServer)
           EndIf
         Case #gdt_prefsServerTest
-          servercall()
+          If EventType()=#PB_EventType_LeftClick 
+              servercall()
+          EndIf
         Case #gdt_prefsLanguage
           gp\language=GetGadgetText(#gdt_prefsLanguage)
         Case #gdt_usePoxy
@@ -498,8 +500,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 437
-; FirstLine = 417
+; CursorPosition = 457
+; FirstLine = 420
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
