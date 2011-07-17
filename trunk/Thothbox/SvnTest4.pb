@@ -628,6 +628,8 @@ EndProcedure
 ; Here in example, we are forcing to load indonesian locale translation, blank means autodetect locale
 Translator_init("locale\", "fr_FR")
 
+Debug t("search")
+
 If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
@@ -908,8 +910,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 628
-; FirstLine = 597
+; CursorPosition = 640
+; FirstLine = 624
 ; Folding = ---
 ; EnableThread
 ; EnableXP
