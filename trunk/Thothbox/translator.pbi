@@ -55,7 +55,7 @@ EndProcedure
 
 Procedure Translator(filename.s)
   Global reader
-  
+  Debug filename
   reader = FileReader(filename)
   ; Sanity check file Size.
   If (FileReader_getSize() < #TRANSLATION_TABLE_POINTER_OFFSET)
@@ -131,6 +131,6 @@ Procedure.s T(msg.s)
 EndProcedure
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 47
-; FirstLine = 27
+; CursorPosition = 57
+; FirstLine = 22
 ; Folding = --

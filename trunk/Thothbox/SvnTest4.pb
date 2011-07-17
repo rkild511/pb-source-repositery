@@ -909,7 +909,7 @@ End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
 ; CursorPosition = 628
-; FirstLine = 613
+; FirstLine = 597
 ; Folding = ---
 ; EnableThread
 ; EnableXP
