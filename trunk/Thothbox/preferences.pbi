@@ -1,7 +1,8 @@
-Procedure LoadPreferences()
+﻿Procedure LoadPreferences()
   If OpenPreferences(#prg_name$+".prefs")
     gp\language=ReadPreferenceString("language", "fr_FR")
-    Debug Translator_init("locale\", gp\language)
+    ;Debug Translator_init("locale\", gp\language)
+    Translator_init("locale\", gp\language)
     gp\server=ReadPreferenceString("server", "http://localhost/thothbox.php")
     gp\useProxy=ReadPreferenceInteger("useProxy", #False)
     gp\proxy\host=ReadPreferenceString("proxyHost", "")
@@ -30,14 +31,13 @@ EndProcedure
   
 Procedure InitLanguageGadget()
    If ExamineDirectory(0, GetCurrentDirectory()+"locale\", "*.mo")  
-    Define n.l=-1
+    Define n.l=-1,name.s
     While NextDirectoryEntry(0)
       If DirectoryEntryType(0) = #PB_DirectoryEntry_File
         n+1
-        AddGadgetItem(#gdt_prefsLanguage,n,Mid(DirectoryEntryName(0),0,Len(DirectoryEntryName(0))-3))
-        Debug DirectoryEntryName(0)
-        If DirectoryEntryName(0)=gp\language
-          Debug"SELECT"
+        name=Mid(DirectoryEntryName(0),0,Len(DirectoryEntryName(0))-3)
+        AddGadgetItem(#gdt_prefsLanguage,n,name)
+        If name=gp\language
           SetGadgetState(#gdt_prefsLanguage,n)
         EndIf
         
@@ -73,6 +73,6 @@ EndProcedure
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 3
+; CursorPosition = 2
 ; Folding = -
 ; EnableXP

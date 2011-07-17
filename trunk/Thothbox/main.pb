@@ -1,6 +1,6 @@
-; Thothbox
+ï»¿; Thothbox
 ; gui :Yann LEBRUN / Thyphoon
-; svn : Jésahel Benoist / Djes
+; svn : JÀ©sahel Benoist / Djes
 ; web : GallyHC
 ; GoScintilla : Srod
 ; Purebasic tools Configuration
@@ -105,11 +105,9 @@ gp\page=#mode_searchWindow
 
 XIncludeFile "translator.pbi"
 
+
 XIncludeFile "preferences.pbi"
 LoadPreferences()
-
-
-
 
 XIncludeFile "network.pbi"
 
@@ -145,8 +143,8 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ;-menu
   If CreateMenu(0, WindowID(0))
     MenuTitle("?")
-    MenuItem(0, T("About"))
-    MenuItem(1, T("Preferences"))
+    MenuItem(0, t("About"))
+    MenuItem(1, t("Preferences"))
 
   EndIf
 
@@ -160,7 +158,7 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   If LoadFont(0, "Arial", 16)
     SetGadgetFont(#gdt_searchTxt, FontID(0))   ; Set the loaded Arial 16 font as new standard
   EndIf
-  ListIconGadget(#gdt_result,  0,  0, 300, 300, T("Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
+  ListIconGadget(#gdt_result,  0,  0, 300, 300, t("Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
   GadgetToolTip(#gdt_result, "choose to see code and information")
   AddGadgetColumn(#gdt_result, 1, t("Category"), 100)
   AddGadgetColumn(#gdt_result, 2, t("Platform"), 250)
@@ -170,7 +168,7 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   TextGadget(#gdt_titleTxt,50,50,50,#gdtH,t("Title")+":")
   StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,#gdtH,"http download memorie")
   
-  TextGadget(#gdt_authorTxt,GadgetX(#gdt_titleTxt),GdtDown(#gdt_titleTxt)+10,50,#gdtH,"Author :")
+  TextGadget(#gdt_authorTxt,GadgetX(#gdt_titleTxt),GdtDown(#gdt_titleTxt)+10,50,#gdtH,t("Author")+" :")
   StringGadget(#gdt_author,GdtRight(#gdt_authorTxt),GadgetY(#gdt_authorTxt),250,#gdtH,"Bidule")
   
   ButtonGadget(#gdt_backSearch,0,0,100,#gdtH,"Back")
@@ -286,19 +284,19 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   ButtonGadget(#gdt_prefsback,0,0,100,#gdtH,"Back")
   
   
-  TextGadget(#gdt_prefsServerTxt,10,GdtDown(#gdt_prefsback)+#gdtH,50,#gdtH,"Server")
+  TextGadget(#gdt_prefsServerTxt,10,GdtDown(#gdt_prefsback)+#gdtH,50,#gdtH,t("Server"))
   StringGadget(#gdt_prefsServer,GdtRight(#gdt_prefsServerTxt),GadgetY(#gdt_prefsServerTxt),250,#gdtH,"")
-  ButtonGadget(#gdt_prefsServerTest,GdtRight(#gdt_prefsServer)+#gdtH,GadgetY(#gdt_prefsServerTxt),60,#gdtH,"Test")
+  ButtonGadget(#gdt_prefsServerTest,GdtRight(#gdt_prefsServer)+#gdtH,GadgetY(#gdt_prefsServerTxt),60,#gdtH,t("Test"))
   ComboBoxGadget(#gdt_prefsLanguage,GdtRight(#gdt_prefsServerTest)+#gdtH,GadgetY(#gdt_prefsServerTest),200,20)
-  Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsServerTxt)+#gdtH, 400, 150, "Network")
-  CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, "Use a Proxy")
-  TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+#gdtH,75,20,"Proxy HTTP :")
+  Frame3DGadget(#gdt_poxyFrame, 10, GdtDown(#gdt_prefsServerTxt)+#gdtH, 400, 150, t("Network"))
+  CheckBoxGadget(#gdt_usePoxy, GadgetX(#gdt_poxyFrame)+10,  GadgetY(#gdt_poxyFrame)+#gdtH, 250, #gdtH, t("Use a Proxy"))
+  TextGadget(#gdt_poxyHostTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_usePoxy)+#gdtH,75,20,t("Proxy HTTP")+" :")
   StringGadget(#gdt_poxyHost,GdtRight(#gdt_poxyHostTxt),GadgetY(#gdt_poxyHostTxt),200,25,"")
-  TextGadget(#gdt_poxyPortTxt,GdtRight(#gdt_poxyHost)+10,GadgetY(#gdt_poxyHost),30,#gdtH,"Port :")
+  TextGadget(#gdt_poxyPortTxt,GdtRight(#gdt_poxyHost)+10,GadgetY(#gdt_poxyHost),30,#gdtH,t("Port")+" :")
   SpinGadget(#gdt_poxyPort,GdtRight(#gdt_poxyPortTxt),GadgetY(#gdt_poxyPortTxt),50,#gdtH,0,9999,#PB_Spin_Numeric)
-  TextGadget(#gdt_poxyLoginTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_poxyHostTxt)+#gdtH,50,#gdtH,"Login :")
+  TextGadget(#gdt_poxyLoginTxt,GadgetX(#gdt_usePoxy),GdtDown(#gdt_poxyHostTxt)+#gdtH,50,#gdtH,t("Login")+" :")
   StringGadget(#gdt_poxyLogin,GdtRight(#gdt_poxyLoginTxt),GadgetY(#gdt_poxyLoginTxt),130,#gdtH,"")
-  TextGadget(#gdt_poxyPasswordTxt,GdtRight(#gdt_poxyLogin)+10,GadgetY(#gdt_poxyLogin),50,#gdtH,"Password :")
+  TextGadget(#gdt_poxyPasswordTxt,GdtRight(#gdt_poxyLogin)+10,GadgetY(#gdt_poxyLogin),50,#gdtH,t("Password")+" :")
   StringGadget(#gdt_poxyPassword,GdtRight(#gdt_poxyPasswordTxt),GadgetY(#gdt_poxyPasswordTxt),130,#gdtH,"")
   CloseGadgetList()
 EndIf
@@ -414,7 +412,7 @@ Repeat
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
           txt+"Jean-Yves LERICQUE/ GallyHC"+#LFCR$
-          txt+"Jésahel BENOIST / Djes"+#LFCR$
+          txt+"JÀ©sahel BENOIST / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
           txt+"thanks to"+#LFCR$
@@ -497,8 +495,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 169
-; FirstLine = 64
+; CursorPosition = 106
+; FirstLine = 84
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico

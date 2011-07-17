@@ -1512,7 +1512,7 @@ EndProcedure
 
 CompilerEndIf
 
-; IDE Options = PureBasic 4.50 Beta 4 (Windows - x86)
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
 ; ExecutableFormat = Shared Dll
 ; CursorPosition = 3
 ; Folding = ---------

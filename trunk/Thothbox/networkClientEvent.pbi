@@ -1,4 +1,4 @@
-; Client Event4 support by DarkPlayer, PureFan
+﻿; Client Event4 support by DarkPlayer, PureFan
 ;http://www.purebasic.fr/english/viewtopic.php?f=12&t=42559&hilit=Disconnect
 ;EnableExplicit
 
@@ -222,6 +222,5 @@ Macro NetworkClientEvent(Connection)
   Hook_NetworkClientEvent(Connection)
 EndMacro
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1
 ; Folding = -----
 ; EnableXP

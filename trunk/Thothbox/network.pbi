@@ -1,4 +1,4 @@
-Procedure servercall()
+﻿Procedure servercall()
   Protected http.HTTP_Query,*rawdata,lenght.l
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
@@ -59,7 +59,5 @@ Procedure serverSearch(keywords.s)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 52
-; FirstLine = 5
 ; Folding = -
 ; EnableXP
