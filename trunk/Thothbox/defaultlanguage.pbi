@@ -7,7 +7,7 @@
   ; "_END_" will indicate the end of the language list (as there is no fixed number)
   ;
   ; Note: The identifier strings are case insensitive to make live easier :)
-  
+
   Language:
   
   ; ===================================================
@@ -19,20 +19,15 @@
   ; ===================================================
   Data$ "_GROUP_", "searchWindow"
   ; ===================================================
-  Data$ "Ok",	"Ok"
-  Data$ "Cancel",	"Cancel"
-  ;For the password
-  Data$ "Fail", "Fail"
-  Data$ "VeryWeak", "Very weak"
-  Data$ "Weak", "Weak"
-  Data$ "OK", "OK"
-  Data$ "Good", "Good"
-  Data$ "Great", "Great"
-  Data$ "Strong", "Strong"
-  Data$ "VeryStrong", "Very strong"
+  Data$ "Version",	"Version"
+  Data$ "search",	"Search"
+  Data$ "name",	"Name"
+  Data$ "category",	"Category"
+  Data$ "Platform","Platform"
   ; ===================================================
   Data$ "_GROUP_", "viewWindow"
   ; ===================================================
+  
   Data$ "Search",	"Search"
   Data$ "Name",	"Name"
   Data$ "NewDbRequestTitle", "Create a New ThyKey Database"
@@ -67,5 +62,5 @@
   
 ;EndDataSection
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 18
+; CursorPosition = 23
 ; EnableXP

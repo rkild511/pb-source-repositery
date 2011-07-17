@@ -228,7 +228,7 @@ Procedure.s Language(Group$, Name$)
     
   EndIf
   
-  ProcedureReturn "*" + String$
+  ProcedureReturn String$
 EndProcedure
 
 loadLanguage("")
@@ -261,8 +261,8 @@ EndProcedure
 
 ; -----------------------------------------------------------------
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 59
-; FirstLine = 57
+; CursorPosition = 230
+; FirstLine = 189
 ; Folding = -
 ; EnableXP
 ; UseMainFile = main.pb
