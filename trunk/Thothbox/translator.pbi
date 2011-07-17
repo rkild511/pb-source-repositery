@@ -13,8 +13,8 @@ IncludeFile "locale.pbi"
 
 Declare.s autodetect_(podir.s, requested_locale.s)
 Declare Translator(filename.s)
-Declare.s Tranlator_getOrigMessage(index)
-Declare.s Tranlator_getTranslationMessage (index, *len)
+Declare.s Tranlator_getOrigMessage(index.l)
+Declare.s Tranlator_getTranslationMessage (index.l, *len)
 Declare.s Tranlator_translate(message.s, *retlen)
 
 Procedure Translator_init(podir.s, locale.s)
@@ -63,9 +63,12 @@ Procedure Translator(filename.s)
   EndIf
   
   ; Load pointer info.
-	count = FileReader_readInt(#COUNT_OFFSET);
-	origTableOffset = FileReader_readInt(#ORIG_TABLE_POINTER_OFFSET);
-	translationTableOffset = FileReader_readInt(#TRANSLATION_TABLE_POINTER_OFFSET);
+;	count.l = FileReader_readInt(#COUNT_OFFSET);
+;	origTableOffset.l = FileReader_readInt(#ORIG_TABLE_POINTER_OFFSET);
+;	translationTableOffset.l = FileReader_readInt(#TRANSLATION_TABLE_POINTER_OFFSET);
+	count.l                  = PeekL(*Translator_MemoryID + #COUNT_OFFSET)
+	origTableOffset.l        = PeekL(*Translator_MemoryID + #ORIG_TABLE_POINTER_OFFSET)
+	translationTableOffset.l = PeekL(*Translator_MemoryID + #TRANSLATION_TABLE_POINTER_OFFSET)
   
   ; Further sanity check file Size.
   If (FileReader_getSize() < origTableOffset Or FileReader_getSize() < translationTableOffset)
@@ -73,24 +76,29 @@ Procedure Translator(filename.s)
   EndIf
 EndProcedure
 
-Procedure.s Tranlator_getOrigMessage(index)
-  Protected len, msgOffset
+Procedure.s Tranlator_getOrigMessage(index.l)
+  Protected len.l, msgOffset.l
   
-  len = FileReader_readInt(origTableOffset + index * 8)
-	msgOffset = FileReader_readInt(origTableOffset + index * 8 + 4)
-  ProcedureReturn FileReader_readStr(msgOffset)
+  ;len.l = FileReader_readInt(origTableOffset + index * 8)
+	;msgOffset = FileReader_readInt(origTableOffset + index * 8 + 4)
+  ;ProcedureReturn FileReader_readStr(msgOffset)
+  len       = PeekL(*Translator_MemoryID + origTableOffset + index * 8)
+  msgOffset = PeekL(*Translator_MemoryID + origTableOffset + index * 8 + 4)
+  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_UTF8)
+  
 EndProcedure
 
-Procedure.s Tranlator_getTranslationMessage(index, *len)
-  Protected msgOffset
-  *len = FileReader_readInt(translationTableOffset + index * 8)
+Procedure.s Tranlator_getTranslationMessage(index.l, *len)
+  Protected msgOffset.l
+  *len      = FileReader_readInt(translationTableOffset + index * 8)
   msgOffset = FileReader_readInt(translationTableOffset + index * 8 + 4)
-  ProcedureReturn FileReader_readStr(msgOffset)
+;  ProcedureReturn FileReader_readStr(msgOffset)
+  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, *len, #PB_UTF8)
 EndProcedure
 
 Procedure.s Tranlator_translate(message.s, *retlen)
-  Protected low, high, mid
-  Protected i, origMsg.s, retlen
+  Protected low.l, high.l, mid.l
+  Protected i, origMsg.s, retlen.l
   
   ; Lookup the translation With binary search.
 	low = 0
@@ -98,7 +106,7 @@ Procedure.s Tranlator_translate(message.s, *retlen)
   While (low <= high)
     mid = (low + high) / 2
     origMsg = Tranlator_getOrigMessage(mid)
-    i = CompareMemoryString(@message, @origMsg, 1, -1, #PB_UTF8)
+    i = CompareMemoryString(@message, @origMsg, 0, -1, #PB_UTF8)
     If (i < 0)
       high = mid - 1
     ElseIf (i > 0)
@@ -131,6 +139,7 @@ Procedure.s T(msg.s)
 EndProcedure
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 61
+; CursorPosition = 108
+; FirstLine = 95
 ; Folding = --
 ; EnableUnicode

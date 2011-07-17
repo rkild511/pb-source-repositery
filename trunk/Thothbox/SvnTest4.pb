@@ -111,7 +111,7 @@ Procedure.i IsFolder(Path.s)
   EndIf
 EndProcedure
 
-;Ne sert pas ici, mais Ã§a peut servir plus tard ;)
+;Ne sert pas ici, mais ça peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
   svn = RunProgram(Prog, Arg, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open )
   Output$ = ""
@@ -125,6 +125,11 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
   EndIf
   ProcedureReturn Output$
 EndProcedure
+
+;To correct the infamous ReadProgramString() sending ascii instead of utf8 in an unicode compiled program
+Procedure.s ASCII2UTF8(str.s)
+  ProcedureReturn PeekS(@str, -1, #PB_Ascii)
+EndProcedure  
 
 Procedure Disabler()
   For i = 0 To #END_OF_THE_GADGETS_TO_DISABLE - 1
@@ -215,14 +220,22 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   If svn
     
     While ProgramRunning(svn)     
-            
+      ;Get svn output entirely (not line by line as we can in ascii) 
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
-        If Error <> ""
-          Debug Error
-        EndIf
-        NewPath.s = ReadProgramString(svn)
-        If NewPath<> ""
+        Output.s + ASCII2UTF8(ReadProgramString(svn))
+      Wend
+      Delay(10)
+    Wend
+    
+    i=1
+
+    nb = CountString(Output, Chr(13) + Chr(10))
+    If nb >= 1
+      For i = 1 To nb + 1
+        ;extract lines and get out CR+LF        
+        NewPath.s = StringField(Output, i, Chr(13) + Chr(10))
+        NewPath.s = ReplaceString(ReplaceString(NewPath.s, Chr(13), ""), Chr(10), "")
+        If NewPath <> ""
           AddElement(Tree())
           Tree()\Item = Item
           Tree()\SubLevel = SubLevel
@@ -239,13 +252,12 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
           Item + 1
         EndIf
         ;Item + 1       
-      Wend
-      Delay(10)
-
-    Wend
+        Debug r
+      Next i
+    EndIf
     
     Repeat
-      Error.s =  ReadProgramError(svn)
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
       Debug Error
     Until Error = ""
 
@@ -404,48 +416,85 @@ Procedure Search(*Pattern.s)
   ClearList(Tree())
   ;SetGadgetText(#ButtonSearch, "Veuillez patienter")
   Item = 0  
-  CreateRegularExpression(0, *Pattern)  
+  
   svn = SubversionCall("list " + RemoteRepositery + " -R")
     
   If svn
-   
+    
     While ProgramRunning(svn)     
-      
+      ;Get svn output entirely (not line by line as we can in ascii) 
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
-        If Error <> ""
-          Debug Error
-        EndIf
-        Path.s = ReadProgramString(svn)
-        Debug Path
-        If Path<> "" And MatchRegularExpression(0, Path)
-          ;AddElement(Tree())
-          ;Tree()\Item = Item
-          ;Tree()\SubLevel = SubLevel
-          ;Tree()\Path = Path
-          ;Debug "----"
-          Debug Path
+        Output.s + ASCII2UTF8(ReadProgramString(svn))
+      Wend
+      Delay(10)
+    Wend
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
+    i=1
+    CreateRegularExpression(0, *Pattern)
+    
+    nb = CountString(Output, Chr(13) + Chr(10))
+    If nb >= 1
+      For i = 1 To nb + 1
+        ;extract lines and get out CR+LF        
+        NewPath.s = StringField(Output, i, Chr(13) + Chr(10))
+        NewPath.s = ReplaceString(ReplaceString(NewPath.s, Chr(13), ""), Chr(10), "")
+        If NewPath <> "" And MatchRegularExpression(0, NewPath)
+          Debug NewPath
           Debug Item          
-          ;If IsFolder(Path.s)
-          ;  Tree()\FolderFlag = #True
-          ;  FoldersNb + 1
-          ;EndIf
           ;Directly adding to the TreeGadget to not have to wait for result
-          AddGadgetItem(#TreeGadget, Item, Path)
-          ;NewItemsNb + 1
+          AddGadgetItem(#TreeGadget, Item, NewPath)
           Item + 1
         EndIf
         ;Item + 1       
-      Wend
-      Delay(10)
-      
-    Wend
+      Next i      
+    EndIf
+    
   EndIf
   
-  Repeat
-    Error.s =  ReadProgramError(svn)
-    Debug Error
-  Until Error = ""
+;   If svn
+;    
+;     While ProgramRunning(svn)     
+;       
+;       While AvailableProgramOutput(svn)
+;         Error.s =  ASCII2UTF8(ReadProgramError(svn))
+;         If Error <> ""
+;           Debug Error
+;         EndIf
+;         Path.s = ASCII2UTF8(ReadProgramString(svn))
+;         Debug Path
+;         If Path<> "" And MatchRegularExpression(0, Path)
+;           ;AddElement(Tree())
+;           ;Tree()\Item = Item
+;           ;Tree()\SubLevel = SubLevel
+;           ;Tree()\Path = Path
+;           ;Debug "----"
+;           Debug Path
+;           Debug Item          
+;           ;If IsFolder(Path.s)
+;           ;  Tree()\FolderFlag = #True
+;           ;  FoldersNb + 1
+;           ;EndIf
+;           ;Directly adding to the TreeGadget to not have to wait for result
+;           AddGadgetItem(#TreeGadget, Item, Path)
+;           ;NewItemsNb + 1
+;           Item + 1
+;         EndIf
+;         ;Item + 1       
+;       Wend
+;       Delay(10)
+;       
+;     Wend
+;   EndIf
+;   
+;   Repeat
+;     Error.s =  ASCII2UTF8(ReadProgramError(svn))
+;     Debug Error
+;   Until Error = ""
   
   ;MakeTreeGadget()
   FreeGadget(#ButtonStopSearch)
@@ -462,18 +511,18 @@ Procedure GetRepositeryReadOnly(nil)
   If svn
     While ProgramRunning(svn)     
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
+        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(ReadProgramString(svn)))
       Wend
       Delay(10)
       Counter + 1
     Wend
     
     Repeat
-      Error.s =  ReadProgramError(svn)
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
       Debug Error
     Until Error = ""
     
@@ -495,7 +544,7 @@ Procedure Update(nil)
   If svn
     While ProgramRunning(svn)     
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
         If Error <> ""
           Debug Error
         EndIf
@@ -506,7 +555,7 @@ Procedure Update(nil)
     Wend
     
     Repeat
-      Error.s =  ReadProgramError(svn)
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
       Debug Error
     Until Error = ""
     
@@ -523,7 +572,7 @@ Procedure Commit(nil)
   If svn
     While ProgramRunning(svn)     
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
         If Error <> ""
           Debug Error
         EndIf
@@ -534,7 +583,7 @@ Procedure Commit(nil)
     Wend
     
     Repeat
-      Error.s =  ReadProgramError(svn)
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
       Debug Error
     Until Error = ""
     
@@ -552,18 +601,18 @@ Procedure GetRepositery(nil)
   If svn
     While ProgramRunning(svn)     
       While AvailableProgramOutput(svn)
-        Error.s =  ReadProgramError(svn)
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
+        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(ReadProgramString(svn)))
       Wend
       Delay(10)
       Counter + 1
     Wend
     
     Repeat
-      Error.s =  ReadProgramError(svn)
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
       Debug Error
     Until Error = ""
     
@@ -604,7 +653,7 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
     If ProgramExitCode(svn)
       Result$ = ""
       Repeat
-        Error$ = ReadProgramError(svn)
+        Error$ = ASCII2UTF8(ReadProgramError(svn))
         If Error$ <> ""
           Error$ + Chr(13)
         EndIf
@@ -908,8 +957,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 203
-; FirstLine = 196
+; CursorPosition = 435
+; FirstLine = 416
 ; Folding = ---
 ; EnableUnicode
 ; EnableThread
