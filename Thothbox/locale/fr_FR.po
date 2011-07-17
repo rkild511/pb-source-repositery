@@ -1,53 +1,46 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Thotbox\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-17 14:56+0100\n"
-"PO-Revision-Date: 2011-07-17 14:57+0100\n"
-"Last-Translator: Yann LEBRUN <thyphoon@wanadoo.fr>\n"
+"POT-Creation-Date: 2011-07-17 15:51+0100\n"
+"PO-Revision-Date: 2011-07-17 15:52+0100\n"
+"Last-Translator: djes <djes@free.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gettext;gettext_noop;t\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Language: French\n"
-"X-Poedit-Country: FRANCE\n"
-"X-Poedit-SearchPath-0: N:\\Purebasic\\Purebasic Projects\\Thothbox\n"
+"X-Poedit-SearchPath-0: f:\\Documents\\Code\\PureBasic\\SvnTest\\repositeries\\pb-source-repositery\\Thothbox\n"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/main.pb:158
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:158
 msgid "version"
-msgstr "version"
+msgstr "Version"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/main.pb:159
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:159
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:631
 msgid "search"
 msgstr "Rechercher"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/main.pb:165
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:165
 msgid "Category"
-msgstr "catégorie"
+msgstr "Catégorie"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/main.pb:166
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:166
 msgid "Platform"
-msgstr "platforme"
+msgstr "Plateforme"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/main.pb:170
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:170
 msgid "Title"
-msgstr "titre"
+msgstr "Titre"
 
-#: N:\Purebasic\Purebasic
-#: Projects\Thothbox/SvnTest4.pb:760
-#: Projects\Thothbox/SvnTest4.pb:782
-#: Projects\Thothbox/SvnTest4.pb:789
-#: Projects\Thothbox/SvnTest4.pb:804
-#: Projects\Thothbox/SvnTest4.pb:814
-#: Projects\Thothbox/SvnTest4.pb:845
-#: Projects\Thothbox/SvnTest4.pb:859
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:762
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:784
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:791
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:806
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:816
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:847
+#: f:\Documents\Code\PureBasic\SvnTest\repositeries\pb-source-repositery\Thothbox/SvnTest4.pb:861
 msgid "Please wait"
 msgstr "Veuillez patienter"
 
