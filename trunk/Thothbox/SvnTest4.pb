@@ -69,6 +69,12 @@ InitNetwork()
 ;*****************************************************************************
 ;- PROCEDURES
 
+Procedure.s t(txt.s)
+  
+  
+  
+EndProcedure
+
 Procedure SubversionCall(SvnArgs.s, Path.s = "")
 
   If ProxyFlag
@@ -780,7 +786,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
-            SetGadgetText(#ButtonUpdate, "Veuillez patienter")
+            SetGadgetText(#ButtonUpdate, t("Veuillez patienter"))
             Update(nil)
             SetGadgetText(#ButtonUpdate, "Recevoir M‡J")            
             
@@ -900,8 +906,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 248
-; FirstLine = 99
+; CursorPosition = 788
+; FirstLine = 762
 ; Folding = ---
 ; EnableThread
 ; EnableXP
