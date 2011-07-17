@@ -12,6 +12,7 @@
 
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
 InitNetwork()
+XIncludeFile "networkClientEvent.pbi"
 XIncludeFile "http.pbi"
 
 
@@ -153,15 +154,15 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   CatchImage(0,?Logo)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
   StringGadget(#gdt_search,0,0,250,#gdtH,"")
-  TextGadget(#gdt_version,0,0,100,#gdtH,"version "+#prg_version$)
-  TextGadget(#gdt_searchTxt,0,0,100,#gdtH,"Search")
+  TextGadget(#gdt_version,0,0,100,#gdtH,Language("searchWindow","version")+" "+#prg_version$)
+  TextGadget(#gdt_searchTxt,0,0,100,#gdtH,  Language("searchWindow","search"))
   If LoadFont(0, "Arial", 16)
     SetGadgetFont(#gdt_searchTxt, FontID(0))   ; Set the loaded Arial 16 font as new standard
   EndIf
-  ListIconGadget(#gdt_result,  0,  0, 300, 300, "Name", 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
+  ListIconGadget(#gdt_result,  0,  0, 300, 300, Language("searchWindow","Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
   GadgetToolTip(#gdt_result, "choose to see code and information")
-  AddGadgetColumn(#gdt_result, 1, "Category", 100)
-  AddGadgetColumn(#gdt_result, 2, "Platform", 250)
+  AddGadgetColumn(#gdt_result, 1, Language("searchWindow","Category"), 100)
+  AddGadgetColumn(#gdt_result, 2, Language("searchWindow","Platform"), 250)
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
   ContainerGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
@@ -344,14 +345,7 @@ Procedure refreachWindow(mode.l)
   
 EndProcedure
 
-Procedure refreachResult()
-  ClearGadgetItems(#gdt_result)
-  AddGadgetItem(#gdt_result,-1,"http download memorie"+Chr(10)+"Network"+Chr(10)+"Windows/Linux/MacOs"+Chr(10)+"****")
-  AddGadgetItem(#gdt_result,-1,"skin windows"+Chr(10)+"window"+Chr(10)+"Windows")
-  AddGadgetItem(#gdt_result,-1,"Pathfinding A*"+Chr(10)+"Game 2D"+Chr(10)+"Windows/Linux/MacOs")
-  AddGadgetItem(#gdt_result,-1,"Iso 3D maps"+Chr(10)+"Game 2D"+Chr(10)+"Windows/Linux/MacOs")
-  AddGadgetItem(#gdt_result,-1,"get network name"+Chr(10)+"Network"+Chr(10)+"Windows")
-EndProcedure  
+ 
 
 Procedure commitNewCode(file.s)
   Protected txt.s,format.l
@@ -435,8 +429,9 @@ Repeat
       Select EventGadget()
           ;- Event searchWindow
         Case #gdt_search
-          If EventType()=#PB_EventType_Change
-            refreachResult() ;refreach result gadget
+          If EventType()=#PB_EventType_LostFocus
+            serverSearch(GetGadgetText(#gdt_search))
+           
           EndIf
         Case #gdt_result
           gp\page=#mode_viewWindow
@@ -502,8 +497,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 107
-; FirstLine = 176
+; CursorPosition = 14
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
