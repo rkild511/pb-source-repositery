@@ -11,6 +11,7 @@
   HTTP_DataProcessing(@http,*rawdata)
   Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
   If http\data<>0
+    MessageRequester("Server Info",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     ClearMap(gp\serverInfos())
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
     nbline=CountString(txt,#LFCR$)
@@ -88,7 +89,6 @@ Procedure getFilesListFromServer(id.l)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 76
-; FirstLine = 33
+; CursorPosition = 13
 ; Folding = -
 ; EnableXP
