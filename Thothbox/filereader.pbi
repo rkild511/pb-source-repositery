@@ -24,7 +24,7 @@ EndProcedure
 
 Procedure.s FileReader_readStr(offset)
   Protected out.s
-	out = PeekS(*Translator_MemoryID + offset)
+	out = PeekS(*Translator_MemoryID + offset, -1, #PB_UTF8)
   ProcedureReturn out
 EndProcedure
 
@@ -67,7 +67,7 @@ Procedure FileReader(filename.s)
 EndProcedure
   
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 32
-; FirstLine = 6
+; CursorPosition = 29
+; FirstLine = 12
 ; Folding = -
 ; EnableUnicode
