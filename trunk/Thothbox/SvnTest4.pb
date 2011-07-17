@@ -908,7 +908,7 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 228
+; CursorPosition = 203
 ; FirstLine = 196
 ; Folding = ---
 ; EnableUnicode
