@@ -1,5 +1,7 @@
 UsePNGImageDecoder()
 
+XIncludeFile "translator.pbi"
+
 CompilerIf #PB_Compiler_OS = #PB_OS_Windows
   #PathSeparator = "\"
 CompilerElse 
@@ -68,12 +70,6 @@ InitNetwork()
 
 ;*****************************************************************************
 ;- PROCEDURES
-
-Procedure.s t(txt.s)
-  
-  
-  
-EndProcedure
 
 Procedure SubversionCall(SvnArgs.s, Path.s = "")
 
@@ -628,6 +624,10 @@ EndProcedure
 ;*****************************************************************************
 ;- MAIN
 
+; Initialize Translator and load default folder
+; Here in example, we are forcing to load indonesian locale translation, blank means autodetect locale
+Translator_init("locale\", "fr_FR")
+
 If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, "URL du dépôt")
@@ -757,7 +757,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             Disabler()
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
-            SetGadgetText(#ButtonGetRepositeryReadOnly, "Veuillez patienter")
+            SetGadgetText(#ButtonGetRepositeryReadOnly, t("Please wait"))
             CreateThread(@GetRepositeryReadOnly(), nil)
             
           Case #ButtonChangeLocalRepositery
@@ -779,14 +779,14 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             ClearGadgetItems(#TreeGadget)
             UserName = GetGadgetText(#StringUserName)
             Password = GetGadgetText(#StringPassword)
-            SetGadgetText(#ButtonGetRepositery, "Veuillez patienter")
+            SetGadgetText(#ButtonGetRepositery, t("Please wait"))
             CreateThread(@GetRepositery(), nil)
             
           Case #ButtonUpdate
             
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
-            SetGadgetText(#ButtonUpdate, t("Veuillez patienter"))
+            SetGadgetText(#ButtonUpdate, t("Please wait"))
             Update(nil)
             SetGadgetText(#ButtonUpdate, "Recevoir MàJ")            
             
@@ -801,7 +801,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
           Case #ButtonExploreRemoteRepositery
             
             ClearList(Tree())
-            SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+            SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
             GetRemoteFileList(0, 0, "")
             MakeTreeGadget()
             SetGadgetText(#ButtonExploreRemoteRepositery, "Explorer le dépôt sur le serveur")
@@ -811,7 +811,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
             
             If FileSize(LocalRepositery) = -2
               ClearList(Tree())
-              SetGadgetText(#ButtonExploreLocalRepositery, "Veuillez patienter")
+              SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
               GetLocalFileList(0, 0, "")
               MakeTreeGadget()
               SetGadgetText(#ButtonExploreLocalRepositery, "Explorer le dépôt local")
@@ -842,7 +842,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
 
                   If IsFolder
                     ;If folder, look into
-                    SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
                     GetLocalFileList(Item + 1, SubLevel + 1, FullPath)
                     MakeTreeGadget()
                     SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
@@ -856,7 +856,7 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
                   
                   If IsFolder
                     ;If folder, look into
-                    SetGadgetText(#ButtonExploreRemoteRepositery, "Veuillez patienter")
+                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
                     GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
                     MakeTreeGadget()
                     SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
@@ -903,11 +903,13 @@ If OpenWindow(0, 0, 0, 450, 430, "ThotBox SubVersion Tiny FrontEnd", #PB_Window_
   
 EndIf
 
+Translator_destroy()
+
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 788
-; FirstLine = 762
+; CursorPosition = 628
+; FirstLine = 613
 ; Folding = ---
 ; EnableThread
 ; EnableXP
