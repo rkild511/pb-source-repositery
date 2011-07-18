@@ -1,14 +1,14 @@
 ﻿Procedure servercall()
-  Protected http.HTTP_Query,*rawdata,lenght.l
+  Protected http.HTTP_Query
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   HTTP_addPostData(@http, "info", "")
-  http\conn=HTTP_sendQuery(@http)
-  *rawdata=HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http,*rawdata)
+  HTTP_sendQuery(@http)
+  HTTP_receiveRawData(@http)
+  HTTP_DataProcessing(@http)
   Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
   If http\data<>0
     MessageRequester("Server Info",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
@@ -32,16 +32,16 @@
 EndProcedure
 
 Procedure serverSearch(keywords.s)
-  Protected http.HTTP_Query,*rawdata,lenght.l
+  Protected http.HTTP_Query
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   HTTP_addPostData(@http, "search", keywords)
-  http\conn=HTTP_sendQuery(@http)
-  *rawdata=HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http,*rawdata)
+  HTTP_sendQuery(@http)
+  HTTP_receiveRawData(@http)
+  HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
   If http\data<>0
     Debug PeekS(http\data,MemorySize(http\data),#PB_Ascii);
@@ -63,16 +63,16 @@ Procedure serverSearch(keywords.s)
 EndProcedure 
 
 Procedure getFilesListFromServer(id.l)
-  Protected http.HTTP_Query,*rawdata,lenght.l
+  Protected http.HTTP_Query
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   HTTP_addPostData(@http, "code", Str(id))
-  http\conn=HTTP_sendQuery(@http)
-  *rawdata=HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http,*rawdata)
+  HTTP_sendQuery(@http)
+  HTTP_receiveRawData(@http)
+  HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
   If http\data<>0
     MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
@@ -89,6 +89,6 @@ Procedure getFilesListFromServer(id.l)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 13
+; CursorPosition = 65
 ; Folding = -
 ; EnableXP

@@ -1,6 +1,6 @@
 ï»¿; Thothbox
 ; gui :Yann LEBRUN / Thyphoon
-; svn : JÀ©sahel Benoist / Djes
+; svn : J)sahel Benoist / Djes
 ; web : GallyHC
 ; GoScintilla : Srod
 ; Purebasic tools Configuration
@@ -412,7 +412,7 @@ Repeat
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
           txt+"Jean-Yves LERICQUE/ GallyHC"+#LFCR$
-          txt+"JÀ©sahel BENOIST / Djes"+#LFCR$
+          txt+"J)sahel BENOIST / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
           txt+"thanks to"+#LFCR$
@@ -509,8 +509,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 485
-; FirstLine = 457
+; FirstLine = 96
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
