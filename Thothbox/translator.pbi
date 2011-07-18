@@ -68,14 +68,17 @@ Procedure.s Translator_getTranslationMessage(index.l)
 EndProcedure
 
 Procedure Translator(FileName.s)
+  Protected hFile, addr.i, count.i, i.i
   
   hFile = ReadFile(#PB_Any, FileName)
   If hFile
     Translator_Filesize = Lof(hFile)                            ; get the length of opened file
     *Translator_MemoryID = AllocateMemory(Translator_Filesize)         ; allocate the needed memory
     If *Translator_MemoryID
-      addr = ReadData(hFile, *Translator_MemoryID, Translator_Filesize)   ; read all data into the memory block
-      ;Debug "Number of bytes read: " + Str(Translator_Filesize)
+      If ReadData(hFile, *Translator_MemoryID, Translator_Filesize) = 0   ; read all data into the memory block
+        ProcedureReturn 1
+      EndIf
+        ;Debug "Number of bytes read: " + Str(Translator_Filesize)
     Else
       ProcedureReturn 1
     EndIf
@@ -94,7 +97,7 @@ Procedure Translator(FileName.s)
     ProcedureReturn 1
   EndIf
 
-	count.l                  = PeekL(*Translator_MemoryID + #COUNT_OFFSET)
+	count                    = PeekL(*Translator_MemoryID + #COUNT_OFFSET)
 	origTableOffset.l        = PeekL(*Translator_MemoryID + #ORIG_TABLE_POINTER_OFFSET)
 	translationTableOffset.l = PeekL(*Translator_MemoryID + #TRANSLATION_TABLE_POINTER_OFFSET)
 	
@@ -128,8 +131,8 @@ EndProcedure
 Macro GetText(msg)
   t(msg)
 EndMacro
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 45
-; FirstLine = 20
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 70
+; FirstLine = 53
 ; Folding = --
 ; EnableUnicode
