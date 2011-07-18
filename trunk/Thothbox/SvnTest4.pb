@@ -60,12 +60,12 @@ Global UserName.s, Password.s
 Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
 Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery\"
 ;Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
-Global ProxyFlag.i = #True
+Global ProxyFlag.i = #False
 Global SVNConfigProxyHost.s = "proxy.cg59.fr"
 Global SVNConfigProxyPort.s = "8080"
 Global SVNConfigProxyUserName.s = ""
 Global SVNConfigProxyPassword.s = ""
-Global MyReadProgramStringBuffer.s
+Global *MyReadProgramStringBuffer = AllocateMemory(1024)
 
 InitNetwork()
 
@@ -85,18 +85,23 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
 EndProcedure
 
 ;Coz bug of the MyReadProgramString() in unicode
+
 Procedure.s MyReadProgramString(ProgramNr)
+  Static MyReadProgramOffset.i = 0
+  
   Size = AvailableProgramOutput(ProgramNr)
   If Size > 0
     Repeat
       ReadProgramData(ProgramNr, @Char.b, 1)
-      MyReadProgramStringBuffer + Chr(Char)
-    Until Char = $0A Or AvailableProgramOutput(ProgramNr) = 0
+      PokeB(*MyReadProgramStringBuffer + MyReadProgramOffset, Char)
+      MyReadProgramOffset + 1
+    Until Char = $0A Or AvailableProgramOutput(ProgramNr) = 0 Or MyReadProgramOffset > 1024
     If Char <> $0A
       ProcedureReturn ""
     Else
-      Temp.s = MyReadProgramStringBuffer     
-      MyReadProgramStringBuffer = ""
+      PokeB(*MyReadProgramStringBuffer + MyReadProgramOffset, 0)
+      Temp.s = PeekS(*MyReadProgramStringBuffer, -1, #PB_Ascii)
+      MyReadProgramOffset = 0
       ProcedureReturn ReplaceString(ReplaceString(Temp, Chr(13), ""), Chr(10), "")
     EndIf
   EndIf
@@ -927,9 +932,9 @@ Translator_destroy()
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 551
-; FirstLine = 525
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 63
+; FirstLine = 42
 ; Folding = ----
 ; EnableUnicode
 ; EnableThread
