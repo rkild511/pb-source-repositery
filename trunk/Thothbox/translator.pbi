@@ -1,34 +1,39 @@
 ; Translator
 ; JCV @ PureBasic Forum
 ; http://www.JCVsite.com
+; Corrected by djes@free.fr Jul 18th 2011
 
 #COUNT_OFFSET = 8
 #ORIG_TABLE_POINTER_OFFSET = 12
 #TRANSLATION_TABLE_POINTER_OFFSET = 16
 
-Global origTableOffset.l, translationTableOffset.l, count.l
+Global origTableOffset.l, translationTableOffset.l
+Global *Translator_MemoryID, Translator_Filesize
+Global NewMap TranslationTable.s()
 
-IncludeFile "filereader.pbi"
+;IncludeFile "filereader.pbi"
 IncludeFile "locale.pbi"
 
-Declare.s autodetect_(podir.s, requested_locale.s)
-Declare Translator(filename.s)
-Declare.s Tranlator_getOrigMessage(index.l)
-Declare.s Tranlator_getTranslationMessage (index.l, *len)
-Declare.s Tranlator_translate(message.s, *retlen)
+Declare.s Translator_Autodetect(podir.s, requested_locale.s)
+Declare   Translator(FileName.s)
+Declare.s Translator_getOrigMessage(index.l)
+Declare.s Translator_getTranslationMessage (index.l)
+Declare.s Translator_translate(message.s)
 
 Procedure Translator_init(podir.s, locale.s)
-  ProcedureReturn Translator(autodetect_(podir, locale))
+  ProcedureReturn Translator(Translator_Autodetect(podir, locale))
 EndProcedure
 
 Procedure Translator_destroy()
-  FileReader_destroy()
+  ClearMap(TranslationTable())
 EndProcedure
   
-Procedure.s autodetect_(podir.s, requested_locale.s)
+Procedure.s Translator_Autodetect(podir.s, requested_locale.s)
   Protected locale.s, find_
   
-  If (requested_locale = "")
+  Debug getLanguageName() 
+  
+  If requested_locale = ""
     locale = getLanguageName()    
     If locale = "C"
       ProcedureReturn ""
@@ -37,98 +42,87 @@ Procedure.s autodetect_(podir.s, requested_locale.s)
     locale = requested_locale
   EndIf
   
-  If FileSize(podir + locale + ".mo")
+  If FileSize(podir + locale + ".mo") > 0
     ProcedureReturn podir + locale + ".mo"
   EndIf
+   
+  Debug podir + locale + "_" + UCase(locale) + ".mo"
   
-  find_ = FindString(locale, "_", 1)
-  locale = Left(locale, find_ - 1)
-  
-  If FileSize(podir + locale + ".mo")
-    Debug podir + locale + ".mo"
-    ProcedureReturn podir + locale + ".mo"
+  If FileSize(podir + locale + "_" + UCase(locale) + ".mo") > 0   
+    ProcedureReturn podir + locale + "_" + UCase(locale) + ".mo"
+  EndIf
+
+  If FileSize(podir + locale + "_" + UCase(locale) + ".mo") > 0   
+    ProcedureReturn podir + locale + "_" + UCase(locale) + ".mo"
   EndIf
   
   ; Give up
   ProcedureReturn ""
 EndProcedure
 
-Procedure Translator(filename.s)
-  Global reader
-  
-  reader = FileReader(filename)
-  ; Sanity check file Size.
-  If (FileReader_getSize() < #TRANSLATION_TABLE_POINTER_OFFSET)
-    ProcedureReturn 0
-  EndIf
-  
-  ; Load pointer info.
-;	count.l = FileReader_readInt(#COUNT_OFFSET);
-;	origTableOffset.l = FileReader_readInt(#ORIG_TABLE_POINTER_OFFSET);
-;	translationTableOffset.l = FileReader_readInt(#TRANSLATION_TABLE_POINTER_OFFSET);
-	count.l                  = PeekL(*Translator_MemoryID + #COUNT_OFFSET)
-	origTableOffset.l        = PeekL(*Translator_MemoryID + #ORIG_TABLE_POINTER_OFFSET)
-	translationTableOffset.l = PeekL(*Translator_MemoryID + #TRANSLATION_TABLE_POINTER_OFFSET)
-  
-  ; Further sanity check file Size.
-  If (FileReader_getSize() < origTableOffset Or FileReader_getSize() < translationTableOffset)
-    ProcedureReturn 1
-  EndIf
-EndProcedure
-
-Procedure.s Tranlator_getOrigMessage(index.l)
+Procedure.s Translator_getOrigMessage(index.l)
   Protected len.l, msgOffset.l
-  
-  ;len.l = FileReader_readInt(origTableOffset + index * 8)
-	;msgOffset = FileReader_readInt(origTableOffset + index * 8 + 4)
-  ;ProcedureReturn FileReader_readStr(msgOffset)
   len       = PeekL(*Translator_MemoryID + origTableOffset + index * 8)
   msgOffset = PeekL(*Translator_MemoryID + origTableOffset + index * 8 + 4)
   ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_UTF8)
-  
 EndProcedure
 
-Procedure.s Tranlator_getTranslationMessage(index.l, *len)
-  Protected msgOffset.l
-  *len      = FileReader_readInt(translationTableOffset + index * 8)
-  msgOffset = FileReader_readInt(translationTableOffset + index * 8 + 4)
-;  ProcedureReturn FileReader_readStr(msgOffset)
-  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, *len, #PB_UTF8)
+Procedure.s Translator_getTranslationMessage(index.l)
+  Protected len.l, msgOffset.l
+  len       = PeekL(*Translator_MemoryID + translationTableOffset + index * 8)
+  msgOffset = PeekL(*Translator_MemoryID + translationTableOffset + index * 8 + 4)
+  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_UTF8)
 EndProcedure
 
-Procedure.s Tranlator_translate(message.s, *retlen)
-  Protected low.l, high.l, mid.l
-  Protected i, origMsg.s, retlen.l
+Procedure Translator(FileName.s)
   
-  ; Lookup the translation With binary search.
-	low = 0
-	high = count - 1
-  While (low <= high)
-    mid = (low + high) / 2
-    origMsg = Tranlator_getOrigMessage(mid)
-    i = CompareMemoryString(@message, @origMsg, 0, -1, #PB_UTF8)
-    If (i < 0)
-      high = mid - 1
-    ElseIf (i > 0)
-      low = mid + 1
+  hFile = ReadFile(#PB_Any, FileName)
+  If hFile
+    Translator_Filesize = Lof(hFile)                            ; get the length of opened file
+    *Translator_MemoryID = AllocateMemory(Translator_Filesize)         ; allocate the needed memory
+    If *Translator_MemoryID
+      addr = ReadData(hFile, *Translator_MemoryID, Translator_Filesize)   ; read all data into the memory block
+      Debug "Number of bytes read: " + Str(Translator_Filesize)
     Else
-      ; translation found.
-      ProcedureReturn Tranlator_getTranslationMessage(mid, @retlen)
+      ProcedureReturn 1
     EndIf
-  Wend
-      
-  ; translation Not found.
-  ProcedureReturn ""
+    CloseFile(hFile)
+  Else
+    ProcedureReturn 2
+  EndIf
+  
+  ; Sanity check file Size.
+  If (Translator_Filesize < #TRANSLATION_TABLE_POINTER_OFFSET)
+    ProcedureReturn 0
+  EndIf
+  
+  ; Further sanity check file Size.
+  If (Translator_Filesize < origTableOffset Or Translator_Filesize < translationTableOffset)
+    ProcedureReturn 1
+  EndIf
+
+	count.l                  = PeekL(*Translator_MemoryID + #COUNT_OFFSET)
+	origTableOffset.l        = PeekL(*Translator_MemoryID + #ORIG_TABLE_POINTER_OFFSET)
+	translationTableOffset.l = PeekL(*Translator_MemoryID + #TRANSLATION_TABLE_POINTER_OFFSET)
+	
+	;Fill map table
+	For i = 0 To count - 1
+	  TranslationTable(Translator_getOrigMessage(i)) = Translator_getTranslationMessage(i)
+	  Debug "'" + Translator_getOrigMessage(i) + "' : '" + Translator_getTranslationMessage(i) + "'"
+  Next i
+     
+  FreeMemory(*Translator_MemoryID)
+  
 EndProcedure
 
-Procedure.s T(msg.s)
+Procedure.s t(msg.s)
   Protected len, out.s
   
   If msg = ""
     ProcedureReturn ""
   EndIf
   
-  out = Tranlator_translate(msg, @len)
+  out = TranslationTable(msg)
   
   ; Use default text if no translation
   If out = ""
@@ -138,8 +132,11 @@ Procedure.s T(msg.s)
   ProcedureReturn out
 EndProcedure
 
+Macro GetText(msg)
+  t(msg)
+EndMacro
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 108
-; FirstLine = 95
+; CursorPosition = 110
+; FirstLine = 75
 ; Folding = --
 ; EnableUnicode
