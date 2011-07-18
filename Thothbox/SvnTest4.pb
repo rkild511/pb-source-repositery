@@ -485,7 +485,7 @@ Procedure GetRepositeryReadOnly(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(MyReadProgramString(svn)))
+        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
       Wend
       Delay(10)
       Counter + 1
@@ -575,7 +575,7 @@ Procedure GetRepositery(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(MyReadProgramString(svn)))
+        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
       Wend
       Delay(10)
       Counter + 1
@@ -928,8 +928,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
-; CursorPosition = 483
-; FirstLine = 546
+; CursorPosition = 551
+; FirstLine = 525
 ; Folding = ----
 ; EnableUnicode
 ; EnableThread
