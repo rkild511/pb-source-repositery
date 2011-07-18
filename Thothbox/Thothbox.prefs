@@ -1,8 +1,8 @@
 ﻿
 language = fr_FR
 server = http://www.koakdesign.info/thothbox/thothbox.php
-useProxy = 0
-proxyHost = 
-proxyPort = 0
+useProxy = 1
+proxyHost = spxy.bpi.fr
+proxyPort = 3128
 proxyLogin = 
 proxyPassword = 

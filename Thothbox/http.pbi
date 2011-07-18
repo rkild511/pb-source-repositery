@@ -263,6 +263,7 @@ Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
   ; si on a un proxy
   If *test\proxy\host<>""
+    Debug "Use Proxy:"+*test\proxy\host+" port:"+Str(*test\proxy\port)
     HTTP_createQuery(*test, method, url, *test\proxy\host,*test\proxy\port,*test\proxy\login,*test\proxy\password)
     ;si on a pas de proxy 
   Else
@@ -288,6 +289,7 @@ EndProcedure
 
 Procedure HTTP_DataProcessing(*test.HTTP_Query,*rawdata)
   Protected lenght.i
+  If *rawdata>0
   lenght=HTTP_FindHeader(*rawdata) ;found the lenght of the header
   If lenght>0
     ;copy header
@@ -302,6 +304,9 @@ Procedure HTTP_DataProcessing(*test.HTTP_Query,*rawdata)
     EndIf
   EndIf
   FreeMemory(*rawdata):*rawdata=0
+Else
+    Debug "DataProcessing:No answer"
+  EndIf
 EndProcedure
 
 Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
@@ -360,5 +365,7 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 265
+; FirstLine = 261
 ; Folding = ---
 ; EnableXP

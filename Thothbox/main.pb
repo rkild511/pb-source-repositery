@@ -475,15 +475,24 @@ Repeat
               DisableGadget(#gdt_poxyLogin,1)
               DisableGadget(#gdt_poxyPassword,1)
             EndIf
-        Case #gdt_poxyHost
-
-        Case #gdt_poxyPort
-
-        Case #gdt_poxyLogin
-      
-        Case #gdt_poxyPassword
-
-      EndSelect
+          Case #gdt_poxyHost
+            If EventType()=#PB_EventType_LostFocus
+              gp\proxy\host=GetGadgetText(#gdt_poxyHost)
+            EndIf
+          Case #gdt_poxyPort
+            ;If EventType()=#PB_EventType_LostFocus
+              gp\proxy\port=GetGadgetState(#gdt_poxyPort)
+              Debug gp\proxy\port
+            ;EndIf
+          Case #gdt_poxyLogin
+            If EventType()=#PB_EventType_LostFocus
+              gp\proxy\login=GetGadgetText(#gdt_poxyLogin)
+            EndIf
+          Case #gdt_poxyPassword
+            If EventType()=#PB_EventType_LostFocus
+              gp\proxy\password=GetGadgetText(#gdt_poxyPassword)
+            EndIf
+        EndSelect
     Case #PB_Event_CloseWindow
       quit=1
   EndSelect
@@ -500,8 +509,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 457
-; FirstLine = 420
+; CursorPosition = 485
+; FirstLine = 457
 ; Folding = --
 ; EnableXP
 ; UseIcon = ibis.ico
