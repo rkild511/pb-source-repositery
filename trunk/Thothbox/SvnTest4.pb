@@ -767,7 +767,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, t("Stop search"))
             Pattern.s = GetGadgetText(#StringSearch)
             SearchThread = CreateThread(@Search(), @Pattern)
-            ;Search(@Pattern)
             
           Case #ButtonStopSearch
             
@@ -933,8 +932,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 63
-; FirstLine = 42
+; CursorPosition = 775
+; FirstLine = 747
 ; Folding = ----
 ; EnableUnicode
 ; EnableThread
