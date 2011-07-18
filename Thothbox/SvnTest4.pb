@@ -60,11 +60,12 @@ Global UserName.s, Password.s
 Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
 Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery\"
 ;Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
-Global ProxyFlag.i = #False
-Global SVNConfigProxyHost.s = "94.23.49.197"
+Global ProxyFlag.i = #True
+Global SVNConfigProxyHost.s = "proxy.cg59.fr"
 Global SVNConfigProxyPort.s = "8080"
-Global SVNConfigProxyUserName.s = "anonymous"
-Global SVNConfigProxyPassword.s = "anonymous@anonymous.com"
+Global SVNConfigProxyUserName.s = ""
+Global SVNConfigProxyPassword.s = ""
+Global MyReadProgramStringBuffer.s
 
 InitNetwork()
 
@@ -82,6 +83,25 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
   ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, Path, #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
 
 EndProcedure
+
+;Coz bug of the MyReadProgramString() in unicode
+Procedure.s MyReadProgramString(ProgramNr)
+  Size = AvailableProgramOutput(ProgramNr)
+  If Size > 0
+    Repeat
+      ReadProgramData(ProgramNr, @Char.b, 1)
+      MyReadProgramStringBuffer + Chr(Char)
+    Until Char = $0A Or AvailableProgramOutput(ProgramNr) = 0
+    If Char <> $0A
+      ProcedureReturn ""
+    Else
+      Temp.s = MyReadProgramStringBuffer     
+      MyReadProgramStringBuffer = ""
+      ProcedureReturn ReplaceString(ReplaceString(Temp, Chr(13), ""), Chr(10), "")
+    EndIf
+  EndIf
+EndProcedure
+
 
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
@@ -118,7 +138,7 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
   If svn
     While ProgramRunning(svn)
       While AvailableProgramOutput(svn)
-        Output$ + ReadProgramString(svn) + Chr(13)
+        Output$ + MyReadProgramString(svn) + Chr(13)
       Wend
     Wend   
     CloseProgram(svn) ; Close the connection to the program
@@ -126,7 +146,7 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
   ProcedureReturn Output$
 EndProcedure
 
-;To correct the infamous ReadProgramString() sending ascii instead of utf8 in an unicode compiled program
+;To correct the infamous MyReadProgramString() sending ascii instead of utf8 in an unicode compiled program
 Procedure.s ASCII2UTF8(str.s)
   ProcedureReturn PeekS(@str, -1, #PB_Ascii)
 EndProcedure  
@@ -220,21 +240,8 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   If svn
     
     While ProgramRunning(svn)     
-      ;Get svn output entirely (not line by line as we can in ascii) 
       While AvailableProgramOutput(svn)
-        Output.s + ASCII2UTF8(ReadProgramString(svn))
-      Wend
-      Delay(10)
-    Wend
-    
-    i=1
-
-    nb = CountString(Output, Chr(13) + Chr(10))
-    If nb >= 1
-      For i = 1 To nb + 1
-        ;extract lines and get out CR+LF        
-        NewPath.s = StringField(Output, i, Chr(13) + Chr(10))
-        NewPath.s = ReplaceString(ReplaceString(NewPath.s, Chr(13), ""), Chr(10), "")
+        NewPath.s = MyReadProgramString(svn)    
         If NewPath <> ""
           AddElement(Tree())
           Tree()\Item = Item
@@ -253,8 +260,9 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
         EndIf
         ;Item + 1       
         Debug r
-      Next i
-    EndIf
+      Wend
+      Delay(10)
+    Wend
     
     Repeat
       Error.s =  ASCII2UTF8(ReadProgramError(svn))
@@ -410,95 +418,57 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
   ;Enabler()  
 EndProcedure
 
+
 Procedure Search(*Pattern.s)
-   
+  
   ClearGadgetItems(#TreeGadget)
   ClearList(Tree())
   ;SetGadgetText(#ButtonSearch, "Veuillez patienter")
   Item = 0  
   
   svn = SubversionCall("list " + RemoteRepositery + " -R")
-    
+     
   If svn
     
-    While ProgramRunning(svn)     
-      ;Get svn output entirely (not line by line as we can in ascii) 
-      While AvailableProgramOutput(svn)
-        Output.s + ASCII2UTF8(ReadProgramString(svn))
-      Wend
-      Delay(10)
-    Wend
-    
-    Repeat
-      Error.s =  ASCII2UTF8(ReadProgramError(svn))
-      Debug Error
-    Until Error = ""
-    
-    i=1
     CreateRegularExpression(0, *Pattern)
     
-    nb = CountString(Output, Chr(13) + Chr(10))
-    If nb >= 1
-      For i = 1 To nb + 1
-        ;extract lines and get out CR+LF        
-        NewPath.s = StringField(Output, i, Chr(13) + Chr(10))
-        NewPath.s = ReplaceString(ReplaceString(NewPath.s, Chr(13), ""), Chr(10), "")
-        If NewPath <> "" And MatchRegularExpression(0, NewPath)
-          Debug NewPath
+    While ProgramRunning(svn)     
+      
+      While AvailableProgramOutput(svn)
+        Path.s = MyReadProgramString(svn)
+        Debug Path
+        If Path<> "" And MatchRegularExpression(0, Path)
+          ;AddElement(Tree())
+          ;Tree()\Item = Item
+          ;Tree()\SubLevel = SubLevel
+          ;Tree()\Path = Path
+          ;Debug "----"
+          Debug Path
           Debug Item          
+          ;If IsFolder(Path.s)
+          ;  Tree()\FolderFlag = #True
+          ;  FoldersNb + 1
+          ;EndIf
           ;Directly adding to the TreeGadget to not have to wait for result
-          AddGadgetItem(#TreeGadget, Item, NewPath)
+          AddGadgetItem(#TreeGadget, Item, Path)
+          ;NewItemsNb + 1
           Item + 1
         EndIf
         ;Item + 1       
-      Next i      
-    EndIf
-    
+      Wend
+      Delay(10)
+      
+    Wend
   EndIf
-  
-;   If svn
-;    
-;     While ProgramRunning(svn)     
-;       
-;       While AvailableProgramOutput(svn)
-;         Error.s =  ASCII2UTF8(ReadProgramError(svn))
-;         If Error <> ""
-;           Debug Error
-;         EndIf
-;         Path.s = ASCII2UTF8(ReadProgramString(svn))
-;         Debug Path
-;         If Path<> "" And MatchRegularExpression(0, Path)
-;           ;AddElement(Tree())
-;           ;Tree()\Item = Item
-;           ;Tree()\SubLevel = SubLevel
-;           ;Tree()\Path = Path
-;           ;Debug "----"
-;           Debug Path
-;           Debug Item          
-;           ;If IsFolder(Path.s)
-;           ;  Tree()\FolderFlag = #True
-;           ;  FoldersNb + 1
-;           ;EndIf
-;           ;Directly adding to the TreeGadget to not have to wait for result
-;           AddGadgetItem(#TreeGadget, Item, Path)
-;           ;NewItemsNb + 1
-;           Item + 1
-;         EndIf
-;         ;Item + 1       
-;       Wend
-;       Delay(10)
-;       
-;     Wend
-;   EndIf
-;   
-;   Repeat
-;     Error.s =  ASCII2UTF8(ReadProgramError(svn))
-;     Debug Error
-;   Until Error = ""
-  
+
+  Repeat
+    Error.s =  ASCII2UTF8(ReadProgramError(svn))
+    Debug Error
+  Until Error = ""
+
   ;MakeTreeGadget()
   FreeGadget(#ButtonStopSearch)
-  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
+  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))
   Enabler()
 
 EndProcedure
@@ -515,7 +485,7 @@ Procedure GetRepositeryReadOnly(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(ReadProgramString(svn)))
+        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(MyReadProgramString(svn)))
       Wend
       Delay(10)
       Counter + 1
@@ -548,7 +518,7 @@ Procedure Update(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
+        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
       Wend
       Delay(10)
       Counter + 1
@@ -576,7 +546,7 @@ Procedure Commit(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ReadProgramString(svn))
+        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
       Wend
       Delay(10)
       Counter + 1
@@ -605,7 +575,7 @@ Procedure GetRepositery(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(ReadProgramString(svn)))
+        AddGadgetItem (#TreeGadget, -1, ASCII2UTF8(MyReadProgramString(svn)))
       Wend
       Delay(10)
       Counter + 1
@@ -792,6 +762,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, t("Stop search"))
             Pattern.s = GetGadgetText(#StringSearch)
             SearchThread = CreateThread(@Search(), @Pattern)
+            ;Search(@Pattern)
             
           Case #ButtonStopSearch
             
@@ -956,10 +927,10 @@ Translator_destroy()
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 435
-; FirstLine = 416
-; Folding = ---
+; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
+; CursorPosition = 483
+; FirstLine = 546
+; Folding = ----
 ; EnableUnicode
 ; EnableThread
 ; EnableXP

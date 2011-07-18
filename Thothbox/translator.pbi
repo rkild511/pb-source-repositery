@@ -21,6 +21,7 @@ Declare.s Translator_getTranslationMessage (index.l)
 Declare.s Translator_translate(message.s)
 
 Procedure Translator_init(podir.s, locale.s)
+  ;Debug Translator_Autodetect(podir, locale)
   ProcedureReturn Translator(Translator_Autodetect(podir, locale))
 EndProcedure
 
@@ -30,9 +31,7 @@ EndProcedure
   
 Procedure.s Translator_Autodetect(podir.s, requested_locale.s)
   Protected locale.s, find_
-  
-  Debug getLanguageName() 
-  
+   
   If requested_locale = ""
     locale = getLanguageName()    
     If locale = "C"
@@ -45,13 +44,7 @@ Procedure.s Translator_Autodetect(podir.s, requested_locale.s)
   If FileSize(podir + locale + ".mo") > 0
     ProcedureReturn podir + locale + ".mo"
   EndIf
-   
-  Debug podir + locale + "_" + UCase(locale) + ".mo"
-  
-  If FileSize(podir + locale + "_" + UCase(locale) + ".mo") > 0   
-    ProcedureReturn podir + locale + "_" + UCase(locale) + ".mo"
-  EndIf
-
+    
   If FileSize(podir + locale + "_" + UCase(locale) + ".mo") > 0   
     ProcedureReturn podir + locale + "_" + UCase(locale) + ".mo"
   EndIf
@@ -82,7 +75,7 @@ Procedure Translator(FileName.s)
     *Translator_MemoryID = AllocateMemory(Translator_Filesize)         ; allocate the needed memory
     If *Translator_MemoryID
       addr = ReadData(hFile, *Translator_MemoryID, Translator_Filesize)   ; read all data into the memory block
-      Debug "Number of bytes read: " + Str(Translator_Filesize)
+      ;Debug "Number of bytes read: " + Str(Translator_Filesize)
     Else
       ProcedureReturn 1
     EndIf
@@ -108,7 +101,7 @@ Procedure Translator(FileName.s)
 	;Fill map table
 	For i = 0 To count - 1
 	  TranslationTable(Translator_getOrigMessage(i)) = Translator_getTranslationMessage(i)
-	  Debug "'" + Translator_getOrigMessage(i) + "' : '" + Translator_getTranslationMessage(i) + "'"
+	  ;Debug "'" + Translator_getOrigMessage(i) + "' : '" + Translator_getTranslationMessage(i) + "'"
   Next i
      
   FreeMemory(*Translator_MemoryID)
@@ -135,8 +128,8 @@ EndProcedure
 Macro GetText(msg)
   t(msg)
 EndMacro
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 110
-; FirstLine = 75
+; IDE Options = PureBasic 4.60 Beta 2 (Windows - x86)
+; CursorPosition = 45
+; FirstLine = 20
 ; Folding = --
 ; EnableUnicode
