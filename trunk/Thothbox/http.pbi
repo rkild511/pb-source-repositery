@@ -30,9 +30,11 @@ Structure HTTP_Query
   List postData.s()
   List files.HTTP_file()
   conn.i          
-  *buffer         ; buffer received data
+  *buffer         ; buffer to received data
+  *rawdata        ; all datareceived header and data mixed
   *data           ; complete received data
   *header         ; received header data
+   error.b        ; return error
 EndStructure
 
 
@@ -40,12 +42,13 @@ Enumeration
   #HTTP_METHOD_GET
   #HTTP_METHOD_POST
   #HTTP_METHOD_FILE
+  #HTTP_ERROR_NO_CONNEXION
+  #HTTP_ERROR_ANSWER_NO_HEADER
 EndEnumeration
 
 
 Procedure HTTP_addQueryHeader(*query.HTTP_Query, name.s, value.s)
   Protected string.s
-  
   string = name+": "+value
   AddElement(*query\headers())
   *query\headers() = string
@@ -101,6 +104,7 @@ Procedure HTTP_addFile(*query.HTTP_Query, name.s, fileName.s)
   
   ProcedureReturn 0
 EndProcedure
+
 Macro SendNetworkAscii(__cnx,__txt)
   *tmpbuffer=AllocateMemory(StringByteLength(__txt, #PB_Ascii)+1)
   PokeS(*tmpbuffer,__txt,Len(__txt),#PB_Ascii)
@@ -109,7 +113,7 @@ Macro SendNetworkAscii(__cnx,__txt)
 EndMacro
 
 Procedure HTTP_sendQuery(*query.HTTP_Query)
-  Protected head.s, postData.s, connection.i, size.i, fileHeaderSize.i, file.i, readed.i, *buffer,*tmpbuffer
+  Protected head.s, postData.s, size.i, fileHeaderSize.i, file.i, readed.i, *buffer,*tmpbuffer
   
   ;Methode
   Select *query\method
@@ -127,13 +131,12 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
     head + *query\headers() + #CRLF$
   Next
   
-  connection = OpenNetworkConnection(*query\host, *query\port)
-  If connection
+  *query\conn = OpenNetworkConnection(*query\host, *query\port)
+  If *query\conn
     Select *query\method
       Case #HTTP_METHOD_GET
         head + #CRLF$
-        
-        SendNetworkAscii(connection,head)
+        SendNetworkAscii(*query\conn,head)
         
       Case #HTTP_METHOD_POST
         ForEach *query\postData()
@@ -144,7 +147,8 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
         head + "Content-Length: "+Str(Len(postData)) + #CRLF$
         head + #CRLF$
         head + postData
-        SendNetworkAscii(connection, head)
+        SendNetworkAscii(*query\conn, head)
+        
       Case #HTTP_METHOD_FILE
         ForEach *query\postData()
           postData + "--"+*query\boundary+#CRLF$
@@ -168,34 +172,36 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
         head + "Content-Length: "+Str(size)+#CRLF$
         head + #CRLF$
         head + postData
-        SendNetworkAscii(connection,head)
+        SendNetworkAscii(*query\conn,head)
         *buffer = AllocateMemory(2048)
         ForEach *query\files()
           postData = "--"+*query\boundary+#CRLF$
           postData + "Content-Disposition: form-data; name="+Chr(34)+*query\files()\name+Chr(34) +"; filename="+Chr(34)+GetFilePart(*query\files()\path)+Chr(34)+#CRLF$
           postData + "Content-Type: application/octet-stream" + #CRLF$ + #CRLF$
-          SendNetworkAscii(connection,postData)
+          SendNetworkAscii(*query\conn,postData)
           file = OpenFile(#PB_Any, *query\files()\path)
           
           If file
             While Eof(file) = 0
               readed = ReadData(file, *buffer, 2048)
-              SendNetworkData(connection, *buffer, readed)
+              SendNetworkData(*query\conn, *buffer, readed)
             Wend
-            SendNetworkAscii(connection,#CRLF$)
+            SendNetworkAscii(*query\conn,#CRLF$)
             CloseFile(file)
           EndIf
         Next
         FreeMemory(*buffer)
         
         postData = "--"+*query\boundary+"--"
-        SendNetworkData(connection, @postData, Len(postData))
+        SendNetworkData(*query\conn, @postData, Len(postData))
     EndSelect
     
-    ProcedureReturn connection
+    ProcedureReturn #True
+  Else
+    *query\error=#HTTP_ERROR_NO_CONNEXION
+    MessageRequester("Http Error","No Connexion"+#CRLF$+*query\host+" port:"+Str(*query\port))
+    ProcedureReturn #False
   EndIf
-  Debug "error to connect:"+*query\host+" port:"+Str(*query\port)
-  ProcedureReturn 0
 EndProcedure
 ;- Nouvelles fonctions
 ;###############################################################################################################
@@ -212,7 +218,7 @@ Procedure HTTP_receiveRawData(*test.HTTP_Query)
   Protected *rawdata,time.i,readed.i,size.i,NEvent.i
   If *test\conn
     *test\buffer = AllocateMemory(2048)
-    *rawdata=AllocateMemory(1)
+    *test\rawdata=AllocateMemory(1)
     time = ElapsedMilliseconds()
     Debug "start"
     Repeat
@@ -222,10 +228,10 @@ Procedure HTTP_receiveRawData(*test.HTTP_Query)
         If readed>0
           Debug readed
           
-          size=MemorySize(*rawdata)
+          size=MemorySize(*test\rawdata)
           If size=1:size=0:EndIf
-          *rawdata=ReAllocateMemory(*rawdata,size+readed)
-          CopyMemory(*test\buffer,*rawdata+size,readed)
+          *test\rawdata=ReAllocateMemory(*test\rawdata,size+readed)
+          CopyMemory(*test\buffer,*test\rawdata+size,readed)
           Debug "size:"+Str(readed)
         Else 
           Debug "rien"
@@ -235,29 +241,31 @@ Procedure HTTP_receiveRawData(*test.HTTP_Query)
       Delay(10)
       
     Until NEvent=#PB_NetworkEvent_Disconnect ;ElapsedMilliseconds() - time >= 3000
-    Debug"end"
+    CloseNetworkConnection(*test\conn)
     FreeMemory(*test\buffer):*test\buffer=0;
-    ProcedureReturn *rawdata
+    ProcedureReturn #True
   Else
     Debug "no Networkconnection"
+    ProcedureReturn #False
   EndIf
 EndProcedure
 
 ; find the end of the header
-Procedure HTTP_FindHeader(*mem)
-  Protected z.l
-  If *mem>0
-    For z=0 To MemorySize(*mem)-4
-      If PeekB(*mem+z)=13 And PeekB(*mem+z+1)=10 And PeekB(*mem+z+2)=13 And PeekB(*mem+z+3)=10
-        ProcedureReturn z+4
-      EndIf
-    Next
-  Else 
-    Debug "HTTP_FindHeader : No data to analyse";
-    ProcedureReturn 0
-  EndIf
-  
-EndProcedure
+; Procedure HTTP_FindHeader(*test.HTTP_Query)
+;   Protected z.l
+;   If *test\rawdata>0
+;     For z=0 To MemorySize(*test\rawdata)-4
+;       If PeekB(*test\rawdata+z)=13 And PeekB(*test\rawdata+z+1)=10 And PeekB(*test\rawdata+z+2)=13 And PeekB(*test\rawdata+z+3)=10
+;         ProcedureReturn z+4
+;       EndIf
+;     Next
+;   Else 
+;     Debug "HTTP_FindHeader : No data to analyse";
+;     *test\error=#HTTP_ERROR_ANSWER_NO_HEADER
+;     ProcedureReturn 0
+;   EndIf
+;   
+; EndProcedure
 
 Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
@@ -287,24 +295,35 @@ Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
   
 EndProcedure
 
-Procedure HTTP_DataProcessing(*test.HTTP_Query,*rawdata)
-  Protected lenght.i
-  If *rawdata>0
-  lenght=HTTP_FindHeader(*rawdata) ;found the lenght of the header
-  If lenght>0
-    ;copy header
-    *test\header=AllocateMemory(lenght)
-    CopyMemory(*rawdata,*test\header,lenght);
-    ;copy file Data
-    If MemorySize(*rawdata)-lenght>0
-      *test\data=AllocateMemory(MemorySize(*rawdata)-lenght)
-      CopyMemory(*rawdata+lenght,*test\data,MemorySize(*rawdata)-lenght);
-    Else
-      Debug "DataProcessing:No Data juste Header"
+Procedure HTTP_DataProcessing(*test.HTTP_Query)
+  Protected lenght.i=0,z.i
+  If *test\rawdata>0
+    ;found the lenght of the header
+    For z=0 To MemorySize(*test\rawdata)-4
+      If PeekB(*test\rawdata+z)=13 And PeekB(*test\rawdata+z+1)=10 And PeekB(*test\rawdata+z+2)=13 And PeekB(*test\rawdata+z+3)=10
+        lenght=z+4
+        Break;
+      EndIf
+    Next
+    
+    If lenght>0
+      ;copy header
+      *test\header=AllocateMemory(lenght)
+      CopyMemory(*test\rawdata,*test\header,lenght);
+      ;copy file Data
+      If MemorySize(*test\rawdata)-lenght>0
+        *test\data=AllocateMemory(MemorySize(*test\rawdata)-lenght)
+        CopyMemory(*test\rawdata+lenght,*test\data,MemorySize(*test\rawdata)-lenght);
+      Else
+        Debug "DataProcessing:No Data juste Header"
+      EndIf
+    Else  
+      Debug "HTTP_FindHeader : No data to analyse";
+      *test\error=#HTTP_ERROR_ANSWER_NO_HEADER
+      ProcedureReturn #False
     EndIf
-  EndIf
-  FreeMemory(*rawdata):*rawdata=0
-Else
+    FreeMemory(*test\rawdata):*test\rawdata=0
+  Else
     Debug "DataProcessing:No answer"
   EndIf
 EndProcedure
@@ -313,10 +332,10 @@ Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
   Protected  *rawdata,lenght.i
   HTTP_query(*test, #HTTP_METHOD_GET, url)
   HTTP_addQueryHeader(*test, "User-Agent", "PB")
-  *test\conn = HTTP_sendQuery(*test)
-  *rawdata=HTTP_receiveRawData(*test)
-  HTTP_DataProcessing(*test,*rawdata)
-  CloseNetworkConnection(*test\conn)
+  HTTP_sendQuery(*test)
+  HTTP_receiveRawData(*test)
+  HTTP_DataProcessing(*test)
+  
   ProcedureReturn #True
 EndProcedure
 
@@ -346,12 +365,9 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
     HTTP_addPostData(@test, "pseudo", "lepiaf31")
     HTTP_addPostData(@test, "nom", "Kevin")
     HTTP_addFile(@test, "datafile", OpenFileRequester("Please choose file to load", "", "*.*", 0))
-    test\conn = HTTP_sendQuery(@test)
-    Debug"receive data"
-    *rawdata=HTTP_receiveRawData(@test)
-    Debug *rawdata
-    HTTP_DataProcessing(@test,*rawdata)
-    CloseNetworkConnection(test\conn)
+    HTTP_sendQuery(@test)
+    HTTP_receiveRawData(@test)
+    HTTP_DataProcessing(@test)
     Print(PeekS(test\data,MemorySize(test\data),#PB_Ascii))
     Input()
   EndProcedure
@@ -365,7 +381,7 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 265
-; FirstLine = 261
+; CursorPosition = 315
+; FirstLine = 295
 ; Folding = ---
 ; EnableXP
