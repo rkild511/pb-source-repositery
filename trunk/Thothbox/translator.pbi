@@ -2,7 +2,7 @@
 ; JCV @ PureBasic Forum
 ; http://www.JCVsite.com
 ; Corrected by djes@free.fr Jul 18th 2011
-
+EnableExplicit
 #COUNT_OFFSET = 8
 #ORIG_TABLE_POINTER_OFFSET = 12
 #TRANSLATION_TABLE_POINTER_OFFSET = 16
@@ -132,7 +132,6 @@ Macro GetText(msg)
   t(msg)
 EndMacro
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 70
-; FirstLine = 53
+; CursorPosition = 4
 ; Folding = --
 ; EnableUnicode
