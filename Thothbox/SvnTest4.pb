@@ -57,11 +57,19 @@ Enumeration
   #LockBroken
   #END_OF_IMAGES
 EndEnumeration
+;/!\ Do NOT separate these enumerations
 Enumeration #PB_Compiler_EnumerationValue Step #END_OF_IMAGES
   #FileImgs
   #FolderImgs
   #Pad
 EndEnumeration
+
+Enumeration 1
+  #PopupMenuStatus
+  #PopupMenuAdd
+  #PopupMenuRevert
+EndEnumeration
+
 
 #SVNConfigProxyHost     = " --config-option servers:global:http-proxy-host="
 #SVNConfigProxyPort     = " --config-option servers:global:http-proxy-port="
@@ -77,6 +85,7 @@ Structure Path
   SubLevel.i
   FolderFlag.i
   Status.s
+  FullPath.s
 EndStructure
 
 ;*****************************************************************************
@@ -103,7 +112,7 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
   SvnArgs + " --non-interactive --no-auth-cache"
-  Debug SvnArgs   
+  ;Debug SvnArgs   
   
   ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, Path, #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
 
@@ -134,9 +143,9 @@ EndProcedure
 Procedure.i StatusImage(Status.s, Folder = #False)
   Static Base
   If Folder
-    Base = #FolderImg 
+    Base = #FolderImgs ;the 's' is important ;)
   Else
-    Base = #FileImg
+    Base = #FileImgs
   EndIf
   
   Select Status
@@ -175,11 +184,57 @@ Procedure.i StatusImage(Status.s, Folder = #False)
     Case "B"
       ProcedureReturn ImageID(Base + #LockBroken)
     Default
-      ProcedureReturn ImageID(Base)
+      If Folder
+        ProcedureReturn ImageID(#FolderImg)
+      Else
+        ProcedureReturn ImageID(#FileImg)
+      EndIf
   EndSelect       
   
 EndProcedure
 
+Procedure.s StatusName(Status.s)
+ 
+  Select Status
+    Case "A"
+      ProcedureReturn t("Added")
+    Case "C"
+      ProcedureReturn t("Conflicted")
+    Case "S"
+      ProcedureReturn t("Suppressed")
+    Case "I"
+      ProcedureReturn t("Ignored")
+    Case "M"
+      ProcedureReturn t("Modified")
+    Case "R"
+      ProcedureReturn t("Remplaced")
+    Case "X"
+      ProcedureReturn t("Non Versionned Folder")
+    Case "?"
+      ProcedureReturn t("Non Versionned")
+    Case "!"
+      ProcedureReturn t("Missing")
+    Case "~"
+      ProcedureReturn t("Dissimulated")
+    Case "L"
+      ProcedureReturn t("Locked")
+    Case "+"
+      ProcedureReturn t("Added With History")
+    Case "S"
+      ProcedureReturn t("Switched")
+    Case "K"
+      ProcedureReturn t("Lock Token")
+    Case "O"
+      ProcedureReturn t("Lock Other")
+    Case "T"
+      ProcedureReturn t("Lock Stolen")
+    Case "B"
+      ProcedureReturn t("Lock Broken")
+    Default
+      ProcedureReturn ""
+  EndSelect       
+  
+EndProcedure
 Procedure MyLoadImage(Nb.i, Filename.s)
   If LoadImage(Nb, Filename) = #False
     Debug "Can't load" + Filename
@@ -211,15 +266,15 @@ Procedure PrepareImages()
   MyLoadImage(#LockBroken, "gfx\BIcon16x16.png")
   
   For i = #Added To #END_OF_IMAGES - 1
-    CreateImage(#FolderImgs + i, 16, 16)
+    CreateImage(#FolderImgs + i, 16, 16, 32)
     StartDrawing(ImageOutput(#FolderImgs + i))
     DrawImage(ImageID(#FolderImg), 0, 0)
-    DrawAlphaImage(i, 0, 0)
+    DrawAlphaImage(ImageID(i), 0, 0)
     StopDrawing()
-    CreateImage(#FileImgs + i, 16, 16)
+    CreateImage(#FileImgs + i, 16, 16, 32)
     StartDrawing(ImageOutput(#FileImgs + i))
     DrawImage(ImageID(#FileImg), 0, 0)
-    DrawAlphaImage(i, 0, 0)
+    DrawAlphaImage(ImageID(i), 0, 0)
     StopDrawing()
   Next i
   
@@ -451,7 +506,8 @@ EndProcedure
 Procedure.s Status(FileName.s)
   Protected svn, Error.s, Output.s
    
-  svn = SubversionCall("status " + Chr(34) + Filename + Chr(34) + " -v --depth empty")
+  ;I'm cheating a bit, as it gives on folder several files of the content, but it works!
+  svn = SubversionCall("status " + Chr(34) + Filename + Chr(34));  + " -v --depth empty")
   
   Output = ""
   
@@ -472,8 +528,70 @@ Procedure.s Status(FileName.s)
     CloseProgram(svn) ; Close the connection to the program
   EndIf
   
-  Debug StringField(Output, 1, " ")
+  ;Debug StringField(Output, 1, " ")
   
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
+  
+EndProcedure
+
+Procedure.s Add(FileName.s)
+  Protected svn, Error.s, Output.s
+   
+  svn = SubversionCall("add " + Chr(34) + Filename + Chr(34))
+  
+  Output = ""
+  
+  If svn
+    While ProgramRunning(svn)     
+      If AvailableProgramOutput(svn)
+        ;Read the first line
+        Output = MyReadProgramString(svn)
+      EndIf
+      Delay(10)
+    Wend
+    
+    Debug Output
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+   
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
+  
+EndProcedure
+
+Procedure.s Revert(FileName.s)
+  Protected svn, Error.s, Output.s
+   
+  svn = SubversionCall("revert " + Chr(34) + Filename + Chr(34))
+  
+  Output = ""
+  
+  If svn
+    While ProgramRunning(svn)     
+      If AvailableProgramOutput(svn)
+        ;Read the first line
+        Output = MyReadProgramString(svn)
+      EndIf
+      Delay(10)
+    Wend
+    
+    Debug Output
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+   
   ;Returns the fist field
   ProcedureReturn StringField(Output, 1, " ")
   
@@ -517,7 +635,8 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
         If (Path <> "" And Right(Path, 1) <> #PathSeparator) Or (Path = "" And Right(LocalRepositery, 1) <> #PathSeparator)
           Path + #PathSeparator
         EndIf
-        Tree()\Status = Status(LocalRepositery + Path + DirectoryEntryName(0))
+        Tree()\FullPath = LocalRepositery + Path + DirectoryEntryName(0)
+        Tree()\Status = Status(Tree()\FullPath)
         ;Debug "----"
         ;Debug NewPath
         ;Debug Item          
@@ -829,7 +948,7 @@ EndProcedure
 
 InitNetwork()
 
-Define.i LocalExploration, Event, SearchThread, nil, Item, SubLevel, IsFolder
+Define.i LocalExploration, Event, SearchThread, nil, Item, SubLevel, IsFolder, MenuItemNb
 Define.s Pattern, Name, FullPath, Filename
 
 ; Initialize Translator and load default folder
@@ -869,6 +988,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
     Event = WaitWindowEvent()
     
     Select Event
+        
+      ;-- Gadgets events
         
       Case #PB_Event_Gadget
         
@@ -1045,12 +1166,12 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
 
                   If IsFolder
                     ;If folder, look into
-                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
+                    SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
                     GetLocalFileList(Item + 1, SubLevel + 1, FullPath)
                     MakeTreeGadget()
                     SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
                     SetGadgetState(#TreeGadget, Item)
-                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))                
+                    SetGadgetText(#ButtonExploreLocalRepositery, t("Explore local repositery"))                
                   EndIf
                     
                 Else
@@ -1078,10 +1199,86 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   EndIf
                 EndIf
                 
+              Case #PB_EventType_RightClick
+                
+                Item = GetGadgetState(#TreeGadget)
+                SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+                Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+                IsFolder = GetGadgetItemData(#TreeGadget, Item)
+                FullPath.s = GetFullPathFromTree(Item, SubLevel)
+                Debug "--------------------"
+                Debug "Item : " + Str(Item)
+                Debug "SubLevel : " + Str(SubLevel)
+                Debug "Full name : " + FullPath
+                
+                If LocalExploration             
+                  ;-Local Menu
+                  If CreatePopupMenu(0)
+                    SelectElement(Tree(), Item)
+                    If StatusName(tree()\Status) <> ""
+                      MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
+                      DisableMenuItem(0, #PopupMenuStatus, 1)
+                    EndIf  
+                    MenuItem(#PopupMenuAdd, t("Add"))
+                    MenuItem(#PopupMenuRevert, t("Undo"))
+                  EndIf
+                  DisplayPopupMenu(0, WindowID(0))
+                  
+                  If IsFolder
+                  EndIf
+                  
+                EndIf
+                
             EndSelect
             
         EndSelect
         
+      ;-- Menus events
+        
+      Case #PB_Event_Menu
+        
+        Select EventMenu()  ; To see which menu has been selected
+            
+          Case #PopupMenuAdd
+            
+            Item = GetGadgetState(#TreeGadget)
+            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+            IsFolder = GetGadgetItemData(#TreeGadget, Item)
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            Debug "--------------------"
+            Debug "Item : " + Str(Item)
+            Debug "SubLevel : " + Str(SubLevel)
+            Debug "Full name : " + FullPath
+
+            SelectElement(Tree(), Item)
+            Add(Tree()\FullPath)
+            Tree()\Status = Status(Tree()\FullPath)
+            MakeTreeGadget()
+            SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+            SetGadgetState(#TreeGadget, Item)
+            
+          Case #PopupMenuRevert
+            
+            Item = GetGadgetState(#TreeGadget)
+            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+            IsFolder = GetGadgetItemData(#TreeGadget, Item)
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            Debug "--------------------"
+            Debug "Item : " + Str(Item)
+            Debug "SubLevel : " + Str(SubLevel)
+            Debug "Full name : " + FullPath
+
+            SelectElement(Tree(), Item)
+            Revert(Tree()\FullPath)
+            Tree()\Status = Status(Tree()\FullPath)
+            MakeTreeGadget()
+            SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+            SetGadgetState(#TreeGadget, Item)
+ 
+        EndSelect
+            
     EndSelect
     
     ;Disable "full access" gadgets if username&password are not given
@@ -1111,9 +1308,9 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 745
-; FirstLine = 742
-; Folding = ----
+; CursorPosition = 508
+; FirstLine = 496
+; Folding = -----
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
