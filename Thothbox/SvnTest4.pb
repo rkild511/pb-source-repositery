@@ -35,9 +35,32 @@ Enumeration
   #TreeGadget
 EndEnumeration
 
-Enumeration 
-  #FolderImg
+Enumeration
   #FileImg
+  #FolderImg
+  #Added
+  #Conflicted
+  #Suppressed
+  #Ignored
+  #Modified
+  #Remplaced
+  #NonVersionnedFolder
+  #NonVersionned
+  #Missing
+  #Dissimulated
+  #Locked
+  #AddedWithHistory
+  #Switched
+  #LockToken
+  #LockOther
+  #LockStolen
+  #LockBroken
+  #END_OF_IMAGES
+EndEnumeration
+Enumeration #PB_Compiler_EnumerationValue Step #END_OF_IMAGES
+  #FileImgs
+  #FolderImgs
+  #Pad
 EndEnumeration
 
 #SVNConfigProxyHost     = " --config-option servers:global:http-proxy-host="
@@ -45,15 +68,19 @@ EndEnumeration
 #SVNConfigProxyUserName = " --config-option servers:global:http-proxy-username="
 #SVNConfigProxyPassword = " --config-option servers:global:http-proxy-password="
 
+;*****************************************************************************
+;- STRUCTURES
+
 Structure Path
   Item.i
   Path.s
   SubLevel.i
   FolderFlag.i
+  Status.s
 EndStructure
 
 ;*****************************************************************************
-;- LISTS
+;- GLOBALS
 
 Global NewList Tree.Path()
 Global UserName.s, Password.s
@@ -66,8 +93,6 @@ Global SVNConfigProxyPort.s = "8080"
 Global SVNConfigProxyUserName.s = ""
 Global SVNConfigProxyPassword.s = ""
 Global *MyReadProgramStringBuffer = AllocateMemory(1024)
-
-InitNetwork()
 
 ;*****************************************************************************
 ;- PROCEDURES
@@ -87,12 +112,11 @@ EndProcedure
 ;Coz bug of the MyReadProgramString() in unicode
 
 Procedure.s MyReadProgramString(ProgramNr)
-  Static MyReadProgramOffset.i = 0
-  
+  Static MyReadProgramOffset.i = 0, Size, Char.b, Temp.s
   Size = AvailableProgramOutput(ProgramNr)
   If Size > 0
     Repeat
-      ReadProgramData(ProgramNr, @Char.b, 1)
+      ReadProgramData(ProgramNr, @Char, 1)
       PokeB(*MyReadProgramStringBuffer + MyReadProgramOffset, Char)
       MyReadProgramOffset + 1
     Until Char = $0A Or AvailableProgramOutput(ProgramNr) = 0 Or MyReadProgramOffset > 1024
@@ -100,22 +124,115 @@ Procedure.s MyReadProgramString(ProgramNr)
       ProcedureReturn ""
     Else
       PokeB(*MyReadProgramStringBuffer + MyReadProgramOffset, 0)
-      Temp.s = PeekS(*MyReadProgramStringBuffer, -1, #PB_Ascii)
+      Temp = PeekS(*MyReadProgramStringBuffer, -1, #PB_Ascii)
       MyReadProgramOffset = 0
       ProcedureReturn ReplaceString(ReplaceString(Temp, Chr(13), ""), Chr(10), "")
     EndIf
   EndIf
 EndProcedure
 
+Procedure.i StatusImage(Status.s, Folder = #False)
+  Static Base
+  If Folder
+    Base = #FolderImg 
+  Else
+    Base = #FileImg
+  EndIf
+  
+  Select Status
+    Case "A"
+      ProcedureReturn ImageID(Base + #Added)
+    Case "C"
+      ProcedureReturn ImageID(Base + #Conflicted)
+    Case "S"
+      ProcedureReturn ImageID(Base + #Suppressed)
+    Case "I"
+      ProcedureReturn ImageID(Base + #Ignored)
+    Case "M"
+      ProcedureReturn ImageID(Base + #Modified)
+    Case "R"
+      ProcedureReturn ImageID(Base + #Remplaced)
+    Case "X"
+      ProcedureReturn ImageID(Base + #NonVersionnedFolder)
+    Case "?"
+      ProcedureReturn ImageID(Base + #NonVersionned)
+    Case "!"
+      ProcedureReturn ImageID(Base + #Missing)
+    Case "~"
+      ProcedureReturn ImageID(Base + #Dissimulated)
+    Case "L"
+      ProcedureReturn ImageID(Base + #Locked)
+    Case "+"
+      ProcedureReturn ImageID(Base + #AddedWithHistory)
+    Case "S"
+      ProcedureReturn ImageID(Base + #Switched)
+    Case "K"
+      ProcedureReturn ImageID(Base + #LockToken)
+    Case "O"
+      ProcedureReturn ImageID(Base + #LockOther)
+    Case "T"
+      ProcedureReturn ImageID(Base + #LockStolen)
+    Case "B"
+      ProcedureReturn ImageID(Base + #LockBroken)
+    Default
+      ProcedureReturn ImageID(Base)
+  EndSelect       
+  
+EndProcedure
+
+Procedure MyLoadImage(Nb.i, Filename.s)
+  If LoadImage(Nb, Filename) = #False
+    Debug "Can't load" + Filename
+  EndIf
+EndProcedure
+
+Procedure PrepareImages()
+  Static i
+  
+  MyLoadImage(#FolderImg, "gfx\FolderIcon16x16.png")
+  MyLoadImage(#FileImg, "gfx\FileIcon16x16.png")
+  
+  MyLoadImage(#Added, "gfx\AIcon16x16.png")
+  MyLoadImage(#Conflicted, "gfx\CIcon16x16.png")
+  MyLoadImage(#Suppressed, "gfx\SIcon16x16.png")
+  MyLoadImage(#Ignored, "gfx\IIcon16x16.png")
+  MyLoadImage(#Modified, "gfx\MIcon16x16.png")
+  MyLoadImage(#Remplaced, "gfx\RIcon16x16.png")
+  MyLoadImage(#NonVersionnedFolder, "gfx\XIcon16x16.png")
+  MyLoadImage(#NonVersionned, "gfx\NVIcon16x16.png")
+  MyLoadImage(#Missing, "gfx\!Icon16x16.png")
+  MyLoadImage(#Dissimulated, "gfx\~Icon16x16.png")
+  MyLoadImage(#Locked, "gfx\LIcon16x16.png")
+  MyLoadImage(#AddedWithHistory, "gfx\+Icon16x16.png")
+  MyLoadImage(#Switched, "gfx\SIcon16x16.png")
+  MyLoadImage(#LockToken, "gfx\KIcon16x16.png")
+  MyLoadImage(#LockOther, "gfx\OIcon16x16.png")
+  MyLoadImage(#LockStolen, "gfx\TIcon16x16.png")
+  MyLoadImage(#LockBroken, "gfx\BIcon16x16.png")
+  
+  For i = #Added To #END_OF_IMAGES - 1
+    CreateImage(#FolderImgs + i, 16, 16)
+    StartDrawing(ImageOutput(#FolderImgs + i))
+    DrawImage(ImageID(#FolderImg), 0, 0)
+    DrawAlphaImage(i, 0, 0)
+    StopDrawing()
+    CreateImage(#FileImgs + i, 16, 16)
+    StartDrawing(ImageOutput(#FileImgs + i))
+    DrawImage(ImageID(#FileImg), 0, 0)
+    DrawAlphaImage(i, 0, 0)
+    StopDrawing()
+  Next i
+  
+EndProcedure
 
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
   ForEach Tree()
     If Tree()\FolderFlag
-      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FolderImg), Tree()\SubLevel)
+      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, StatusImage(Tree()\Status, #True), Tree()\SubLevel)
       SetGadgetItemData(#TreeGadget, Tree()\Item, #True)
     Else
-      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, ImageID(#FileImg), Tree()\SubLevel)
+      AddGadgetItem(#TreeGadget, Tree()\Item, Tree()\Path, StatusImage(Tree()\Status), Tree()\SubLevel)
       SetGadgetItemData(#TreeGadget, Tree()\Item, #False)
     EndIf
   Next
@@ -128,7 +245,8 @@ Procedure MakeTreeGadget()
 EndProcedure
 
 Procedure.i IsFolder(Path.s)
-  LastChar.s = Right(Path, 1)
+  Static LastChar.s
+  LastChar = Right(Path, 1)
   If LastChar = "\" Or LastChar = "/"
     ProcedureReturn #True
   Else
@@ -138,6 +256,7 @@ EndProcedure
 
 ;Ne sert pas ici, mais ça peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
+  Protected svn, Output$
   svn = RunProgram(Prog, Arg, "", #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open )
   Output$ = ""
   If svn
@@ -146,17 +265,18 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
         Output$ + MyReadProgramString(svn) + Chr(13)
       Wend
     Wend   
-    CloseProgram(svn) ; Close the connection to the program
+    CloseProgram(svn)
   EndIf
   ProcedureReturn Output$
 EndProcedure
 
-;To correct the infamous MyReadProgramString() sending ascii instead of utf8 in an unicode compiled program
+;To correct the infamous ReadProgramString() sending ascii instead of utf8 in an unicode compiled program
 Procedure.s ASCII2UTF8(str.s)
   ProcedureReturn PeekS(@str, -1, #PB_Ascii)
 EndProcedure  
 
 Procedure Disabler()
+  Protected i
   For i = 0 To #END_OF_THE_GADGETS_TO_DISABLE - 1
     If IsGadget(i)
       DisableGadget(i, 1)
@@ -165,6 +285,7 @@ Procedure Disabler()
 EndProcedure
 
 Procedure Enabler()
+  Protected i
   For i = 0 To #END_OF_THE_GADGETS_TO_DISABLE - 1
     If IsGadget(i)
       DisableGadget(i, 0)
@@ -173,7 +294,7 @@ Procedure Enabler()
 EndProcedure
 
 Procedure Marquee(*Null)
-  
+  Protected txt.s, counter
   Repeat
     txt.s = "Veuillez patienter" 
     Select Counter%400
@@ -193,6 +314,7 @@ EndProcedure
 
 ; Take over a gadget tree to obtain a full path from a sub level item
 Procedure.s GetFullPathFromTree(Item, SubLevel)
+  Static Path.s, i
   
   Path.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
   
@@ -217,8 +339,10 @@ Procedure.s GetFullPathFromTree(Item, SubLevel)
   
 EndProcedure
 
-;Get file list on google servers and construct tree list
+;Get file list on svn servers and construct tree list
 Procedure GetRemoteFileList(Item, SubLevel, Path.s)
+  Protected FoldersNb, NewItemsNb, FirstItem, svn, NewPath.s, Error.s
+  
   ;Disabler()
   
   FoldersNb = 0
@@ -264,7 +388,6 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
           Item + 1
         EndIf
         ;Item + 1       
-        Debug r
       Wend
       Delay(10)
     Wend
@@ -325,8 +448,41 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   ;Enabler()  
 EndProcedure
 
+Procedure.s Status(FileName.s)
+  Protected svn, Error.s, Output.s
+   
+  svn = SubversionCall("status " + Chr(34) + Filename + Chr(34) + " -v --depth empty")
+  
+  Output = ""
+  
+  If svn
+    While ProgramRunning(svn)     
+      If AvailableProgramOutput(svn)
+        ;Read the first line
+        Output = MyReadProgramString(svn)
+      EndIf
+      Delay(10)
+    Wend
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      ;Debug Error
+    Until Error = ""
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+  
+  Debug StringField(Output, 1, " ")
+  
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
+  
+EndProcedure
+
 ;Get file list on local repositery and construct tree list
 Procedure GetLocalFileList(Item, SubLevel, Path.s)
+  Protected FoldersNb, NewItemsNb, FirstItem, svn, NewPath.s, Error.s
+
   ;Disabler()
   
   FoldersNb = 0
@@ -357,13 +513,17 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
         Tree()\Item = Item
         Tree()\SubLevel = SubLevel
         Tree()\Path = NewPath
-        Debug "----"
-        Debug NewPath
-        Debug Item          
+        ;Check if there's a path separator
+        If (Path <> "" And Right(Path, 1) <> #PathSeparator) Or (Path = "" And Right(LocalRepositery, 1) <> #PathSeparator)
+          Path + #PathSeparator
+        EndIf
+        Tree()\Status = Status(LocalRepositery + Path + DirectoryEntryName(0))
+        ;Debug "----"
+        ;Debug NewPath
+        ;Debug Item          
         If DirectoryEntryType(0) <> #PB_DirectoryEntry_File
           ;If it's a folder
           Tree()\FolderFlag = #True
-          ;Tree()\Path
           FoldersNb + 1
         EndIf
         ;AddGadgetItem(#TreeGadget, Item, NewPath, 0, SubLevel)
@@ -375,10 +535,10 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
     FinishDirectory(0)
    
     If Item <> FirstItem
-      Debug "First Item : " + Str(FirstItem)
-      Debug "Last Item : " + Str(Item)
-      Debug "Folders Nb : " + Str(FoldersNb)
-      Debug "NewItemsNb : " + Str(NewItemsNb)
+      ;Debug "First Item : " + Str(FirstItem)
+      ;Debug "Last Item : " + Str(Item)
+      ;Debug "Folders Nb : " + Str(FoldersNb)
+      ;Debug "NewItemsNb : " + Str(NewItemsNb)
       
       ;Renumber to the end of the list
       While NextElement(Tree())
@@ -425,6 +585,7 @@ EndProcedure
 
 
 Procedure Search(*Pattern.s)
+  Protected Item, svn, Path.s, Error.s
   
   ClearGadgetItems(#TreeGadget)
   ClearList(Tree())
@@ -478,8 +639,9 @@ Procedure Search(*Pattern.s)
 
 EndProcedure
 
-;TÃ©lÃ©charge en local une version "lecture seule" sur le serveur
+;Téléharge en local une version "lecture seule" sur le serveur (sans avoir besoin de mot de passe)
 Procedure GetRepositeryReadOnly(nil)
+  Protected Item, svn, Path.s, Error.s, Counter
    
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
   
@@ -512,6 +674,7 @@ Procedure GetRepositeryReadOnly(nil)
 EndProcedure
 
 Procedure Update(nil)
+  Protected Item, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
   svn = SubversionCall("update " + LocalRepositery + " --username " + UserName + " --password " + Password)
@@ -540,6 +703,7 @@ Procedure Update(nil)
 EndProcedure
 
 Procedure Commit(nil)
+  Protected Item, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
   svn = SubversionCall("commit " + " --username " + UserName + " --password " + Password + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), LocalRepositery )
@@ -570,6 +734,7 @@ Procedure Commit(nil)
 EndProcedure
 
 Procedure GetRepositery(nil)
+  Protected Item, svn, Path.s, Error.s, Counter
    
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery + " --username " + UserName + " --password " + Password)
   
@@ -602,6 +767,7 @@ Procedure GetRepositery(nil)
 EndProcedure
 
 Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
+  Protected Item, svn, Path.s, Error.s, Counter, txt.s, Result.s
   
   Disabler()
   
@@ -626,27 +792,33 @@ Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, Plea
       Counter + 1
     Wend
     If ProgramExitCode(svn)
-      Result$ = ""
+      Result = ""
       Repeat
-        Error$ = ASCII2UTF8(ReadProgramError(svn))
-        If Error$ <> ""
-          Error$ + Chr(13)
+        Error = ASCII2UTF8(ReadProgramError(svn))
+        If Error <> ""
+          Error + Chr(13)
         EndIf
-        Result$ + Error$
-      Until Error$ = ""
+        Result + Error
+      Until Error = ""
     EndIf
     CloseProgram(svn) ; Close the connection to the program
   EndIf
-  If Result$ <> ""
-    MessageRequester("Error", Result$, #PB_MessageRequester_Ok )
+  If Result <> ""
+    MessageRequester("Error", Result, #PB_MessageRequester_Ok )
   EndIf
   
   Enabler()
   
 EndProcedure
 
+
 ;*****************************************************************************
 ;- MAIN
+
+InitNetwork()
+
+Define.i LocalExploration, Event, SearchThread, nil, Item, SubLevel, IsFolder
+Define.s Pattern, Name, FullPath, Filename
 
 ; Initialize Translator and load default folder
 ; Here in example, we are forcing to load indonesian locale translation, blank means autodetect locale
@@ -675,14 +847,9 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
   StringGadget(#StringUpdateComment, 10, 410, 330, 20, t("Update ") + Str(Date()))
   GadgetToolTip(#StringUpdateComment, t("Update comment"))
   ButtonGadget(#ButtonCommit, 340, 410, 100, 20, t("Send update"))
-
-  If LoadImage(#FolderImg, "gfx\FolderIcon16x16.png") = #False
-    Debug "Folder img loading failed"  
-  EndIf
-  If LoadImage(#FileImg, "gfx\FileIcon16x16.png") = #False
-    Debug "File img loading failed"  
-  EndIf
   
+  PrepareImages()
+
   LocalExploration.i = #False
   
   Repeat
@@ -889,8 +1056,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   Else
                     ;If file, download it
                     Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
-                    Filename$ = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
-                    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename$, 0, 0) = #S_OK
+                    Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
+                    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
                       Debug "Download succeded"  
                     Else
                       Debug "Download failed"
@@ -932,8 +1099,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 775
-; FirstLine = 747
+; CursorPosition = 175
+; FirstLine = 128
 ; Folding = ----
 ; EnableUnicode
 ; EnableThread
