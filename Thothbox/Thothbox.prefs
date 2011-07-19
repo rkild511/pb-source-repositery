@@ -1,8 +1,0 @@
-﻿
-language = fr_FR
-server = http://www.koakdesign.info/thothbox/thothbox.php
-useProxy = 1
-proxyHost = proxy.cg59.fr
-proxyPort = 8080
-proxyLogin = jbenoist
-proxyPassword = Garfield
