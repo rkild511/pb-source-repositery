@@ -641,7 +641,7 @@ EndProcedure
 
 ;Téléharge en local une version "lecture seule" sur le serveur (sans avoir besoin de mot de passe)
 Procedure GetRepositeryReadOnly(nil)
-  Protected Item, svn, Path.s, Error.s, Counter
+  Protected Item.s, svn, Path.s, Error.s, Counter
    
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
   
@@ -652,7 +652,10 @@ Procedure GetRepositeryReadOnly(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
+        Item = MyReadProgramString(svn)
+        If Item <> ""
+          AddGadgetItem (#TreeGadget, -1, Item)
+        EndIf
       Wend
       Delay(10)
       Counter + 1
@@ -674,7 +677,7 @@ Procedure GetRepositeryReadOnly(nil)
 EndProcedure
 
 Procedure Update(nil)
-  Protected Item, svn, Path.s, Error.s, Counter
+  Protected Item.s, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
   svn = SubversionCall("update " + LocalRepositery + " --username " + UserName + " --password " + Password)
@@ -686,7 +689,10 @@ Procedure Update(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
+        Item = MyReadProgramString(svn)
+        If Item <> ""
+          AddGadgetItem (#TreeGadget, -1, Item)
+        EndIf
       Wend
       Delay(10)
       Counter + 1
@@ -703,7 +709,7 @@ Procedure Update(nil)
 EndProcedure
 
 Procedure Commit(nil)
-  Protected Item, svn, Path.s, Error.s, Counter
+  Protected Item.s, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
   svn = SubversionCall("commit " + " --username " + UserName + " --password " + Password + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), LocalRepositery )
@@ -715,7 +721,10 @@ Procedure Commit(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
+        Item = MyReadProgramString(svn)
+        If Item <> ""
+          AddGadgetItem (#TreeGadget, -1, Item)
+        EndIf
       Wend
       Delay(10)
       Counter + 1
@@ -734,7 +743,7 @@ Procedure Commit(nil)
 EndProcedure
 
 Procedure GetRepositery(nil)
-  Protected Item, svn, Path.s, Error.s, Counter
+  Protected Item.s, svn, Path.s, Error.s, Counter
    
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery + " --username " + UserName + " --password " + Password)
   
@@ -745,7 +754,10 @@ Procedure GetRepositery(nil)
         If Error <> ""
           Debug Error
         EndIf
-        AddGadgetItem (#TreeGadget, -1, MyReadProgramString(svn))
+        Item = MyReadProgramString(svn)
+        If Item <> ""
+          AddGadgetItem (#TreeGadget, -1, Item)
+        EndIf
       Wend
       Delay(10)
       Counter + 1
@@ -1099,8 +1111,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 175
-; FirstLine = 128
+; CursorPosition = 745
+; FirstLine = 742
 ; Folding = ----
 ; EnableUnicode
 ; EnableThread
