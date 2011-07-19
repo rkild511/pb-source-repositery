@@ -20,7 +20,7 @@ Structure HTTP_Proxy
 EndStructure
 
 Structure HTTP_Query
-  method.b
+  method.b         ;see enumeration under structure
   host.s
   port.i
   path.s
@@ -34,9 +34,11 @@ Structure HTTP_Query
   *rawdata        ; all datareceived header and data mixed
   *data           ; complete received data
   *header         ; received header data
-   error.b        ; return error
+  error.b         ; return error
+  *callback       ; CallBack funtion procedure()
 EndStructure
 
+#HTTP_BUFFER=2048; Buffer size to reveive data
 
 Enumeration
   #HTTP_METHOD_GET
@@ -205,81 +207,119 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
 EndProcedure
 ;- Nouvelles fonctions
 ;###############################################################################################################
-Procedure HTTP_proxy(*test.HTTP_Query,host.s="",port.i=80,login.s="",password.s="")
-  *test\proxy\host=host
-  *test\proxy\port=port
-  *test\proxy\login=login
-  *test\proxy\password=password
+Procedure HTTP_proxy(*query.HTTP_Query,host.s="",port.i=80,login.s="",password.s="")
+  *query\proxy\host=host
+  *query\proxy\port=port
+  *query\proxy\login=login
+  *query\proxy\password=password
 EndProcedure
 
 
 
-Procedure HTTP_receiveRawData(*test.HTTP_Query)
+Procedure HTTP_receiveRawData(*query.HTTP_Query)
   Protected *rawdata,time.i,readed.i,size.i,NEvent.i
-  If *test\conn
-    *test\buffer = AllocateMemory(2048)
-    *test\rawdata=AllocateMemory(1)
+  
+  If *query\rawdata>0
+    FreeMemory(*query\rawdata)
+  EndIf
+  
+  If *query\header>0
+    FreeMemory(*query\header)
+  EndIf
+  
+  If *query\data>0
+    FreeMemory(*query\data)
+  EndIf
+  
+  If *query\conn
+    *query\buffer = AllocateMemory(#HTTP_BUFFER)
+    *query\rawdata=AllocateMemory(1)
     time = ElapsedMilliseconds()
-    Debug "start"
     Repeat
-      NEvent=NetworkClientEvent(*test\conn);NetworkClientEvent(*test\conn) 
+      NEvent=NetworkClientEvent(*query\conn);NetworkClientEvent(*query\conn) 
       If NEvent=#PB_NetworkEvent_Data
-        readed = ReceiveNetworkData(*test\conn, *test\buffer, 2048)
+        readed = ReceiveNetworkData(*query\conn, *query\buffer, #HTTP_BUFFER)
         If readed>0
-          Debug readed
-          
-          size=MemorySize(*test\rawdata)
+          size=MemorySize(*query\rawdata)
           If size=1:size=0:EndIf
-          *test\rawdata=ReAllocateMemory(*test\rawdata,size+readed)
-          CopyMemory(*test\buffer,*test\rawdata+size,readed)
-          Debug "size:"+Str(readed)
+          *query\rawdata=ReAllocateMemory(*query\rawdata,size+readed)
+          CopyMemory(*query\buffer,*query\rawdata+size,readed)
+          ;-Search Header
+          If *query\header=0
+            ;found the lenght of the header
+            Protected z.i,lenght.i
+            For z=-4 To readed-5
+              ;If PeekB(*query\rawdata+size+z)=13 And PeekB(*query\rawdata+size+z+1)=10 And PeekB(*query\rawdata+size+z+2)=13 And PeekB(*query\rawdata+size+z+3)=10
+              If size+z>=0 And PeekL(*query\rawdata+size+z)=168626701
+                lenght=size+z+4
+                *query\header=AllocateMemory(lenght)
+                CopyMemory(*query\rawdata,*query\header,lenght);
+                ;Analyse the header !
+                Protected txt.s,nbline.l,line.s
+                txt=PeekS(*query\header,MemorySize(*query\header),#PB_Ascii)
+                nbline=CountString(txt,#LF$)
+                Debug "___Header__"
+                For z=1 To nbline
+                  line=StringField(txt, z, #LF$)
+                  line=ReplaceString(line,#LF$,"")
+                  line=ReplaceString(line,#CR$,"")
+                  Debug line
+                Next
+                Break;
+              EndIf
+            Next
+          EndIf
+          
+          ;-CallBack
+          If *query\callback>0
+            Debug "callback"
+            CallFunctionFast(*query\callback,size+readed,lenght)
+          EndIf
         Else 
-          Debug "rien"
+          Debug "HTTP_receiveRawData() rien"
         EndIf
         time = ElapsedMilliseconds()
       EndIf
       Delay(10)
       
     Until NEvent=#PB_NetworkEvent_Disconnect ;ElapsedMilliseconds() - time >= 3000
-    CloseNetworkConnection(*test\conn)
-    FreeMemory(*test\buffer):*test\buffer=0;
-    ProcedureReturn #True
+    CloseNetworkConnection(*query\conn)
+    FreeMemory(*query\buffer):*query\buffer=0;
+    ;-Search Data
+    If *query\header>0
+      size=MemorySize(*query\rawdata)-MemorySize(*query\header)
+      *query\data=AllocateMemory(size)
+      CopyMemory(*query\rawdata+MemorySize(*query\header),*query\data,size);
+      FreeMemory(*query\rawdata):*query\rawdata=0
+      Debug "___DATA__"
+      Debug PeekS(*query\data,MemorySize(*query\data),#PB_Ascii)
+      ProcedureReturn #True
+    Else
+      Debug "HTTP_ERROR_ANSWER_NO_HEADER"
+      *query\error=#HTTP_ERROR_ANSWER_NO_HEADER
+      ProcedureReturn #False
+    EndIf
+    
+    
   Else
     Debug "no Networkconnection"
     ProcedureReturn #False
   EndIf
 EndProcedure
 
-; find the end of the header
-; Procedure HTTP_FindHeader(*test.HTTP_Query)
-;   Protected z.l
-;   If *test\rawdata>0
-;     For z=0 To MemorySize(*test\rawdata)-4
-;       If PeekB(*test\rawdata+z)=13 And PeekB(*test\rawdata+z+1)=10 And PeekB(*test\rawdata+z+2)=13 And PeekB(*test\rawdata+z+3)=10
-;         ProcedureReturn z+4
-;       EndIf
-;     Next
-;   Else 
-;     Debug "HTTP_FindHeader : No data to analyse";
-;     *test\error=#HTTP_ERROR_ANSWER_NO_HEADER
-;     ProcedureReturn 0
-;   EndIf
-;   
-; EndProcedure
-
-Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
+Procedure HTTP_query(*query.HTTP_Query,method.b,url.s)
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
   ; si on a un proxy
-  If *test\proxy\host<>""
-    Debug "Use Proxy:"+*test\proxy\host+" port:"+Str(*test\proxy\port)
-    HTTP_createQuery(*test, method, url, *test\proxy\host,*test\proxy\port,*test\proxy\login,*test\proxy\password)
+  If *query\proxy\host<>""
+    Debug "Use Proxy:"+*query\proxy\host+" port:"+Str(*query\proxy\port)
+    HTTP_createQuery(*query, method, url, *query\proxy\host,*query\proxy\port,*query\proxy\login,*query\proxy\password)
     ;si on a pas de proxy 
   Else
     host = GetURLPart(url, #PB_URL_Site); the main domain
     path =GetURLPart(url,#PB_URL_Path); the path
     port= Val(GetURLPart(url, #PB_URL_Port))
     If port=0:port=80:EndIf
-    HTTP_createQuery(*test, method, "/"+path, host,port)
+    HTTP_createQuery(*query, method, "/"+path, host,port)
   EndIf
   ;si on a une protection part login/password via un htacess
   login=GetURLPart(url, #PB_URL_User)
@@ -288,64 +328,29 @@ Procedure HTTP_query(*test.HTTP_Query,method.b,url.s)
     string = login+":"+pass
     res = Space(Len(string)*4)
     Base64Encoder(@string, Len(string), @res, Len(string)*4)
-    HTTP_addQueryHeader(*test, "Authorization", "Basic "+res)
+    HTTP_addQueryHeader(*query, "Authorization", "Basic "+res)
   EndIf
   
   
   
 EndProcedure
 
-Procedure HTTP_DataProcessing(*test.HTTP_Query)
-  Protected lenght.i=0,z.i
-  If *test\rawdata>0
-    ;found the lenght of the header
-    For z=0 To MemorySize(*test\rawdata)-4
-      If PeekB(*test\rawdata+z)=13 And PeekB(*test\rawdata+z+1)=10 And PeekB(*test\rawdata+z+2)=13 And PeekB(*test\rawdata+z+3)=10
-        lenght=z+4
-        Break;
-      EndIf
-    Next
-    
-    If lenght>0
-      ;copy header
-      *test\header=AllocateMemory(lenght)
-      CopyMemory(*test\rawdata,*test\header,lenght);
-      ;copy file Data
-      If MemorySize(*test\rawdata)-lenght>0
-        *test\data=AllocateMemory(MemorySize(*test\rawdata)-lenght)
-        CopyMemory(*test\rawdata+lenght,*test\data,MemorySize(*test\rawdata)-lenght);
-      Else
-        Debug "DataProcessing:No Data juste Header"
-      EndIf
-    Else  
-      Debug "HTTP_FindHeader : No data to analyse";
-      *test\error=#HTTP_ERROR_ANSWER_NO_HEADER
-      ProcedureReturn #False
-    EndIf
-    FreeMemory(*test\rawdata):*test\rawdata=0
-  Else
-    Debug "DataProcessing:No answer"
-  EndIf
-EndProcedure
-
-Procedure HTTP_DownloadToMem(*test.HTTP_Query,url.s)
+Procedure HTTP_DownloadToMem(*query.HTTP_Query,url.s)
   Protected  *rawdata,lenght.i
-  HTTP_query(*test, #HTTP_METHOD_GET, url)
-  HTTP_addQueryHeader(*test, "User-Agent", "PB")
-  HTTP_sendQuery(*test)
-  HTTP_receiveRawData(*test)
-  HTTP_DataProcessing(*test)
-  
+  HTTP_query(*query, #HTTP_METHOD_GET, url)
+  HTTP_addQueryHeader(*query, "User-Agent", "PB")
+  HTTP_sendQuery(*query)
+  HTTP_receiveRawData(*query)
   ProcedureReturn #True
 EndProcedure
 
-Procedure HTTP_DownloadToFile(*test.HTTP_Query,url.s,file.s)
-  HTTP_DownloadToMem(*test,url.s)
-  If *test\data<>0
+Procedure HTTP_DownloadToFile(*query.HTTP_Query,url.s,file.s)
+  HTTP_DownloadToMem(*query,url.s)
+  If *query\data<>0
     CreateFile(0,file)
-    WriteData(0,*test\data,MemorySize(*test\data))
+    WriteData(0,*query\data,MemorySize(*query\data))
     CloseFile(0)
-    FreeMemory(*test\data):*test\data=0
+    FreeMemory(*query\data):*query\data=0
     ProcedureReturn #True
   Else  
     ProcedureReturn #False  
@@ -367,7 +372,6 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
     HTTP_addFile(@test, "datafile", OpenFileRequester("Please choose file to load", "", "*.*", 0))
     HTTP_sendQuery(@test)
     HTTP_receiveRawData(@test)
-    HTTP_DataProcessing(@test)
     Print(PeekS(test\data,MemorySize(test\data),#PB_Ascii))
     Input()
   EndProcedure
@@ -381,7 +385,7 @@ CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 315
-; FirstLine = 295
+; CursorPosition = 271
+; FirstLine = 248
 ; Folding = ---
 ; EnableXP

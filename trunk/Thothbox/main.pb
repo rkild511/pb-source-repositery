@@ -54,8 +54,14 @@ CompilerIf  #PB_Compiler_OS = #PB_OS_Windows
   EndIf
 CompilerEndIf
 
+Enumeration
+  #win_Main
+  #win_Wait
+EndEnumeration
+
 ;mode and gadget
 Enumeration
+  
   #mode_searchWindow;mode 0 search window
   #gdt_logo
   #gdt_version
@@ -87,6 +93,8 @@ Enumeration
   #gdt_poxyLoginTxt
   #gdt_poxyPassword
   #gdt_poxyPasswordTxt
+  ;for #win_Wait
+  #gdt_waitTxt
   #gdt_end
 EndEnumeration
 
@@ -139,9 +147,9 @@ EndMacro
 #gdtW=10  ;space after a Gadget
 
 
-If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
+If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
-  If CreateMenu(0, WindowID(0))
+  If CreateMenu(#win_Main, WindowID(#win_Main))
     MenuTitle("?")
     MenuItem(0, t("About"))
     MenuItem(1, t("Preferences"))
@@ -149,7 +157,7 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   EndIf
 
   ;-mode_searchWindow Gadgets
-  ContainerGadget(#mode_searchWindow,0,0,WindowWidth(0),WindowHeight(0))
+  ContainerGadget(#mode_searchWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   CatchImage(0,?Logo)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
   StringGadget(#gdt_search,0,0,250,#gdtH,"")
@@ -164,7 +172,7 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   AddGadgetColumn(#gdt_result, 2, t("Platform"), 250)
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
-  ContainerGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
+  ContainerGadget(#mode_viewWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   TextGadget(#gdt_titleTxt,50,50,50,#gdtH,t("Title")+":")
   StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,#gdtH,"http download memorie")
   
@@ -301,6 +309,8 @@ If OpenWindow(0, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_W
   CloseGadgetList()
 EndIf
 
+
+
 Procedure refreachWindow(mode.l)
   Protected hide.b,tmpX.l,tmpY.l,tmpH.l,tmpW.l
   ;-mode_searchWindow Resize
@@ -344,8 +354,6 @@ Procedure refreachWindow(mode.l)
   
 EndProcedure
 
- 
-
 Procedure commitNewCode(file.s)
   Protected txt.s,format.l
   If FileSize(file)>0 And (LCase(GetExtensionPart(file))="pb" Or LCase(GetExtensionPart(file))="pbi")
@@ -381,8 +389,10 @@ EndProcedure
 ;SetGadgetColor(#gdt_version,#PB_Gadget_BackColor,#White)
 Define event.l,quit.b=#False,file.s,z.l
 For z=#mode_searchWindow To #gdt_end-1
-  SetGadgetColor(z,#PB_Gadget_BackColor,#White)
-  SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
+  If IsGadget(z)
+    SetGadgetColor(z,#PB_Gadget_BackColor,#White)
+    SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
+  EndIf
 Next
 
 
@@ -509,8 +519,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 116
-; FirstLine = 96
+; CursorPosition = 393
+; FirstLine = 361
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

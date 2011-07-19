@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-18 07:15" user="Thyphoon" host="GRAAL"/>
+    <lastopen date="2011-07-19 06:21" user="Thyphoon" host="GRAAL"/>
   </section>
   <section name="files">
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="fffa1a72dcee673313a0d9f13414d98e"/>
+      <fingerprint md5="88d0f6321f38b9d944a11edd61f719a0"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="++"/>
@@ -28,7 +28,7 @@
     </file>
     <file name="http.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="69be95d373ddc821d841dfa8b99c5376"/>
+      <fingerprint md5="286d711ad790d76e5eddb8b5acd621a5"/>
     </file>
     <file name="preferences.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -36,23 +36,19 @@
     </file>
     <file name="network.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="3e140512c7c7b71edf234a37179d3109"/>
+      <fingerprint md5="50b63a316978d9bd5b69083b1a0dc5a8"/>
     </file>
     <file name="networkClientEvent.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="a023f646342940048253b9fad0c6ed73"/>
     </file>
     <file name="translator.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="405d19d3a22b6dea222ab964050b7f8d"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="1e4a93420a7cdd65a378ad5de43295e2"/>
     </file>
     <file name="locale.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="6d0138ecd9b17a1d679609da8b1f1b0b"/>
-    </file>
-    <file name="filereader.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="10f60c633541d68679b81e4ef79c2a03"/>
+      <fingerprint md5="00872cf19bbed272c021c833e44163af"/>
     </file>
   </section>
   <section name="targets">

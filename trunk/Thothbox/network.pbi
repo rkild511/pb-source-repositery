@@ -1,14 +1,33 @@
-﻿Procedure servercall()
+﻿Procedure myCallBack(l.i,max.i)
+SetGadgetText(#gdt_waitTxt,Str(l))
+EndProcedure
+;http://www.koakdesign.info/thothbox/thothbox.php
+
+
+
+Procedure OpenWaitWindow()
+  OpenWindow(#win_Wait,0,0,320,200,"",#PB_Window_WindowCentered,WindowID(0))
+  TextGadget(#gdt_waitTxt,20,20,320,20,"Please Wait...")
+  StickyWindow(#win_Wait,1)
+  DisableWindow(#win_Main,1)
+EndProcedure
+
+Procedure CloseWaitWindow()
+  CloseWindow(#win_Wait)
+  DisableWindow(#win_Main,0)
+EndProcedure
+Procedure servercall()
   Protected http.HTTP_Query
+  OpenWaitWindow()
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
+  http\callback=@myCallBack()
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   HTTP_addPostData(@http, "info", "")
   HTTP_sendQuery(@http)
   HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http)
   Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
   If http\data<>0
     MessageRequester("Server Info",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
@@ -29,10 +48,12 @@
   Else
     MessageRequester("Server Back Call","Error")
   EndIf
+  CloseWaitWindow()
 EndProcedure
 
 Procedure serverSearch(keywords.s)
   Protected http.HTTP_Query
+  OpenWaitWindow()
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
@@ -41,7 +62,7 @@ Procedure serverSearch(keywords.s)
   HTTP_addPostData(@http, "search", keywords)
   HTTP_sendQuery(@http)
   HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http)
+  ;HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
   If http\data<>0
     Debug PeekS(http\data,MemorySize(http\data),#PB_Ascii);
@@ -60,6 +81,7 @@ Procedure serverSearch(keywords.s)
   Else
     MessageRequester("serverSearch()","Error")
   EndIf
+  CloseWaitWindow()
 EndProcedure 
 
 Procedure getFilesListFromServer(id.l)
@@ -72,7 +94,7 @@ Procedure getFilesListFromServer(id.l)
   HTTP_addPostData(@http, "code", Str(id))
   HTTP_sendQuery(@http)
   HTTP_receiveRawData(@http)
-  HTTP_DataProcessing(@http)
+  ;HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
   If http\data<>0
     MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
@@ -89,6 +111,6 @@ Procedure getFilesListFromServer(id.l)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 65
-; Folding = -
+; CursorPosition = 1
+; Folding = --
 ; EnableXP
