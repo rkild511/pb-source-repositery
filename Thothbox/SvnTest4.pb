@@ -118,7 +118,7 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
 
 EndProcedure
 
-;Coz bug of the MyReadProgramString() in unicode
+;Coz bug of the ReadProgramString() in unicode
 
 Procedure.s MyReadProgramString(ProgramNr)
   Static MyReadProgramOffset.i = 0, Size, Char.b, Temp.s
@@ -235,9 +235,10 @@ Procedure.s StatusName(Status.s)
   EndSelect       
   
 EndProcedure
+
 Procedure MyLoadImage(Nb.i, Filename.s)
   If LoadImage(Nb, Filename) = #False
-    Debug "Can't load" + Filename
+    Debug "Can't load " + Filename
   EndIf
 EndProcedure
 
@@ -544,10 +545,9 @@ Procedure.s Add(FileName.s)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
-        ;Read the first line
-        Output = MyReadProgramString(svn)
-      EndIf
+      While AvailableProgramOutput(svn)
+        Output + MyReadProgramString(svn)
+      Wend
       Delay(10)
     Wend
     
@@ -575,10 +575,9 @@ Procedure.s Revert(FileName.s)
   
   If svn
     While ProgramRunning(svn)     
-      If AvailableProgramOutput(svn)
-        ;Read the first line
-        Output = MyReadProgramString(svn)
-      EndIf
+      While AvailableProgramOutput(svn)
+        Output + MyReadProgramString(svn)
+      Wend
       Delay(10)
     Wend
     
@@ -758,7 +757,7 @@ Procedure Search(*Pattern.s)
 
 EndProcedure
 
-;Téléharge en local une version "lecture seule" sur le serveur (sans avoir besoin de mot de passe)
+;Locally download a read-only version of the repositery (no password needed)
 Procedure GetRepositeryReadOnly(nil)
   Protected Item.s, svn, Path.s, Error.s, Counter
    
@@ -1093,7 +1092,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
               ;Else local app folder
               LocalRepositery = PathRequester(t("Local repositery folder"), GetCurrentDirectory())
             EndIf
-            
             SetGadgetText(#StringLocalRepositery, LocalRepositery)
             
           Case #ButtonGetRepositery
@@ -1163,7 +1161,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 If LocalExploration
                   
                   ;-Local Exploration
-
                   If IsFolder
                     ;If folder, look into
                     SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
@@ -1177,7 +1174,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 Else
                   
                   ;-Remote exploration
-                  
                   If IsFolder
                     ;If folder, look into
                     SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
@@ -1223,10 +1219,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     MenuItem(#PopupMenuRevert, t("Undo"))
                   EndIf
                   DisplayPopupMenu(0, WindowID(0))
-                  
-                  If IsFolder
-                  EndIf
-                  
+
                 EndIf
                 
             EndSelect
@@ -1308,8 +1301,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 508
-; FirstLine = 496
+; CursorPosition = 1221
+; FirstLine = 1228
 ; Folding = -----
 ; EnableUnicode
 ; EnableThread
