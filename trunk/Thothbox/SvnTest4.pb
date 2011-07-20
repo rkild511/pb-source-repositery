@@ -68,6 +68,7 @@ Enumeration 1
   #PopupMenuStatus
   #PopupMenuAdd
   #PopupMenuRevert
+  #PopupMenuDelete
 EndEnumeration
 
 
@@ -153,7 +154,7 @@ Procedure.i StatusImage(Status.s, Folder = #False)
       ProcedureReturn ImageID(Base + #Added)
     Case "C"
       ProcedureReturn ImageID(Base + #Conflicted)
-    Case "S"
+    Case "D"
       ProcedureReturn ImageID(Base + #Suppressed)
     Case "I"
       ProcedureReturn ImageID(Base + #Ignored)
@@ -200,7 +201,7 @@ Procedure.s StatusName(Status.s)
       ProcedureReturn t("Added")
     Case "C"
       ProcedureReturn t("Conflicted")
-    Case "S"
+    Case "D"
       ProcedureReturn t("Suppressed")
     Case "I"
       ProcedureReturn t("Ignored")
@@ -466,14 +467,7 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
         Tree()\Item = Item
         Item + 1
       Wend
-
-      CompilerIf #PB_Compiler_Debugger
-        Debug "*******"
-        ForEach Tree()
-          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
-        Next
-      CompilerEndIf
-      
+     
       ;Sort by files/folders the new entries
       If NewItemsNb > 0
         SortStructuredList(Tree(), #PB_Sort_Descending, OffsetOf(Path\FolderFlag), #PB_Sort_Integer, FirstItem, FirstItem + NewItemsNb - 1) ;First : sort all
@@ -483,19 +477,11 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
         EndIf
         SortStructuredList(Tree(), #PB_Sort_Ascending|#PB_Sort_NoCase, OffsetOf(Path\Path), #PB_Sort_String, FirstItem + FoldersNb, FirstItem + NewItemsNb - 1) ;and files
       EndIf
-      CompilerIf #PB_Compiler_Debugger
-        Debug "*******"
-        ForEach Tree()
-          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
-        Next
-      CompilerEndIf
-      Debug "*******"
       ;Renumber all the list
       Item = 0
       ForEach Tree()
         Tree()\Item = Item
         Item + 1
-        Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
       Next
   
     EndIf
@@ -596,6 +582,36 @@ Procedure.s Revert(FileName.s)
   
 EndProcedure
 
+Procedure.s Delete(FileName.s)
+  Protected svn, Error.s, Output.s
+   
+  svn = SubversionCall("delete " + Chr(34) + Filename + Chr(34))
+  
+  Output = ""
+  
+  If svn
+    While ProgramRunning(svn)     
+      While AvailableProgramOutput(svn)
+        Output + MyReadProgramString(svn)
+      Wend
+      Delay(10)
+    Wend
+    
+    Debug Output
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+   
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
+  
+EndProcedure
+
 ;Get file list on local repositery and construct tree list
 Procedure GetLocalFileList(Item, SubLevel, Path.s)
   Protected FoldersNb, NewItemsNb, FirstItem, svn, NewPath.s, Error.s
@@ -636,9 +652,6 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
         EndIf
         Tree()\FullPath = LocalRepositery + Path + DirectoryEntryName(0)
         Tree()\Status = Status(Tree()\FullPath)
-        ;Debug "----"
-        ;Debug NewPath
-        ;Debug Item          
         If DirectoryEntryType(0) <> #PB_DirectoryEntry_File
           ;If it's a folder
           Tree()\FolderFlag = #True
@@ -653,24 +666,13 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
     FinishDirectory(0)
    
     If Item <> FirstItem
-      ;Debug "First Item : " + Str(FirstItem)
-      ;Debug "Last Item : " + Str(Item)
-      ;Debug "Folders Nb : " + Str(FoldersNb)
-      ;Debug "NewItemsNb : " + Str(NewItemsNb)
       
       ;Renumber to the end of the list
       While NextElement(Tree())
         Tree()\Item = Item
         Item + 1
       Wend
-
-      CompilerIf #PB_Compiler_Debugger
-        Debug "*******"
-        ForEach Tree()
-          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
-        Next
-      CompilerEndIf
-      
+;       
       ;Sort by files/folders the new entries
       If NewItemsNb > 0
         SortStructuredList(Tree(), #PB_Sort_Descending, OffsetOf(Path\FolderFlag), #PB_Sort_Integer, FirstItem, FirstItem + NewItemsNb - 1) ;First : sort all
@@ -680,19 +682,13 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
         EndIf
         SortStructuredList(Tree(), #PB_Sort_Ascending|#PB_Sort_NoCase, OffsetOf(Path\Path), #PB_Sort_String, FirstItem + FoldersNb, FirstItem + NewItemsNb - 1) ;and files
       EndIf
-      CompilerIf #PB_Compiler_Debugger
-        Debug "*******"
-        ForEach Tree()
-          Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
-        Next
-      CompilerEndIf
-      Debug "*******"
+      
       ;Renumber all the list
       Item = 0
       ForEach Tree()
         Tree()\Item = Item
         Item + 1
-        Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
+        ;Debug "Item Nb " + Str(Tree()\Item) + " Sublevel " + Str(tree()\SubLevel) + " Value " + tree()\Path + " Folder " + Str(tree()\FolderFlag)
       Next
   
     EndIf
@@ -1186,11 +1182,13 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     ;If file, download it
                     Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
                     Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
-                    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
-                      Debug "Download succeded"  
-                    Else
-                      Debug "Download failed"
-                      MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
+                    If Filename
+                      If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
+                        Debug "Download succeded"  
+                      Else
+                        Debug "Download failed"
+                        MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
+                      EndIf
                     EndIf
                   EndIf
                 EndIf
@@ -1208,15 +1206,16 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 Debug "Full name : " + FullPath
                 
                 If LocalExploration             
-                  ;-Local Menu
+                  ;-Local Popup Menu
                   If CreatePopupMenu(0)
                     SelectElement(Tree(), Item)
                     If StatusName(tree()\Status) <> ""
                       MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
                       DisableMenuItem(0, #PopupMenuStatus, 1)
-                    EndIf  
-                    MenuItem(#PopupMenuAdd, t("Add"))
-                    MenuItem(#PopupMenuRevert, t("Undo"))
+                      MenuItem(#PopupMenuAdd, t("Add"))
+                      MenuItem(#PopupMenuRevert, t("Undo"))
+                    EndIf
+                    MenuItem(#PopupMenuDelete, t("Delete"))
                   EndIf
                   DisplayPopupMenu(0, WindowID(0))
 
@@ -1269,6 +1268,25 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             MakeTreeGadget()
             SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
             SetGadgetState(#TreeGadget, Item)
+            
+          Case #PopupMenuDelete
+            
+            Item = GetGadgetState(#TreeGadget)
+            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+            IsFolder = GetGadgetItemData(#TreeGadget, Item)
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            Debug "--------------------"
+            Debug "Item : " + Str(Item)
+            Debug "SubLevel : " + Str(SubLevel)
+            Debug "Full name : " + FullPath
+
+            SelectElement(Tree(), Item)
+            Delete(Tree()\FullPath)
+            Tree()\Status = Status(Tree()\FullPath)
+            MakeTreeGadget()
+            SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+            SetGadgetState(#TreeGadget, Item)
  
         EndSelect
             
@@ -1301,8 +1319,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1221
-; FirstLine = 1228
+; CursorPosition = 704
+; FirstLine = 687
 ; Folding = -----
 ; EnableUnicode
 ; EnableThread
