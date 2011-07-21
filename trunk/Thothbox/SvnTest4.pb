@@ -946,7 +946,8 @@ EndProcedure
 Procedure.s RemoteMakeDir(Path.s, Filename.s)
   Protected svn, Error.s, Output.s
   
-  Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " --username " + UserName + " --password " + Password
+  If filename <> ""
+  Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " -m " + Chr(34) + t("Directory") + Filename + t("created") + Chr(34) + " --username " + UserName + " --password " + Password
    
 ;   svn = SubversionCall("mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " --username " + UserName + " --password " + Password)
 ;   
@@ -973,6 +974,8 @@ Procedure.s RemoteMakeDir(Path.s, Filename.s)
   ;Returns the fist field
   ProcedureReturn StringField(Output, 1, " ")
   
+  EndIf
+
 EndProcedure
 
 Procedure.s RemoteDelete(Path.s)
@@ -1293,7 +1296,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   EndIf
                   If CreatePopupMenu(0)
                     SelectElement(Tree(), Item)
-                    If Name <> ""
+                    If GetGadgetText(#StringUsername) <> "" And GetGadgetText(#StringPassword) <> "" 
                       MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
                       ;MenuItem(#PopupMenuRevert, t("Delete"))
                     EndIf
@@ -1405,8 +1408,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1367
-; FirstLine = 1330
+; CursorPosition = 948
+; FirstLine = 942
 ; Folding = -----
 ; EnableUnicode
 ; EnableThread
