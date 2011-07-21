@@ -28,7 +28,6 @@ Enumeration
   #TextPassword
   #StringPassword
   #ButtonGetRepositery
-  #StringUpdateComment
   #ButtonCommit
   #ButtonUpdate
   #END_OF_THE_GADGETS_TO_DISABLE
@@ -118,7 +117,8 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
   EndIf
   SvnArgs + " --non-interactive --no-auth-cache"
-  ;Debug SvnArgs   
+  
+  Debug SvnArgs   
   
   ProcedureReturn RunProgram("svn\bin\svn.exe", SvnArgs, Path, #PB_Program_Read|#PB_Program_Hide|#PB_Program_Open|#PB_Program_Error )
 
@@ -438,9 +438,11 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
           Tree()\Item = Item
           Tree()\SubLevel = SubLevel
           Tree()\Path = NewPath
-          Debug "----"
-          Debug NewPath
-          Debug Item          
+          Tree()\FullPath = Path + NewPath 
+          ;Debug "----"
+          ;Debug NewPath
+          ;Debug Item      
+          ;Debug Tree()\FullPath
           If IsFolder(NewPath.s)
             Tree()\FolderFlag = #True
             FoldersNb + 1
@@ -827,11 +829,11 @@ Procedure Update(nil)
       
 EndProcedure
 
-Procedure Commit(nil)
+Procedure Commit(Comment.s)
   Protected Item.s, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + UserName + " --password " + Password
    
-  svn = SubversionCall("commit " + " --username " + UserName + " --password " + Password + " -m " + Chr(34) + GetGadgetText(#StringUpdateComment) + Chr(34), LocalRepositery )
+  svn = SubversionCall("commit " + " --username " + UserName + " --password " + Password + " -m " + Chr(34) + Comment + Chr(34) + " --force-log", LocalRepositery )
   
   If svn
     While ProgramRunning(svn)     
@@ -947,65 +949,70 @@ Procedure.s RemoteMakeDir(Path.s, Filename.s)
   Protected svn, Error.s, Output.s
   
   If filename <> ""
-  Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " -m " + Chr(34) + t("Directory") + Filename + t("created") + Chr(34) + " --username " + UserName + " --password " + Password
-   
-;   svn = SubversionCall("mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " --username " + UserName + " --password " + Password)
-;   
-;   Output = ""
-;   
-;   If svn
-;     While ProgramRunning(svn)     
-;       While AvailableProgramOutput(svn)
-;         Output + MyReadProgramString(svn)
-;       Wend
-;       Delay(10)
-;     Wend
-;     
-;     Debug Output
-;     
-;     Repeat
-;       Error.s =  ASCII2UTF8(ReadProgramError(svn))
-;       Debug Error
-;     Until Error = ""
-;     
-;     CloseProgram(svn) ; Close the connection to the program
-;   EndIf
-;    
-  ;Returns the fist field
-  ProcedureReturn StringField(Output, 1, " ")
+    ;Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " -m " + Chr(34) + t("Directory") + " " + Filename + " " + t("created") + Chr(34) + " --username " + UserName + " --password " + Password + " --force-log"
+     
+    svn = SubversionCall("mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " -m " + Chr(34) + t("Directory") + " " + Filename + " " + t("created") + Chr(34) + " --username " + UserName + " --password " + Password + " --force-log")
+    
+    Output = ""
+    
+    If svn
+      While ProgramRunning(svn)     
+        While AvailableProgramOutput(svn)
+          Output + MyReadProgramString(svn)
+        Wend
+        Delay(10)
+      Wend
+      
+      Debug Output
+      
+      Repeat
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
+        Debug Error
+      Until Error = ""
+      
+      CloseProgram(svn) ; Close the connection to the program
+    EndIf
+     
+    ;Returns the fist field
+    ProcedureReturn StringField(Output, 1, " ")
   
   EndIf
 
 EndProcedure
 
-Procedure.s RemoteDelete(Path.s)
+Procedure.s RemoteDelete(FullPath.s)
   Protected svn, Error.s, Output.s
-   
-  svn = SubversionCall("delete " + Chr(34) + Path + Chr(34) + " --username " + UserName + " --password " + Password)
   
-  Output = ""
-  
-  If svn
-    While ProgramRunning(svn)     
-      While AvailableProgramOutput(svn)
-        Output + MyReadProgramString(svn)
+  If FullPath <> ""
+    ;Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " -m " + Chr(34) + t("Directory") + " " + Filename + " " + t("created") + Chr(34) + " --username " + UserName + " --password " + Password + " --force-log"
+     
+    svn = SubversionCall("delete " + Chr(34) + RemoteRepositery + FullPath + Chr(34) + " -m " + Chr(34) + FullPath + " " + t("deletion") + Chr(34) + " --username " + UserName + " --password " + Password + " --force-log")
+    
+    Output = ""
+    
+    If svn
+      While ProgramRunning(svn)     
+        While AvailableProgramOutput(svn)
+          Output + MyReadProgramString(svn)
+        Wend
+        Delay(10)
       Wend
-      Delay(10)
-    Wend
-    
-    Debug Output
-    
-    Repeat
-      Error.s =  ASCII2UTF8(ReadProgramError(svn))
-      Debug Error
-    Until Error = ""
-    
-    CloseProgram(svn) ; Close the connection to the program
-  EndIf
-   
-  ;Returns the fist field
-  ProcedureReturn StringField(Output, 1, " ")
+      
+      Debug Output
+      
+      Repeat
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
+        Debug Error
+      Until Error = ""
+      
+      CloseProgram(svn) ; Close the connection to the program
+    EndIf
+     
+    ;Returns the fist field
+    ProcedureReturn StringField(Output, 1, " ")
   
+  EndIf
+
 EndProcedure
 
 
@@ -1015,11 +1022,11 @@ EndProcedure
 
 InitNetwork()
 
-Define.i LocalExploration, Event, SearchThread, nil, Item, SubLevel, IsFolder, MenuItemNb
-Define.s Pattern, Name, FullPath, Filename
+;- Define
+Define.i LocalExploration, Event, SearchThread, nil, Item, SubLevel, IsFolder, MenuItemNb, u
+Define.s Pattern, Name, FullPath, Filename, Comment
 
-; Initialize Translator and load default folder
-; Here in example, we are forcing to load indonesian locale translation, blank means autodetect locale
+; Initialize Translator
 Translator_init("locale\", "fr_FR")
 
 If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
@@ -1042,8 +1049,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
   StringGadget(#StringPassword, 307, 370, 132, 20, "")
   ButtonGadget(#ButtonGetRepositery, 10, 390, 331, 20, t("Receive a repositery work copy "))
   ButtonGadget(#ButtonUpdate, 340, 390, 100, 20, t("Receive update"))
-  StringGadget(#StringUpdateComment, 10, 410, 330, 20, t("Update ") + Str(Date()))
-  GadgetToolTip(#StringUpdateComment, t("Update comment"))
   ButtonGadget(#ButtonCommit, 340, 410, 100, 20, t("Send update"))
   
   PrepareImages()
@@ -1083,19 +1088,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   LocalRepositery + #PathSeparator
                 EndIf
                               
-            EndSelect
-
-          Case  #StringUpdateComment
-            
-            Select EventType()
-                
-              Case #PB_EventType_Change 
-
-                If Trim(GetGadgetText(#StringUpdateComment)) = ""
-                  ;Default comment
-                  SetGadgetText(#StringUpdateComment, t("Update ") + Str(Date()))
-                EndIf
-                
             EndSelect
                   
           Case  #StringUsername
@@ -1187,10 +1179,14 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #ButtonCommit
             
+            Comment = InputRequester(t("Comment"), t("Give a comment for your commit"), t("Update ") + Str(Date()))
+            If Comment = ""
+              Comment = t("No comment")
+            EndIf              
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonCommit, t("Please wait"))
-            Commit(nil)
+            Commit(Comment)
             SetGadgetText(#ButtonCommit, t("Send update"))            
             LocalExploration = #False
             
@@ -1231,8 +1227,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 If LocalExploration
                   
                   ;-Local Exploration
-                  If IsFolder
-                    ;If folder, look into
+                  If IsFolder And (GetGadgetItemState(#TreeGadget, Item) & #PB_Tree_Expanded) = #False
+                    ;If folder & not opened, look into
                     SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
                     GetLocalFileList(Item + 1, SubLevel + 1, FullPath)
                     MakeTreeGadget()
@@ -1246,12 +1242,14 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   ;-Remote exploration
                   If IsFolder
                     ;If folder, look into
-                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
-                    GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
-                    MakeTreeGadget()
-                    SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
-                    SetGadgetState(#TreeGadget, Item)
-                    SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))                
+                    If (GetGadgetItemState(#TreeGadget, Item) & #PB_Tree_Expanded) = #False
+                      SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
+                      GetRemoteFileList(Item + 1, SubLevel + 1, FullPath)
+                      MakeTreeGadget()
+                      SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+                      SetGadgetState(#TreeGadget, Item)
+                      SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))
+                    EndIf
                   Else
                     ;If file, download it
                     Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
@@ -1292,13 +1290,11 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   ;-Remote Popup Menu
                   Debug Name 
                   Debug Fullpath
-                  If isfolder = 0
-                  EndIf
                   If CreatePopupMenu(0)
                     SelectElement(Tree(), Item)
                     If GetGadgetText(#StringUsername) <> "" And GetGadgetText(#StringPassword) <> "" 
                       MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
-                      ;MenuItem(#PopupMenuRevert, t("Delete"))
+                      MenuItem(#PopupMenuRemoteDelete, t("Delete"))
                     EndIf
                   EndIf
                   DisplayPopupMenu(0, WindowID(0))
@@ -1354,6 +1350,9 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
 
             SelectElement(Tree(), Item)
             RemoteDelete(Tree()\FullPath)
+            SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
+            ClearList(Tree())
+            GetRemoteFileList(0, 0, "")          
             MakeTreeGadget()
             SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
             SetGadgetState(#TreeGadget, Item)
@@ -1362,19 +1361,29 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
             Item = GetGadgetState(#TreeGadget)
             SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
-            Debug sublevel
+            
             Name = InputRequester(t("Create directory"), t("Give the future directory a name"), "")
             Name = ReplaceString(ReplaceString(ReplaceString(ReplaceString(Name, "?", ""), ":", ""), "/", ""), "\", "")
             If Name <> ""
-              SelectElement(Tree(), Item)
-              If SubLevel = 0
-                RemoteMakedir("", Name)
-              Else
-                RemoteMakedir(Tree()\FullPath, Name)  
-              EndIf
+              RemoteMakedir(GetPathPart(Tree()\FullPath), Name)  
+              SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
+              ClearList(Tree())
+              ;Re-read tree
+              ;If SubLevel = 0
+              ;  Debug SubLevel
+              GetRemoteFileList(0, 0, "")
+              ;Else
+              ;  For u = Item - 1 To 0
+              ;    SelectElement(Tree(), Item)
+              ;    If Tree()\SubLevel < SubLevel
+              ;      Break
+              ;    EndIf
+              ;  Next u
+              ;  GetRemoteFileList(u, Tree()\SubLevel, Tree()\FullPath)
+              ;EndIf
               MakeTreeGadget()
-              SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
-              SetGadgetState(#TreeGadget, Item)
+              SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))
+              LocalExploration = #False
             EndIf
             
         EndSelect
@@ -1389,12 +1398,10 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
     EndIf
     If GetGadgetText(#StringUsername) = "" Or GetGadgetText(#StringPassword) = ""
       DisableGadget(#ButtonGetRepositery, 1)
-      DisableGadget(#StringUpdateComment, 1)
       DisableGadget(#ButtonCommit, 1)
       DisableGadget(#ButtonUpdate, 1)
     Else
       DisableGadget(#ButtonGetRepositery, 0)
-      DisableGadget(#StringUpdateComment, 0)
       DisableGadget(#ButtonCommit, 0)
       DisableGadget(#ButtonUpdate, 0)      
     EndIf
@@ -1408,9 +1415,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 948
-; FirstLine = 942
+; CursorPosition = 1229
+; FirstLine = 1215
 ; Folding = -----
+; Markers = 1182
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
