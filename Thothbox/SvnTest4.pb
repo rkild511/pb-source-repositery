@@ -11,6 +11,7 @@ CompilerEndIf
 ;*****************************************************************************
 ;- CONSTANTS
 
+;Gadgets
 Enumeration 
   #TextRemoteRepositery
   #StringRemoteRepositery
@@ -35,6 +36,7 @@ Enumeration
   #TreeGadget
 EndEnumeration
 
+;Images
 Enumeration
   #FileImg
   #FolderImg
@@ -64,11 +66,14 @@ Enumeration #PB_Compiler_EnumerationValue Step #END_OF_IMAGES
   #Pad
 EndEnumeration
 
+;Menus
 Enumeration 1
   #PopupMenuStatus
   #PopupMenuAdd
   #PopupMenuRevert
   #PopupMenuDelete
+  #PopupMenuRemoteMkdir
+  #PopupMenuRemoteDelete
 EndEnumeration
 
 
@@ -892,50 +897,114 @@ Procedure GetRepositery(nil)
   
 EndProcedure
 
-Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
-  Protected Item, svn, Path.s, Error.s, Counter, txt.s, Result.s
+; Procedure MakeDirOnRepositery(Url.s, UserName.s, Password.s, LocalFolder.s, PleaseWaitButton.i)
+;   Protected Item, svn, Path.s, Error.s, Counter, txt.s, Result.s
+;   
+;   Disabler()
+;   
+;   txt.s = "Veuillez patienter"
+;   Counter = 0
+;   
+;   svn = SubversionCall("mkdir " + Url + " --username " + UserName + " --password " + Password)
+;   
+;   If svn
+;     While ProgramRunning(svn)     
+;       txt.s = "Veuillez patienter" 
+;       Select Counter%400
+;         Case 1 To 100
+;           txt + "."
+;         Case 100 To 200
+;           txt + ".."
+;         Case 200 To 300
+;           txt + "..."
+;       EndSelect
+;       SetGadgetText(PleaseWaitButton, txt)
+;       Delay(10)
+;       Counter + 1
+;     Wend
+;     If ProgramExitCode(svn)
+;       Result = ""
+;       Repeat
+;         Error = ASCII2UTF8(ReadProgramError(svn))
+;         If Error <> ""
+;           Error + Chr(13)
+;         EndIf
+;         Result + Error
+;       Until Error = ""
+;     EndIf
+;     CloseProgram(svn) ; Close the connection to the program
+;   EndIf
+;   If Result <> ""
+;     MessageRequester("Error", Result, #PB_MessageRequester_Ok )
+;   EndIf
+;   
+;   Enabler()
+;   
+; EndProcedure
+
+
+Procedure.s RemoteMakeDir(Path.s, Filename.s)
+  Protected svn, Error.s, Output.s
   
-  Disabler()
+  Debug "mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " --username " + UserName + " --password " + Password
+   
+;   svn = SubversionCall("mkdir " + Chr(34) + RemoteRepositery + Path + FileName + Chr(34) + " --username " + UserName + " --password " + Password)
+;   
+;   Output = ""
+;   
+;   If svn
+;     While ProgramRunning(svn)     
+;       While AvailableProgramOutput(svn)
+;         Output + MyReadProgramString(svn)
+;       Wend
+;       Delay(10)
+;     Wend
+;     
+;     Debug Output
+;     
+;     Repeat
+;       Error.s =  ASCII2UTF8(ReadProgramError(svn))
+;       Debug Error
+;     Until Error = ""
+;     
+;     CloseProgram(svn) ; Close the connection to the program
+;   EndIf
+;    
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
   
-  txt.s = "Veuillez patienter"
-  Counter = 0
+EndProcedure
+
+Procedure.s RemoteDelete(Path.s)
+  Protected svn, Error.s, Output.s
+   
+  svn = SubversionCall("delete " + Chr(34) + Path + Chr(34) + " --username " + UserName + " --password " + Password)
   
-  svn = SubversionCall("mkdir " + Url + " --username " + UserName + " --password " + Password)
+  Output = ""
   
   If svn
     While ProgramRunning(svn)     
-      txt.s = "Veuillez patienter" 
-      Select Counter%400
-        Case 1 To 100
-          txt + "."
-        Case 100 To 200
-          txt + ".."
-        Case 200 To 300
-          txt + "..."
-      EndSelect
-      SetGadgetText(PleaseWaitButton, txt)
+      While AvailableProgramOutput(svn)
+        Output + MyReadProgramString(svn)
+      Wend
       Delay(10)
-      Counter + 1
     Wend
-    If ProgramExitCode(svn)
-      Result = ""
-      Repeat
-        Error = ASCII2UTF8(ReadProgramError(svn))
-        If Error <> ""
-          Error + Chr(13)
-        EndIf
-        Result + Error
-      Until Error = ""
-    EndIf
+    
+    Debug Output
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
     CloseProgram(svn) ; Close the connection to the program
   EndIf
-  If Result <> ""
-    MessageRequester("Error", Result, #PB_MessageRequester_Ok )
-  EndIf
-  
-  Enabler()
+   
+  ;Returns the fist field
+  ProcedureReturn StringField(Output, 1, " ")
   
 EndProcedure
+
 
 
 ;*****************************************************************************
@@ -1078,6 +1147,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonGetRepositeryReadOnly, t("Please wait"))
             CreateThread(@GetRepositeryReadOnly(), nil)
+            LocalExploration = #False            
             
           Case #ButtonChangeLocalRepositery
             
@@ -1089,6 +1159,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
               LocalRepositery = PathRequester(t("Local repositery folder"), GetCurrentDirectory())
             EndIf
             SetGadgetText(#StringLocalRepositery, LocalRepositery)
+            LocalExploration = #False            
             
           Case #ButtonGetRepositery
             
@@ -1099,6 +1170,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             Password = GetGadgetText(#StringPassword)
             SetGadgetText(#ButtonGetRepositery, t("Please wait"))
             CreateThread(@GetRepositery(), nil)
+            LocalExploration = #False            
+
             
           Case #ButtonUpdate
             
@@ -1106,7 +1179,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonUpdate, t("Please wait"))
             Update(nil)
-            SetGadgetText(#ButtonUpdate, t("Receive update"))            
+            SetGadgetText(#ButtonUpdate, t("Receive update"))
+            LocalExploration = #False            
             
           Case #ButtonCommit
             
@@ -1115,6 +1189,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             SetGadgetText(#ButtonCommit, t("Please wait"))
             Commit(nil)
             SetGadgetText(#ButtonCommit, t("Send update"))            
+            LocalExploration = #False
             
           Case #ButtonExploreRemoteRepositery
             
@@ -1149,10 +1224,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
                 IsFolder = GetGadgetItemData(#TreeGadget, Item)
                 FullPath.s = GetFullPathFromTree(Item, SubLevel)
-                Debug "--------------------"
-                Debug "Item : " + Str(Item)
-                Debug "SubLevel : " + Str(SubLevel)
-                Debug "Full name : " + FullPath
                 
                 If LocalExploration
                   
@@ -1200,10 +1271,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
                 IsFolder = GetGadgetItemData(#TreeGadget, Item)
                 FullPath.s = GetFullPathFromTree(Item, SubLevel)
-                Debug "--------------------"
-                Debug "Item : " + Str(Item)
-                Debug "SubLevel : " + Str(SubLevel)
-                Debug "Full name : " + FullPath
                 
                 If LocalExploration             
                   ;-Local Popup Menu
@@ -1216,6 +1283,20 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                       MenuItem(#PopupMenuRevert, t("Undo"))
                     EndIf
                     MenuItem(#PopupMenuDelete, t("Delete"))
+                  EndIf
+                  DisplayPopupMenu(0, WindowID(0))
+                Else
+                  ;-Remote Popup Menu
+                  Debug Name 
+                  Debug Fullpath
+                  If isfolder = 0
+                  EndIf
+                  If CreatePopupMenu(0)
+                    SelectElement(Tree(), Item)
+                    If Name <> ""
+                      MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
+                      ;MenuItem(#PopupMenuRevert, t("Delete"))
+                    EndIf
                   EndIf
                   DisplayPopupMenu(0, WindowID(0))
 
@@ -1234,14 +1315,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
           Case #PopupMenuAdd
             
             Item = GetGadgetState(#TreeGadget)
-            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
-            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
-            IsFolder = GetGadgetItemData(#TreeGadget, Item)
-            FullPath.s = GetFullPathFromTree(Item, SubLevel)
-            Debug "--------------------"
-            Debug "Item : " + Str(Item)
-            Debug "SubLevel : " + Str(SubLevel)
-            Debug "Full name : " + FullPath
 
             SelectElement(Tree(), Item)
             Add(Tree()\FullPath)
@@ -1253,15 +1326,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
           Case #PopupMenuRevert
             
             Item = GetGadgetState(#TreeGadget)
-            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
-            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
-            IsFolder = GetGadgetItemData(#TreeGadget, Item)
-            FullPath.s = GetFullPathFromTree(Item, SubLevel)
-            Debug "--------------------"
-            Debug "Item : " + Str(Item)
-            Debug "SubLevel : " + Str(SubLevel)
-            Debug "Full name : " + FullPath
-
+            
             SelectElement(Tree(), Item)
             Revert(Tree()\FullPath)
             Tree()\Status = Status(Tree()\FullPath)
@@ -1272,14 +1337,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
           Case #PopupMenuDelete
             
             Item = GetGadgetState(#TreeGadget)
-            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
-            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
-            IsFolder = GetGadgetItemData(#TreeGadget, Item)
-            FullPath.s = GetFullPathFromTree(Item, SubLevel)
-            Debug "--------------------"
-            Debug "Item : " + Str(Item)
-            Debug "SubLevel : " + Str(SubLevel)
-            Debug "Full name : " + FullPath
 
             SelectElement(Tree(), Item)
             Delete(Tree()\FullPath)
@@ -1287,7 +1344,36 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             MakeTreeGadget()
             SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
             SetGadgetState(#TreeGadget, Item)
- 
+            
+          Case #PopupMenuRemoteDelete
+            
+            Item = GetGadgetState(#TreeGadget)
+
+            SelectElement(Tree(), Item)
+            RemoteDelete(Tree()\FullPath)
+            MakeTreeGadget()
+            SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+            SetGadgetState(#TreeGadget, Item)
+            
+          Case #PopupMenuRemoteMkdir
+            
+            Item = GetGadgetState(#TreeGadget)
+            SubLevel = GetGadgetItemAttribute(#TreeGadget, Item, #PB_Tree_SubLevel)
+            Debug sublevel
+            Name = InputRequester(t("Create directory"), t("Give the future directory a name"), "")
+            Name = ReplaceString(ReplaceString(ReplaceString(ReplaceString(Name, "?", ""), ":", ""), "/", ""), "\", "")
+            If Name <> ""
+              SelectElement(Tree(), Item)
+              If SubLevel = 0
+                RemoteMakedir("", Name)
+              Else
+                RemoteMakedir(Tree()\FullPath, Name)  
+              EndIf
+              MakeTreeGadget()
+              SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
+              SetGadgetState(#TreeGadget, Item)
+            EndIf
+            
         EndSelect
             
     EndSelect
@@ -1319,10 +1405,12 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 704
-; FirstLine = 687
+; CursorPosition = 1367
+; FirstLine = 1330
 ; Folding = -----
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
+; UseIcon = gfx\ibisv2.ico
+; Executable = ThotboxSVNFrontend.exe
 ; EnablePurifier
