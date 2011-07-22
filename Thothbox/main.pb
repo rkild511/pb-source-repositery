@@ -519,8 +519,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 398
-; FirstLine = 361
+; CursorPosition = 81
+; FirstLine = 81
 ; Folding = --
 ; EnableUnicode
 ; EnableXP
