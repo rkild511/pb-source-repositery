@@ -31,6 +31,7 @@ Enumeration
   #ButtonCommit
   #ButtonUpdate
   #END_OF_THE_GADGETS_TO_DISABLE
+  #HyperlinkRepositery
   #CheckboxSVNAuthCache
   #ButtonStopSearch
   #TreeGadget
@@ -166,7 +167,7 @@ Procedure LoadPreferences()
   If OpenPreferences(GetHomeDirectory() + #prg_name$+".prefs") = 0
     OpenPreferences(GetCurrentDirectory() + #prg_name$ + ".prefs")
   EndIf
-  Language               = ReadPreferenceString( "language", "fr_FR")
+  Language               = ReadPreferenceString( "language", "")
   
   RemoteRepositery       = ReadPreferenceString( "SVNRemoteRepositery", "https://pb-source-repositery.googlecode.com/svn/trunk/")
   LocalRepositery        = ReadPreferenceString( "SVNLocalRepositery",  GetCurrentDirectory() + "repositeries\pb-source-repositery\")
@@ -1117,7 +1118,8 @@ Translator_init("locale\", Language)
 If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
   TextGadget(#TextRemoteRepositery, 10, 11, 80, 20, t("Repositery URL"))
-  StringGadget(#StringRemoteRepositery, 80, 9, 360, 20, RemoteRepositery)
+  StringGadget(#StringRemoteRepositery, 80, 9, 330, 20, RemoteRepositery)
+  HyperLinkGadget(#HyperlinkRepositery, 420, 11, 20, 20, t("Go"), RGB(0,255,0), #PB_Font_Underline)
   StringGadget(#StringSearch, 10, 30, 300, 20, "")
   ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
   ButtonGadget(#ButtonExploreRemoteRepositery, 10, 50, 430, 20, t("Explore remote repositery"))
@@ -1128,7 +1130,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
   ButtonGadget(#ButtonChangeLocalRepositery, 360, 321, 80, 20, t("Choose"))  
   ButtonGadget(#ButtonGetRepositeryReadOnly, 10, 341, 240, 20, t("Receive a read only repositery copy")) 
   ButtonGadget(#ButtonExploreLocalRepositery, 250, 341, 190, 20, t("Explore local repositery")) 
-  CheckBoxGadget(#CheckboxSVNAuthCache, 10, 370, 150, 20, t("SVN authentification system"))
+  CheckBoxGadget(#CheckboxSVNAuthCache, 10, 370, 250, 20, t("SVN authentification system"))
   TextGadget(#TextSVNUserName, 10, 392, 80, 20, t("User name"))
   StringGadget(#StringSVNUserName, 91, 390, 100, 20, SVNUserName)
   TextGadget(#TextSVNPassword, 192, 392, 65, 20, t("Password"))
@@ -1162,6 +1164,10 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 RemoteRepositery = GetGadgetText(#StringRemoteRepositery)
                 
             EndSelect
+            
+          Case #HyperlinkRepositery
+            
+            RunProgram(RemoteRepositery) ;launch URL
             
           Case  #StringLocalRepositery
             
@@ -1548,10 +1554,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1284
-; FirstLine = 1296
+; CursorPosition = 177
+; FirstLine = 164
 ; Folding = ------
-; Markers = 1278
+; Markers = 1284
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
