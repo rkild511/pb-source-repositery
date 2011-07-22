@@ -23,14 +23,14 @@ Enumeration
   #ButtonChangeLocalRepositery
   #ButtonGetRepositeryReadOnly
   #ButtonExploreLocalRepositery
-  #TextSVNUserName
-  #StringSVNUserName
-  #TextSVNPassword
-  #StringSVNPassword
   #ButtonGetRepositery
   #ButtonCommit
   #ButtonUpdate
   #END_OF_THE_GADGETS_TO_DISABLE
+  #TextSVNUserName
+  #StringSVNUserName
+  #TextSVNPassword
+  #StringSVNPassword
   #HyperlinkRepositery
   #CheckboxSVNAuthCache
   #ButtonStopSearch
@@ -1554,8 +1554,8 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 177
-; FirstLine = 164
+; CursorPosition = 28
+; FirstLine = 14
 ; Folding = ------
 ; Markers = 1284
 ; EnableUnicode

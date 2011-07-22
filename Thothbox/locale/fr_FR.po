@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Thotbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-22 14:48+0100\n"
-"PO-Revision-Date: 2011-07-22 14:50+0100\n"
+"PO-Revision-Date: 2011-07-22 17:08+0100\n"
 "Last-Translator: djes <djes@free.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -310,7 +310,7 @@ msgstr " recevoir d'abord une copie du dépôt ?"
 
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1355
 msgid "Where should I save file "
-msgstr "Où sauver le fichier"
+msgstr "Où sauver le fichier "
 
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1361
 msgid "Saving failed"
