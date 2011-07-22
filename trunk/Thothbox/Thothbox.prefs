@@ -1,0 +1,14 @@
+﻿
+language = 
+server = 
+useProxy = 0
+proxyHost = 
+proxyPort = 
+proxyLogin = 
+proxyPassword = 
+
+SVNRemoteRepositery = https://pb-source-repositery.googlecode.com/svn/trunk/
+SVNLocalRepositery = repositeries\pb-source-repositery\Thothbox\
+SVNAuthCache = 0
+SVNUsername = 
+SVNPassword = 
