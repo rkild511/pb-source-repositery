@@ -65,6 +65,7 @@ Enumeration
   #mode_searchWindow;mode 0 search window
   #gdt_logo
   #gdt_version
+  #gdt_OffOnLine
   #gdt_searchTxt
   #gdt_search
   #gdt_result
@@ -104,7 +105,8 @@ Structure globalParameters
   server.s
   useProxy.b        ;#True or #False if you want to use proxy setting
   proxy.HTTP_Proxy
-  
+  threadCheckServer.i
+  onOffLine.b
   Map serverInfos.s()
 EndStructure
 Global gp.globalParameters
@@ -150,16 +152,20 @@ EndMacro
 
 If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
-  If CreateMenu(#win_Main, WindowID(#win_Main))
+  If CreateImageMenu(#win_Main, WindowID(#win_Main),#PB_Menu_ModernLook)
     MenuTitle("?")
     MenuItem(0, t("About"))
     MenuItem(1, t("Preferences"))
+    MenuTitle("")
   EndIf
-  CheckServer()
+  
   ;-mode_searchWindow Gadgets
   ContainerGadget(#mode_searchWindow,-WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   CatchImage(0,?Logo)
+  CatchImage(1,?OnLine)
+  CatchImage(2,?OffLine)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
+  ImageGadget(#gdt_OffOnLine,16,16,32,32,ImageID(1))
   StringGadget(#gdt_search,0,0,250,#gdtH,"")
   TextGadget(#gdt_version,0,0,100,#gdtH,t("version")+" "+#prg_version$)
   TextGadget(#gdt_searchTxt,0,0,100,#gdtH,  t("search"))
@@ -434,6 +440,9 @@ Next
 
 LoadLanguage()
 InitGadgets() 
+;Check if server is Online
+gp\threadCheckServer=CreateThread(@CheckServer(),0)
+AddWindowTimer(0, 123, 250)
 
 ;-Parse input parameters
 z=0
@@ -451,6 +460,19 @@ Repeat
   event = WaitWindowEvent()
   
   Select event
+    Case #PB_Event_Timer 
+      Define infotxt.s
+      If EventTimer() = 123
+        gp\onOffLine=1-gp\onOffLine
+        SetGadgetState(#gdt_OffOnLine,ImageID(gp\onOffLine+1))
+        infotxt=GetMenuTitleText(#win_Main,1)
+        If Len(infotxt)>5
+          infotxt="";
+        Else
+          infotxt+"."
+        EndIf
+        SetMenuTitleText(#win_Main,1,infotxt)
+      EndIf
     Case #PB_Event_SizeWindow
       refreachWindow(gp\page) ;resize all gadget
       
@@ -503,7 +525,11 @@ Repeat
           EndIf
         Case #gdt_prefsServerTest
           If EventType()=#PB_EventType_LeftClick 
-              servercall()
+            If IsThread(gp\threadCheckServer)=0
+            gp\threadCheckServer=CreateThread(@CheckServer(),1)
+            AddWindowTimer(0, 123, 250)
+          Else
+            EndIf
           EndIf
         Case #gdt_prefsLanguage
           gp\language=GetGadgetText(#gdt_prefsLanguage)
@@ -552,14 +578,17 @@ End
 DataSection
   Logo:
   IncludeBinary "gfx/thotbox.png"
-
+  OnLine:
+  IncludeBinary "gfx/serverOnline.png"
+  OffLine:
+  IncludeBinary "gfx/serverOffline.png"
 EndDataSection 
 
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 334
-; FirstLine = 332
+; CursorPosition = 466
+; FirstLine = 453
 ; Folding = --
 ; EnableUnicode
 ; EnableXP
