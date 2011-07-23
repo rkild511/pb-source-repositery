@@ -5,6 +5,7 @@ EndProcedure
 
 
 
+
 Procedure OpenWaitWindow()
   OpenWindow(#win_Wait,0,0,320,200,"",#PB_Window_WindowCentered,WindowID(0))
   TextGadget(#gdt_waitTxt,20,20,320,20,"Please Wait...")
@@ -16,13 +17,12 @@ Procedure CloseWaitWindow()
   CloseWindow(#win_Wait)
   DisableWindow(#win_Main,0)
 EndProcedure
-Procedure servercall()
+
+Procedure servercall(win=#True)
   Protected http.HTTP_Query
-  OpenWaitWindow()
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
-  http\callback=@myCallBack()
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   HTTP_addPostData(@http, "info", "")
@@ -30,7 +30,7 @@ Procedure servercall()
   HTTP_receiveRawData(@http)
   Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
   If http\data<>0
-    MessageRequester("Server Info",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
+    ;MessageRequester("Server Info",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     ClearMap(gp\serverInfos())
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
     nbline=CountString(txt,#LFCR$)
@@ -46,9 +46,14 @@ Procedure servercall()
     Next
     
   Else
+    Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
     MessageRequester("Server Back Call","Error")
   EndIf
-  CloseWaitWindow()
+
+EndProcedure
+
+Procedure CheckServer()
+  CreateThread(@servercall(), 0)
 EndProcedure
 
 Procedure serverSearch(keywords.s)
@@ -111,6 +116,7 @@ Procedure getFilesListFromServer(id.l)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1
+; CursorPosition = 32
+; FirstLine = 11
 ; Folding = --
 ; EnableXP
