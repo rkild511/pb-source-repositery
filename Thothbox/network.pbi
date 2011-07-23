@@ -18,7 +18,7 @@ Procedure CloseWaitWindow()
   DisableWindow(#win_Main,0)
 EndProcedure
 
-Procedure servercall(win=#True)
+Procedure servercall()
   Protected http.HTTP_Query
   If gp\useProxy=#True
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
@@ -36,24 +36,44 @@ Procedure servercall(win=#True)
     nbline=CountString(txt,#LFCR$)
     Debug nbline
     For z=1 To nbline
-      line=StringField(txt, z, #LFCR$)
+      line=ReplaceString(line,#LFCR$,#CR$)
+      line=StringField(txt, z, #CR$)
       sepa=FindString(line,":",0)
       If sepa>0
         key=Trim(Mid(line,0,sepa-1))
+        Debug key
+        Debug value
         value=Trim(Mid(line,sepa+1,Len(line)-sepa))
         gp\serverInfos(key)=value
       EndIf
     Next
-    
+    If FindMapElement(gp\serverInfos(), "version")
+      ProcedureReturn #True
+    Else
+      ProcedureReturn #False
+    EndIf
   Else
-    Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
-    MessageRequester("Server Back Call","Error")
+    ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
+    MessageRequester(t("Error"),t("Can't Connect with server"))
+    ProcedureReturn #False
   EndIf
 
 EndProcedure
 
-Procedure CheckServer()
-  CreateThread(@servercall(), 0)
+Procedure CheckServer(n)
+  If servercall()
+    RemoveWindowTimer(0, 123)
+    SetMenuTitleText(#win_Main,1,t("Online"))
+    SetGadgetState(#gdt_OffOnLine,ImageID(1))
+    If n=#True
+      MessageRequester(t("Server"),gp\serverInfos("message"))
+    EndIf
+  Else
+    RemoveWindowTimer(0, 123)
+    SetGadgetState(#gdt_OffOnLine,ImageID(2))
+    SetMenuTitleText(#win_Main,1,t("Offline"))
+  EndIf
+  
 EndProcedure
 
 Procedure serverSearch(keywords.s)
@@ -116,7 +136,7 @@ Procedure getFilesListFromServer(id.l)
 EndProcedure 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 32
-; FirstLine = 11
+; CursorPosition = 66
+; FirstLine = 39
 ; Folding = --
 ; EnableXP
