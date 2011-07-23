@@ -1,8 +1,6 @@
 ﻿Procedure LoadPreferences()
   If OpenPreferences(#prg_name$+".prefs")
     gp\language=ReadPreferenceString("language", "fr_FR")
-    ;Debug Translator_init("locale\", gp\language)
-    Translator_init("locale\", gp\language)
     gp\server=ReadPreferenceString("server", "http://localhost/thothbox.php")
     gp\useProxy=ReadPreferenceInteger("useProxy", #False)
     gp\proxy\host=ReadPreferenceString("proxyHost", "")
@@ -73,6 +71,6 @@ EndProcedure
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 2
+; CursorPosition = 3
 ; Folding = -
 ; EnableXP

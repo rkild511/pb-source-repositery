@@ -7,19 +7,19 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-19 06:21" user="Thyphoon" host="GRAAL"/>
+    <lastopen date="2011-07-21 17:42" user="lebrun_y" host="LEBRUN"/>
   </section>
   <section name="files">
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="88d0f6321f38b9d944a11edd61f719a0"/>
+      <fingerprint md5="9efa695c0b69d0279dd2ac1ad9cd1006"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="++"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="4d163a5ddc0a39ff62b42d71d2d29669"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla_HeaderFile.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="++"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="72444cc5da1e66c0b0dd2d23cfc803a2"/>
     </file>
     <file name="svn.pb">
@@ -28,27 +28,23 @@
     </file>
     <file name="http.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="286d711ad790d76e5eddb8b5acd621a5"/>
+      <fingerprint md5="0d39cbac135e899e1e218cc6b7864a96"/>
     </file>
     <file name="preferences.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
       <fingerprint md5="17e2df263c2f2b286e0ee66a86280a86"/>
     </file>
     <file name="network.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="50b63a316978d9bd5b69083b1a0dc5a8"/>
-    </file>
-    <file name="networkClientEvent.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="a023f646342940048253b9fad0c6ed73"/>
+      <fingerprint md5="ad3a1c178561c766531c195ff293e146"/>
     </file>
     <file name="translator.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
-      <fingerprint md5="1e4a93420a7cdd65a378ad5de43295e2"/>
+      <fingerprint md5="910b30248070a8ea85e6a4364287e398"/>
     </file>
     <file name="locale.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="00872cf19bbed272c021c833e44163af"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="c7a4c9daf9cbe1dc4bedafb9a74fbdc1"/>
     </file>
   </section>
   <section name="targets">

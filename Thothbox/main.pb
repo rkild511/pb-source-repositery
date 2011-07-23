@@ -12,7 +12,7 @@
 
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
 InitNetwork()
-XIncludeFile "networkClientEvent.pbi"
+
 XIncludeFile "http.pbi"
 
 
@@ -147,17 +147,17 @@ EndMacro
 #gdtW=10  ;space after a Gadget
 
 
+
 If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
   If CreateMenu(#win_Main, WindowID(#win_Main))
     MenuTitle("?")
     MenuItem(0, t("About"))
     MenuItem(1, t("Preferences"))
-
   EndIf
-
+  CheckServer()
   ;-mode_searchWindow Gadgets
-  ContainerGadget(#mode_searchWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+  ContainerGadget(#mode_searchWindow,-WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   CatchImage(0,?Logo)
   ImageGadget(#gdt_logo,0,0,200,50,ImageID(0))
   StringGadget(#gdt_search,0,0,250,#gdtH,"")
@@ -172,7 +172,7 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   AddGadgetColumn(#gdt_result, 2, t("Platform"), 250)
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
-  ContainerGadget(#mode_viewWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+  ContainerGadget(#mode_viewWindow,-WindowWidth(#win_Main)*2,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   TextGadget(#gdt_titleTxt,50,50,50,#gdtH,t("Title")+":")
   StringGadget(#gdt_title,GdtRight(#gdt_titleTxt),GadgetY(#gdt_titleTxt),250,#gdtH,"http download memorie")
   
@@ -288,7 +288,7 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   CloseGadgetList()
   
   ;-mode_prefsWindow Gadgets
-  ContainerGadget(#mode_prefsWindow,0,0,WindowWidth(0),WindowHeight(0))
+  ContainerGadget(#mode_prefsWindow,-WindowWidth(#win_Main)*3,0,WindowWidth(0),WindowHeight(0))
   ButtonGadget(#gdt_prefsback,0,0,100,#gdtH,"Back")
   
   
@@ -309,12 +309,39 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   CloseGadgetList()
 EndIf
 
+Procedure LoadLanguage()
+  Debug "Load Language:"+gp\language
+  Translator_destroy()
+  Translator_init("locale\", gp\language)
+  ;-langue searchWindow
+  SetMenuItemText(#win_Main, 0, t("About"))
+  SetMenuItemText(#win_Main, 1,t("Preferences"))
+  SetGadgetText(#gdt_version,t("version")+" "+#prg_version$)
+  SetGadgetText(#gdt_searchTxt,t("search"))
+  SetGadgetItemText(#gdt_result, -1, t("Name") ,0)
+  SetGadgetItemText(#gdt_result, -1, t("Category") ,1)
+  SetGadgetItemText(#gdt_result, -1, t("Platform") ,2)
+  GadgetToolTip(#gdt_result, t("choose to see code and information"))
+  ;-langue viewWindow
+  SetGadgetText(#gdt_titleTxt,t("Title")+":")
+  SetGadgetText(#gdt_authorTxt,t("Author")+" :")
+  ;-langue prefsWindow 
+  SetGadgetText(#gdt_prefsback,t("Back"))
+  SetGadgetText(#gdt_prefsServerTxt,t("Server"))
+  SetGadgetText(#gdt_prefsServerTest,t("Test"))
+  SetGadgetText(#gdt_poxyFrame, t("Network"))
+  SetGadgetText(#gdt_usePoxy, t("Use a Proxy"))
+  SetGadgetText(#gdt_poxyHostTxt,t("Proxy HTTP")+" :")
+  SetGadgetText(#gdt_poxyPortTxt,t("Port")+" :")
+  SetGadgetText(#gdt_poxyLoginTxt,t("Login")+" :")
+  SetGadgetText(#gdt_poxyPasswordTxt,t("Password")+" :")
 
+EndProcedure
 
 Procedure refreachWindow(mode.l)
   Protected hide.b,tmpX.l,tmpY.l,tmpH.l,tmpW.l
   ;-mode_searchWindow Resize
-  
+  ResizeGadget(#mode_searchWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   ResizeGadget(#mode_searchWindow,0,0,WindowWidth(0),WindowHeight(0))
   ResizeGadget(#gdt_logo,(WindowWidth(0)-ImageWidth(0))/2,#gdtH,#PB_Ignore,#PB_Ignore)
   ResizeGadget(#gdt_version,(WindowWidth(0)-ImageWidth(0))/2+ImageWidth(0)+10,GdtDown(#gdt_logo)-#gdtH,#PB_Ignore,#PB_Ignore)
@@ -333,23 +360,33 @@ Procedure refreachWindow(mode.l)
   
   Select mode
     Case #mode_searchWindow
-      HideGadget(#mode_viewWindow,#True)
-      HideGadget(#mode_searchWindow,#False)
-      HideGadget(#mode_prefsWindow,#True)
+      ResizeGadget(#mode_searchWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_viewWindow,WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_prefsWindow,WindowWidth(#win_Main)*2,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ;HideGadget(#mode_viewWindow,#True)
+      ;HideGadget(#mode_searchWindow,#False)
+      ;HideGadget(#mode_prefsWindow,#True)
     Case #mode_viewWindow
-      HideGadget(#mode_viewWindow,#False)
-      HideGadget(#mode_searchWindow,#True)
-      HideGadget(#mode_prefsWindow,#True)
+      ResizeGadget(#mode_viewWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_searchWindow,WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_prefsWindow,WindowWidth(#win_Main)*2,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      
+      ;HideGadget(#mode_viewWindow,#False)
+      ;HideGadget(#mode_searchWindow,#True)
+      ;HideGadget(#mode_prefsWindow,#True)
       ColorSetGadgetState(#gdt_historic,0)
     ;Case #mode_submitWindow
     ;  HideGadget(#mode_viewWindow,#False)
     ;  HideGadget(#mode_searchWindow,#True)
     ;  HideGadget(#mode_prefsWindow,#True)
     ;  HideGadget(#mo
-    Case #mode_prefsWindow
-      HideGadget(#mode_viewWindow,#True)
-      HideGadget(#mode_searchWindow,#True)
-      HideGadget(#mode_prefsWindow,#False)
+  Case #mode_prefsWindow
+      ResizeGadget(#mode_prefsWindow,0,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_searchWindow,WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ResizeGadget(#mode_viewWindow,WindowWidth(#win_Main)*2,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
+      ;HideGadget(#mode_viewWindow,#True)
+      ;HideGadget(#mode_searchWindow,#True)
+      ;HideGadget(#mode_prefsWindow,#False)
   EndSelect
   
 EndProcedure
@@ -395,8 +432,9 @@ For z=#mode_searchWindow To #gdt_end-1
   EndIf
 Next
 
-
+LoadLanguage()
 InitGadgets() 
+
 ;-Parse input parameters
 z=0
 While z<CountProgramParameters()-1
@@ -469,6 +507,7 @@ Repeat
           EndIf
         Case #gdt_prefsLanguage
           gp\language=GetGadgetText(#gdt_prefsLanguage)
+          loadLanguage()
         Case #gdt_usePoxy
           If GetGadgetState(#gdt_usePoxy)=#PB_Checkbox_Checked
               gp\useProxy=#True
@@ -519,8 +558,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 81
-; FirstLine = 81
+; CursorPosition = 334
+; FirstLine = 332
 ; Folding = --
 ; EnableUnicode
 ; EnableXP
