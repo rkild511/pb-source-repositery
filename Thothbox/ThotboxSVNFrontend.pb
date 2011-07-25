@@ -54,6 +54,9 @@ Enumeration
   #Locked
   #AddedWithHistory
   #Switched
+  #Updated
+  #Merged
+  #Existed
   #LockToken
   #LockOther
   #LockStolen
@@ -243,16 +246,34 @@ Procedure.i StatusImage(Status.s, Folder = #False)
   Select Status
     Case "A"
       ProcedureReturn ImageID(Base + #Added)
+    Case "B"
+      ProcedureReturn ImageID(Base + #LockBroken)
     Case "C"
       ProcedureReturn ImageID(Base + #Conflicted)
     Case "D"
       ProcedureReturn ImageID(Base + #Suppressed)
+    Case "E"
+      ProcedureReturn ImageID(Base + #Existed)
+    Case "G"
+      ProcedureReturn ImageID(Base + #Merged)
     Case "I"
       ProcedureReturn ImageID(Base + #Ignored)
+    Case "K"
+      ProcedureReturn ImageID(Base + #LockToken)
+    Case "L"
+      ProcedureReturn ImageID(Base + #Locked)
     Case "M"
       ProcedureReturn ImageID(Base + #Modified)
+    Case "O"
+      ProcedureReturn ImageID(Base + #LockOther)
     Case "R"
       ProcedureReturn ImageID(Base + #Remplaced)
+    Case "S"
+      ProcedureReturn ImageID(Base + #Switched)
+    Case "T"
+      ProcedureReturn ImageID(Base + #LockStolen)
+    Case "U"
+      ProcedureReturn ImageID(Base + #Updated)
     Case "X"
       ProcedureReturn ImageID(Base + #NonVersionnedFolder)
     Case "?"
@@ -261,20 +282,8 @@ Procedure.i StatusImage(Status.s, Folder = #False)
       ProcedureReturn ImageID(Base + #Missing)
     Case "~"
       ProcedureReturn ImageID(Base + #Dissimulated)
-    Case "L"
-      ProcedureReturn ImageID(Base + #Locked)
     Case "+"
       ProcedureReturn ImageID(Base + #AddedWithHistory)
-    Case "S"
-      ProcedureReturn ImageID(Base + #Switched)
-    Case "K"
-      ProcedureReturn ImageID(Base + #LockToken)
-    Case "O"
-      ProcedureReturn ImageID(Base + #LockOther)
-    Case "T"
-      ProcedureReturn ImageID(Base + #LockStolen)
-    Case "B"
-      ProcedureReturn ImageID(Base + #LockBroken)
     Default
       If Folder
         ProcedureReturn ImageID(#FolderImg)
@@ -357,6 +366,9 @@ Procedure PrepareImages()
   MyLoadImage(#LockOther, "gfx\OIcon16x16.png")
   MyLoadImage(#LockStolen, "gfx\TIcon16x16.png")
   MyLoadImage(#LockBroken, "gfx\BIcon16x16.png")
+  MyLoadImage(#Updated, "gfx\UIcon16x16.png")
+  MyLoadImage(#Merged, "gfx\GIcon16x16.png")
+  MyLoadImage(#Existed, "gfx\EIcon16x16.png")
   
   For i = #Added To #END_OF_IMAGES - 1
     CreateImage(#FolderImgs + i, 16, 16, 32)
@@ -630,11 +642,11 @@ Procedure.s Add(FileName.s)
       Delay(10)
     Wend
     
-    Debug Output
+    ;Debug Output
     
     Repeat
       Error.s =  ASCII2UTF8(ReadProgramError(svn))
-      Debug Error
+      ;Debug Error
     Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
@@ -660,11 +672,11 @@ Procedure.s Revert(FileName.s)
       Delay(10)
     Wend
     
-    Debug Output
+    ;Debug Output
     
     Repeat
       Error.s =  ASCII2UTF8(ReadProgramError(svn))
-      Debug Error
+      ;Debug Error
     Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
@@ -690,11 +702,11 @@ Procedure.s Delete(FileName.s)
       Delay(10)
     Wend
     
-    Debug Output
+    ;Debug Output
     
     Repeat
       Error.s =  ASCII2UTF8(ReadProgramError(svn))
-      Debug Error
+      ;Debug Error
     Until Error = ""
     
     CloseProgram(svn) ; Close the connection to the program
@@ -884,9 +896,12 @@ Procedure GetRepositeryReadOnly(nil)
 EndProcedure
 
 Procedure Update(nil)
-  Protected Item.s, svn, Path.s, Error.s, Counter
+  Protected Item, svn, NewPath.s, Error.s, Counter, Output.s, Status.s
   ; repositeries\pb-source-repositery --username " + SVNUserName + " --Password " + SVNPassword
-   
+  
+  ClearList(tree())
+  Item = 0
+  
   svn = SubversionCall("update " + LocalRepositery)
   
   If svn
@@ -896,9 +911,23 @@ Procedure Update(nil)
         If Error <> ""
           Debug Error
         EndIf
-        Item = MyReadProgramString(svn)
-        If Item <> ""
-          AddGadgetItem (#TreeGadget, -1, Item)
+        Output.s = MyReadProgramString(svn)    
+        Status.s = StringField(Output, 1, " ")
+        NewPath = StringField(Output, 2, " ")
+        If Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
+          MessageRequester(t("Informations"), t("Update") + " : " + Output, #PB_MessageRequester_Ok)
+        ElseIf NewPath <> "" 
+          AddElement(Tree())
+          Tree()\Item = Item
+          Tree()\SubLevel = 0
+          Tree()\Path = NewPath
+          Tree()\FullPath = NewPath
+          Tree()\Status = StringField(Output, 1, " ")
+          If IsFolder(NewPath.s)
+            Tree()\FolderFlag = #True
+          EndIf
+          AddGadgetItem(#TreeGadget, -1, NewPath, StatusImage(Tree()\Status))
+          Item + 1
         EndIf
       Wend
       Delay(10)
@@ -1288,7 +1317,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             SetGadgetText(#ButtonUpdate, t("Please wait"))
             Update(nil)
             SetGadgetText(#ButtonUpdate, t("Receive update"))
-            Exploration = 0            
+            Exploration = #Local            
             
           Case #ButtonCommit
             
@@ -1580,10 +1609,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1478
-; FirstLine = 1450
+; CursorPosition = 946
+; FirstLine = 904
 ; Folding = ------
-; Markers = 1295
+; Markers = 503
 ; EnableUnicode
 ; EnableThread
 ; EnableXP

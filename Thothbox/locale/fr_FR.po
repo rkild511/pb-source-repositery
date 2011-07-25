@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Thotbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-25 13:47+0100\n"
-"PO-Revision-Date: 2011-07-25 13:48+0100\n"
+"POT-Creation-Date: 2011-07-25 14:36+0100\n"
+"PO-Revision-Date: 2011-07-25 14:36+0100\n"
 "Last-Translator: djes <djes@free.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -99,7 +99,7 @@ msgstr "Login"
 
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:313
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:343
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1148
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1178
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -111,279 +111,287 @@ msgstr "sélectionner pour voir code et détails"
 msgid "Back"
 msgstr "Revenir"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:292
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:301
 msgid "Added"
 msgstr "Ajouté"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:294
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:303
 msgid "Conflicted"
 msgstr "Conflit"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:296
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:305
 msgid "Suppressed"
 msgstr "Supprimé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:298
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:307
 msgid "Ignored"
 msgstr "Ignoré"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:300
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:309
 msgid "Modified"
 msgstr "Modifié"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:302
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:311
 msgid "Remplaced"
 msgstr "Remplacé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:304
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:313
 msgid "Non Versionned Folder"
 msgstr "Dossier non versionné"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:306
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:315
 msgid "Non Versionned"
 msgstr "Non versionné"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:308
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:317
 msgid "Missing"
 msgstr "Manquant"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:310
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:319
 msgid "Dissimulated"
 msgstr "Dissimulé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:312
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:321
 msgid "Locked"
 msgstr "Verrouillé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:314
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:323
 msgid "Added With History"
 msgstr "Ajouté avec historique"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:316
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:325
 msgid "Switched"
 msgstr "Basculé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:318
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:327
 msgid "Lock Token"
 msgstr "Verrou dépôt distant et local"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:320
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:329
 msgid "Lock Other"
 msgstr "Verrou dépôt distant dans autre copie"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:322
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:331
 msgid "Lock Stolen"
 msgstr "Verrou dépôt et local mais volé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:324
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:333
 msgid "Lock Broken"
 msgstr "Non verrouillé dans dépôt distant, verrou local brisé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:844
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1136
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1249
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:856
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1166
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1279
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/translator_test.pb:5
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/translator_test.pbi:5
 msgid "Search"
 msgstr "Rechercher"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:881
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1143
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:893
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1173
 msgid "Receive a read only repositery copy"
 msgstr "Recevoir une copie du dépôt en lecture seule"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:983
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1150
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:919
+msgid "Informations"
+msgstr "Informations"
+
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:919
+msgid "Update"
+msgstr "Mise à jour"
+
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1013
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1180
 msgid "Receive a repositery work copy "
 msgstr "Recevoir une copie de travail du dépôt"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1038
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1040
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1073
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1068
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1070
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1103
 msgid "Directory"
 msgstr "Dossier"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1038
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1040
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1073
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1068
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1070
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1103
 msgid "created"
 msgstr "créé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1075
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1105
 msgid "deletion"
 msgstr "effacement"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1110
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1214
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1228
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1297
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1326
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1140
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1244
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1258
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1327
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1356
 msgid "Alert"
 msgstr "Alerte"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1110
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1140
 msgid "Saving failed"
 msgstr "La sauvegarde a échoué"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1130
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1160
 msgid "ThotBox SubVersion Tiny FrontEnd"
 msgstr "ThotBox - Petite interface pour SubVersion"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1132
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1162
 msgid "Repositery URL"
 msgstr "URL du dépôt"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1134
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1164
 msgid "Go"
 msgstr "Aller"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1137
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1313
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1367
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1511
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1546
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1548
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1167
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1343
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1397
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1541
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1576
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1578
 msgid "Explore remote repositery"
 msgstr "Explorer le dépôt distant"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1139
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1169
 msgid "Local repositery"
 msgstr "Dépôt local"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1141
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1171
 msgid "Local repositery folder. It'll be created if necessary"
 msgstr "Dossier du dépôt local. Sera créé si nécessaire"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1142
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1172
 msgid "Choose"
 msgstr "Choisir"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1144
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1323
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1174
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1353
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1383
 msgid "Explore local repositery"
 msgstr "Explorer le dépôt local"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1145
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1175
 msgid "SVN authentification system"
 msgstr "Système d'authentification de Subversion"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1146
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1176
 msgid "User name"
 msgstr "Nom d'utilisateur"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1151
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1290
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1181
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1320
 msgid "Receive update"
 msgstr "Recevoir MàJ"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1152
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1303
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1182
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1333
 msgid "Send update"
 msgstr "Envoyer MàJ"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1214
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1244
 msgid "Your UserName can't contain space"
 msgstr "Votre nom d'utilisateur ne peut contenir d'espace"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1228
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1258
 msgid "Your Password can't contain space"
 msgstr "Votre mot de passe ne peut contenir d'espace"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1240
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1270
 msgid "Stop search"
 msgstr "Stop"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1257
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1280
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1288
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1301
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1287
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1310
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1320
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1348
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1362
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1492
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1524
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1318
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1331
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1340
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1350
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1378
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1392
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1522
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1554
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/translator_test.pb:6
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/translator_test.pbi:6
 msgid "Please wait"
 msgstr "Veuillez patienter"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1265
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1268
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1295
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1298
 msgid "Local repositery folder"
 msgstr "Dossier du dépôt local"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1295
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1325
 msgid "Comment"
 msgstr "Commentaire"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1295
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1325
 msgid "Give a comment for your commit"
 msgstr "Donnez un commentaire pour votre envoi"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1295
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1325
 msgid "Update "
 msgstr "Mise à jour"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1297
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1327
 msgid "Canceled"
 msgstr "Annulé"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1326
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1356
 msgid "Folder doesn't exist."
 msgstr "Le dossier n'existe pas."
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1326
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1356
 msgid "Maybe should you try first "
 msgstr "Peut-être devriez-vous "
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1326
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1356
 msgid " to receive a repositery copy ? "
 msgstr " recevoir d'abord une copie du dépôt ?"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1372
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1469
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1402
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1499
 msgid "Where should I save file "
 msgstr "Où sauver le fichier "
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1393
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1423
 msgid "Add"
 msgstr "Ajouter"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1394
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1424
 msgid "Undo"
 msgstr "Défaire"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1396
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1412
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1426
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1442
 msgid "Delete"
 msgstr "Effacer"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1407
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1437
 msgid "Download"
 msgstr "Télécharger"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1408
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1438
 msgid "Open"
 msgstr "Ouvrir"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1411
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1520
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1441
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1550
 msgid "Create directory"
 msgstr "Créer un dossier"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1455
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1490
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1485
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1520
 msgid "Deletion"
 msgstr "Effacement"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1455
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1490
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1485
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1520
 msgid "Are you sure to want to delete this item ?"
 msgstr "Etes-vous certain de vouloir supprimer cet objet ?"
 
-#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1520
+#: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/ThotboxSVNFrontend.pb:1550
 msgid "Give the future directory a name"
 msgstr "Donnez un nom au futur dossier"
 
