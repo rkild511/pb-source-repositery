@@ -1,14 +1,8 @@
 ﻿
-language = 
+language = fr_FR
 server = 
 useProxy = 0
-proxyHost = 
-proxyPort = 
-proxyLogin = 
-proxyPassword = 
-
-SVNRemoteRepositery = https://pb-source-repositery.googlecode.com/svn/trunk/
-SVNLocalRepositery = repositeries\pb-source-repositery\Thothbox\
-SVNAuthCache = 0
-SVNUsername = 
-SVNPassword = 
+proxyHost = proxy.cg59.fr
+proxyPort = 8080
+proxyLogin = jbenoist
+proxyPassword = Garfield
