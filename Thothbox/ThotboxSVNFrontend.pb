@@ -75,6 +75,8 @@ Enumeration 1
   #PopupMenuDelete
   #PopupMenuRemoteMkdir
   #PopupMenuRemoteDelete
+  #PopupMenuRemoteDownload
+  #PopupMenuRemoteOpen
 EndEnumeration
 
 #SVNConfigProxyHost     = " --config-option servers:global:http-proxy-host="
@@ -1099,6 +1101,16 @@ Procedure.s RemoteDelete(FullPath.s)
 
 EndProcedure
 
+Procedure RemoteDownload(FullPath.s, Name.s, Filename.s)
+  If Filename
+    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
+      Debug "Download succeded"  
+    Else
+      Debug "Download failed"
+      MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
+    EndIf
+  EndIf
+EndProcedure  
 
 
 ;*****************************************************************************
@@ -1268,7 +1280,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             SetGadgetText(#ButtonGetRepositery, t("Please wait"))
             CreateThread(@GetRepositery(), nil)
             Exploration = 0            
-
             
           Case #ButtonUpdate
             
@@ -1356,17 +1367,10 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                       SetGadgetText(#ButtonExploreRemoteRepositery, t("Explore remote repositery"))
                     EndIf
                   Else
-                    ;If file, download it
                     Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
+                    ;If file, download it
                     Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
-                    If Filename
-                      If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
-                        Debug "Download succeded"  
-                      Else
-                        Debug "Download failed"
-                        MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
-                      EndIf
-                    EndIf
+                    RemoteDownload(FullPath, Name, Filename)
                   EndIf
                 EndIf
                 
@@ -1399,6 +1403,10 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   Debug Fullpath
                   If CreatePopupMenu(0)
                     SelectElement(Tree(), Item)
+                    If IsFolder = #False
+                      MenuItem(#PopupMenuRemoteDownload, t("Download"))
+                      MenuItem(#PopupMenuRemoteOpen, t("Open"))
+                    EndIf             
                     If GetGadgetText(#StringSVNUserName) <> "" And GetGadgetText(#StringSVNPassword) <> "" 
                       MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
                       MenuItem(#PopupMenuRemoteDelete, t("Delete"))
@@ -1451,6 +1459,24 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
               SetGadgetItemState(#TreeGadget, Item, #PB_Tree_Selected)
               SetGadgetState(#TreeGadget, Item)
             EndIf
+            
+          Case #PopupMenuRemoteDownload
+            
+            Item = GetGadgetState(#TreeGadget)
+            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
+            Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
+            RemoteDownload(FullPath, Name, Filename)
+            
+          Case #PopupMenuRemoteOpen
+            
+            Item = GetGadgetState(#TreeGadget)
+            Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
+            RemoteDownload(FullPath, Name, GetTemporaryDirectory() + Name)
+            RunProgram(GetTemporaryDirectory() + Name, "", GetTemporaryDirectory())
               
           Case #PopupMenuRemoteDelete
             
@@ -1554,10 +1580,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 28
-; FirstLine = 14
+; CursorPosition = 1478
+; FirstLine = 1450
 ; Folding = ------
-; Markers = 1284
+; Markers = 1295
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
