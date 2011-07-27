@@ -442,7 +442,6 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
               SendNetworkData(*query\conn, *buffer, readed)
               ;-Up CallBack
               If *query\upCallback>0
-                Debug "upcallback"
                   CallFunctionFast(*query\upCallback,Loc(file),Lof(file))
               EndIf
             Wend
@@ -518,7 +517,7 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
                 Protected txt.s,nbline.l,line.s,nbFound.l
                 txt=PeekS(*query\header,MemorySize(*query\header),#PB_Ascii)
                 nbline=CountString(txt,#LF$)
-                Debug "___Header__"
+                ;Debug "___Header__"
                 For z=1 To nbline
                   line=StringField(txt, z, #LF$)
                   line=ReplaceString(line,#LF$,"")
@@ -582,7 +581,7 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
                       
                     EndIf
                   Else 
-                    Debug line
+                    ;Debug line
                   EndIf
                 Next
                 Break;
@@ -592,7 +591,7 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
           
           ;-Down CallBack
           If *query\downCallback>0
-            Debug "down callback"
+            ;Debug "down callback"
             CallFunctionFast(*query\downCallback,size+readed,lenght)
           EndIf
         Else 
@@ -608,12 +607,12 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
     ;-Search Data
     If *query\header>0
       size=MemorySize(*query\rawdata)-MemorySize(*query\header)
-      Debug "size:"+Str(size)
+      ;Debug "size:"+Str(size)
       *query\data=AllocateMemory(size)
       CopyMemory(*query\rawdata+MemorySize(*query\header),*query\data,size);
       FreeMemory(*query\rawdata):*query\rawdata=0
-      Debug "___DATA__"
-      Debug PeekS(*query\data,MemorySize(*query\data),#PB_Ascii)
+      ;Debug "___DATA__"
+      ;Debug PeekS(*query\data,MemorySize(*query\data),#PB_Ascii)
       ProcedureReturn #True
     Else
       Debug "HTTP_ERROR_ANSWER_NO_HEADER"
@@ -632,7 +631,7 @@ Procedure HTTP_query(*query.HTTP_Query,method.b,url.s)
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
   ; si on a un proxy
   If *query\proxy\host<>""
-    Debug "Use Proxy:"+*query\proxy\host+" port:"+Str(*query\proxy\port)
+    ;Debug "Use Proxy:"+*query\proxy\host+" port:"+Str(*query\proxy\port)
     HTTP_createQuery(*query, method, url, *query\proxy\host,*query\proxy\port,*query\proxy\login,*query\proxy\password)
     ;si on a pas de proxy 
   Else
@@ -740,8 +739,8 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 
 CompilerEndIf
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 610
-; FirstLine = 367
+; IDE Options = PureBasic 4.51 (Windows - x86)
+; CursorPosition = 633
+; FirstLine = 453
 ; Folding = +v-86---
 ; EnableXP
