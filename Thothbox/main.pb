@@ -76,6 +76,7 @@ Enumeration
   #gdt_authorTxt
   #gdt_author
   #gdt_compile
+  #gdt_tab
   #gdt_code
   #gdt_historic
   #mode_prefsWindow
@@ -99,6 +100,13 @@ Enumeration
   #gdt_end
 EndEnumeration
 
+Structure fileslist
+  id.i
+  filename.s
+  lenght.i
+EndStructure
+
+
 Structure globalParameters
   page.l
   language.s
@@ -108,6 +116,7 @@ Structure globalParameters
   threadCheckServer.i
   onOffLine.b
   Map serverInfos.s()
+  List file.fileslist()
 EndStructure
 Global gp.globalParameters
 
@@ -148,7 +157,7 @@ EndMacro
 #gdtH=20  ;Gadget height
 #gdtW=10  ;space after a Gadget
 
-
+IncludeFile "tab.pbi"
 
 If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
@@ -186,104 +195,11 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   StringGadget(#gdt_author,GdtRight(#gdt_authorTxt),GadgetY(#gdt_authorTxt),250,#gdtH,"Bidule")
   
   ButtonGadget(#gdt_backSearch,0,0,100,#gdtH,"Back")
-  GOSCI_Create(#gdt_code, 10, 10, 580, 580, 0, #GOSCI_AUTOSIZELINENUMBERSMARGIN|#GOSCI_ALLOWCODEFOLDING)
-  
-  ;Set the padding added to the width of the line-number margin.
-  GOSCI_SetAttribute(#gdt_code, #GOSCI_LINENUMBERAUTOSIZEPADDING, 10)
-  
-  ;Set folding symbols margin width.
-  GOSCI_SetMarginWidth(#gdt_code, #GOSCI_MARGINFOLDINGSYMBOLS, 24)
-  
-  ;Set the back color of the line containing the caret.
-  GOSCI_SetColor(#gdt_code, #GOSCI_CARETLINEBACKCOLOR, $B4FFFF)
-  
-  ;Set font.
-  GOSCI_SetFont(#gdt_code, "Courier New", 10)
-  
-  ;Set tabs. Here we use a 'hard' tab in which a tab character is physically inserted. Set the 3rd (optional) parameter to 1 to use soft-tabs.
-  GOSCI_SetTabs(#gdt_code, 2)
-  
-  ;Set styles for our syntax highlighting.
-  ;=======================================
-  ;First define some constants to identify our various styles.
-  ;You can name these as we wish.
-  Enumeration
-    #STYLES_COMMANDS = 1
-    #STYLES_COMMENTS
-    #STYLES_LITERALSTRINGS
-    #STYLES_NUMBERS
-    #STYLES_CONSTANTS
-    #STYLES_FUNCTIONS
-  EndEnumeration
-  
-  ;Set individual styles for commands.
-  GOSCI_SetStyleFont(#gdt_code, #STYLES_COMMANDS, "", -1, #PB_Font_Bold)
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_COMMANDS, $800000)  ;We have omitted the optional back color.
-  
-  ;Set individual styles for comments.
-  GOSCI_SetStyleFont(#gdt_code, #STYLES_COMMENTS, "", -1, #PB_Font_Italic)
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_COMMENTS, $006400)  ;We have omitted the optional back color.
-  
-  ;Set individual styles for literal strings.
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_LITERALSTRINGS, #Gray)  ;We have omitted the optional back color.
-  
-  ;Set individual styles for numbers.
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_NUMBERS, #Red)  ;We have omitted the optional back color.
-  
-  ;Set individual styles for constants.
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_CONSTANTS, $2193DE)  ;We have omitted the optional back color.
-  
-  ;Set individual styles for functions.
-  GOSCI_SetStyleColors(#gdt_code, #STYLES_FUNCTIONS, #Blue)  ;We have omitted the optional back color.
-  
-  ;Set keywords for our syntax highlighting.
-  ;=========================================
-  ;First some commands.
-  GOSCI_AddKeywords(#gdt_code, "Debug End If ElseIf Else EndIf For To Next Step Protected ProcedureReturn", #STYLES_COMMANDS)
-  ;Now set up a ; symbol to denote a comment. Note the use of #GOSCI_DELIMITTOENDOFLINE.
-  ;Note also that this symbol will act as an additional separator.
-  GOSCI_AddKeywords(#gdt_code, ";", #STYLES_COMMENTS, #GOSCI_DELIMITTOENDOFLINE)
-  ;Now set up quotes to denote literal strings.
-  ;We do this by passing the beginning and end delimiting characters; in this case both are quotation marks. Note the use of #GOSCI_DELIMITBETWEEN.
-  ;Note also that a quote will subsequently act as an additional separator.
-  GOSCI_AddKeywords(#gdt_code, Chr(34) + Chr(34), #STYLES_LITERALSTRINGS, #GOSCI_DELIMITBETWEEN)
-  ;Now set up a # symbol to denote a constant. Note the use of #GOSCI_LEFTDELIMITWITHOUTWHITESPACE.
-  GOSCI_AddKeywords(#gdt_code, "#", #STYLES_CONSTANTS, #GOSCI_LEFTDELIMITWITHOUTWHITESPACE)
-  ;Now set up a ( symbol to denote a function. Note the use of #GOSCI_RIGHTDELIMITWITHWHITESPACE.
-  GOSCI_AddKeywords(#gdt_code, "(", #STYLES_FUNCTIONS, #GOSCI_RIGHTDELIMITWITHWHITESPACE)
-  ;We arrange for a ) symbol to match the coloring of the ( symbol.
-  GOSCI_AddKeywords(#gdt_code, ")", #STYLES_FUNCTIONS)
-  
-  ;Add some folding keywords.
-  GOSCI_AddKeywords(#gdt_code, "Procedure Macro", #STYLES_COMMANDS, #GOSCI_OPENFOLDKEYWORD|#GOSCI_DELIMITNONE)
-  GOSCI_AddKeywords(#gdt_code, "EndProcedure EndMacro", #STYLES_COMMANDS, #GOSCI_CLOSEFOLDKEYWORD|#GOSCI_DELIMITNONE)
-  
-  
-  ;Additional lexer options.
-  ;=========================
-  ;The lexer needs to know what separator characters we are using.
-  GOSCI_SetLexerOption(#gdt_code, #GOSCI_LEXEROPTION_SEPARATORSYMBOLS, @"=+-*/%()[],.") ;You would use GOSCI_AddKeywords() to set a style for some of these if required.
-  ;We can also set a style for numbers.
-  GOSCI_SetLexerOption(#gdt_code, #GOSCI_LEXEROPTION_NUMBERSSTYLEINDEX, #STYLES_NUMBERS)
-  ;}
-  
-  
-  ;-Tmp
-  Define text$;
-  text$ = "; GoScintilla." + #CRLF$
-  text$ + "; By Stephen Rodriguez." + #CRLF$ + #CRLF$
-  text$ + "#MyConstant$ = " + Chr(34) + "Version = 1.0" + Chr(34) + #CRLF$ + #CRLF$
-  text$ + "Procedure.i AddIntegers(a, b)" + #CRLF$
-  text$ + #TAB$ + "Protected result" + #CRLF$
-  text$ + #TAB$ + "result = a + b  ; Calculate the sum of the 2 integers." + #CRLF$
-  text$ + #TAB$ + "ProcedureReturn result" + #CRLF$
-  text$ + "EndProcedure" + #CRLF$ + #CRLF$
-  text$ + "Debug " + Chr(34) + "The sum of 10 and 20 is " + Chr(34) + " + Str(AddIntegers(10, 20))" + #CRLF$ + #CRLF$
-  text$ + "End" + #CRLF$
-  GOSCI_SetText(#gdt_code, text$)
-  ;-End Tmp
-  
-  ButtonGadget(#gdt_compile,GadgetX(#gdt_code),GadgetY(#gdt_code)-20,100,20,"Compile this code")
+  PanelGadget(#gdt_tab, 10, 10, 580, 580)
+  CloseGadgetList()
+
+ 
+  ButtonGadget(#gdt_compile,GadgetX(#gdt_tab),GadgetY(#gdt_tab)-20,100,20,"Compile this code")
   ListIconGadget(#gdt_historic,  0,  0, 300, 300, "Date", 75,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
   AddGadgetColumn(#gdt_historic, 1, "Author", 75)
   AddGadgetColumn(#gdt_historic, 2, "Comment", 145)
@@ -296,8 +212,7 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   ;-mode_prefsWindow Gadgets
   ContainerGadget(#mode_prefsWindow,-WindowWidth(#win_Main)*3,0,WindowWidth(0),WindowHeight(0))
   ButtonGadget(#gdt_prefsback,0,0,100,#gdtH,"Back")
-  
-  
+
   TextGadget(#gdt_prefsServerTxt,10,GdtDown(#gdt_prefsback)+#gdtH,50,#gdtH,t("Server"))
   StringGadget(#gdt_prefsServer,GdtRight(#gdt_prefsServerTxt),GadgetY(#gdt_prefsServerTxt),250,#gdtH,"")
   ButtonGadget(#gdt_prefsServerTest,GdtRight(#gdt_prefsServer)+#gdtH,GadgetY(#gdt_prefsServerTxt),60,#gdtH,t("Test"))
@@ -360,9 +275,9 @@ Procedure refreachWindow(mode.l)
   
   ;-mode_viewWindow Resize
   ResizeGadget(#mode_viewWindow,0,0,WindowWidth(0),WindowHeight(0))
-  ResizeGadget(#gdt_code,50,150,WindowWidth(0)-100,WindowHeight(0)-200)
-  ResizeGadget(#gdt_compile,GadgetX(#gdt_code),GadgetY(#gdt_code)-20,100,#gdtH)
-  ResizeGadget(#gdt_historic,WindowWidth(0)-GadgetWidth(#gdt_historic)-50,50,#PB_Ignore,GadgetY(#gdt_code)-GadgetY(#gdt_historic))
+  ResizeGadget(#gdt_tab,50,150,WindowWidth(0)-100,WindowHeight(0)-200)
+  ResizeGadget(#gdt_compile,GadgetX(#gdt_tab),GadgetY(#gdt_tab)-20,100,#gdtH)
+  ResizeGadget(#gdt_historic,WindowWidth(0)-GadgetWidth(#gdt_historic)-50,50,#PB_Ignore,GadgetY(#gdt_tab)-GadgetY(#gdt_historic))
   
   Select mode
     Case #mode_searchWindow
@@ -433,8 +348,8 @@ EndProcedure
 Define event.l,quit.b=#False,file.s,z.l
 For z=#mode_searchWindow To #gdt_end-1
   If IsGadget(z)
-    SetGadgetColor(z,#PB_Gadget_BackColor,#White)
-    SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
+    ;SetGadgetColor(z,#PB_Gadget_BackColor,#White)
+    ;SetGadgetColor(z,#PB_Gadget_TitleBackColor,#White)
   EndIf
 Next
 
@@ -482,7 +397,7 @@ Repeat
           Define txt.s
           txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
           txt+"Jean-Yves LERICQUE/ GallyHC"+#LFCR$
-          txt+"J)sahel BENOIST / Djes"+#LFCR$
+          txt+"Jesahel BENOIST / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
           txt+"thanks to"+#LFCR$
@@ -497,6 +412,9 @@ Repeat
       
       Select EventGadget()
           ;- Event searchWindow
+        Case #gdt_OffOnLine
+          gp\page=#mode_viewWindow
+          refreachWindow(gp\page)
         Case #gdt_search
           If EventType()=#PB_EventType_LostFocus
             serverSearch(GetGadgetText(#gdt_search))
@@ -504,10 +422,17 @@ Repeat
           EndIf
         Case #gdt_result
           If EventType()=#PB_EventType_LeftClick 
+            GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
+            SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
+            clearTabcode()
             getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+            downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+            initTabCode()
+            gp\page=#mode_viewWindow
+            refreachWindow(gp\page)
           EndIf
-          ;gp\page=#mode_viewWindow
-          ;refreachWindow(gp\page)
+          gp\page=#mode_viewWindow
+          refreachWindow(gp\page)
           
           ;- Event viewWindow  
         Case #gdt_historic
@@ -519,6 +444,7 @@ Repeat
         Case #gdt_prefsback
           gp\page=#mode_searchWindow
           refreachWindow(gp\page)
+          SavePreferences()
         Case #gdt_prefsServer
           If EventType()=#PB_EventType_LostFocus
             gp\server=GetGadgetText(#gdt_prefsServer)
@@ -573,7 +499,7 @@ Repeat
   EndSelect
   
 Until quit = 1
-SavePreferences()
+
 End
 DataSection
   Logo:
@@ -586,9 +512,9 @@ EndDataSection
 
 
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 466
-; FirstLine = 453
+; IDE Options = PureBasic 4.51 (Windows - x86)
+; CursorPosition = 425
+; FirstLine = 423
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

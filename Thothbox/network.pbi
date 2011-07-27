@@ -3,9 +3,6 @@ SetGadgetText(#gdt_waitTxt,Str(l))
 EndProcedure
 ;http://www.koakdesign.info/thothbox/thothbox.php
 
-
-
-
 Procedure OpenWaitWindow()
   OpenWindow(#win_Wait,0,0,320,200,"",#PB_Window_WindowCentered,WindowID(0))
   TextGadget(#gdt_waitTxt,20,20,320,20,"Please Wait...")
@@ -121,22 +118,53 @@ Procedure getFilesListFromServer(id.l)
   HTTP_receiveRawData(@http)
   ;HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
+  ClearList(gp\file())
   If http\data<>0
-    MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
+    ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
-      line=StringField(txt, z, #LFCR$)
-      Debug line
+      line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
+      AddElement(gp\file())
+      gp\file()\id=Val(StringField(line, 1, ";"))
+      gp\file()\filename=StringField(line, 2, ";")
+      Debug ">"+gp\file()\filename
+      gp\file()\lenght=Val(StringField(line, 3, ";"))
     Next
+
   Else
     MessageRequester("getFilesListFromServer()","Error")
   EndIf
-EndProcedure 
+EndProcedure
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 66
-; FirstLine = 39
+Procedure downloadfiles(id.l)
+  Protected http.HTTP_Query
+    ForEach gp\file()
+      HTTP_free(@http)
+        If gp\useProxy=#True
+          HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
+        EndIf
+      HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
+      HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
+      HTTP_addPostData(@http, "file", Str(gp\file()\id))
+      HTTP_addPostData(@http, "code", Str(id))
+      Debug "file:"+Str(gp\file()\id)+" code:"+Str(id)
+      HTTP_sendQuery(@http)
+      HTTP_receiveRawData(@http)
+      Debug GetTemporaryDirectory()+gp\file()\filename
+      If CreateFile(0,GetTemporaryDirectory()+gp\file()\filename)
+        WriteData(0,http\data,MemorySize(http\data))
+        CloseFile(0)
+      Else 
+        MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
+      EndIf
+      ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
+      FreeMemory(http\data):http\data=0
+    Next
+EndProcedure
+; IDE Options = PureBasic 4.51 (Windows - x86)
+; CursorPosition = 161
+; FirstLine = 99
 ; Folding = --
 ; EnableXP
