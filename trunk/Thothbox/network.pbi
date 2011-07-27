@@ -1,4 +1,35 @@
-﻿Procedure myCallBack(l.i,max.i)
+﻿Procedure.b Create_Directory(directory.s)
+;
+Define bindex.l
+Define bnumbs.l
+Define bsplit.s
+Define stemps.s
+Repeat
+bindex + 1
+bsplit = StringField(directory, bindex, "/")
+If bsplit <> ""
+If bindex = 1
+stemps + bsplit
+Else
+stemps + "\" + bsplit
+EndIf
+If FileSize(stemps) = -2
+bnumbs + 1
+Else
+If CreateDirectory(stemps) <> 0
+bnumbs + 1
+EndIf
+EndIf
+EndIf
+Until bsplit = ""
+bindex - 1
+If bindex = bnumbs
+ProcedureReturn #True
+EndIf
+ProcedureReturn #False
+EndProcedure
+
+Procedure myCallBack(l.i,max.i)
 SetGadgetText(#gdt_waitTxt,Str(l))
 EndProcedure
 ;http://www.koakdesign.info/thothbox/thothbox.php
@@ -84,18 +115,15 @@ Procedure serverSearch(keywords.s)
   HTTP_addPostData(@http, "search", keywords)
   HTTP_sendQuery(@http)
   HTTP_receiveRawData(@http)
-  ;HTTP_DataProcessing(@http)
   ;Debug PeekS(http\header,MemorySize(http\header),#PB_Ascii);
   If http\data<>0
-    Debug PeekS(http\data,MemorySize(http\data),#PB_Ascii);
+    ;Debug PeekS(http\data,MemorySize(http\data),#PB_Ascii);
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s,id.l
     ClearGadgetItems(#gdt_result)
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
-    Debug txt
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
-      Debug line
       AddGadgetItem(#gdt_result,z-1,StringField(line, 2, ";")+Chr(10)+StringField(line, 3, ";")+Chr(10)+StringField(line, 4, ";"))
       id=Val(StringField(line, 1, ";"))
       SetGadgetItemData(#gdt_result,z-1, id)
@@ -129,7 +157,6 @@ Procedure getFilesListFromServer(id.l)
       AddElement(gp\file())
       gp\file()\id=Val(StringField(line, 1, ";"))
       gp\file()\filename=StringField(line, 2, ";")
-      Debug ">"+gp\file()\filename
       gp\file()\lenght=Val(StringField(line, 3, ";"))
     Next
 
@@ -140,13 +167,19 @@ EndProcedure
 
 Procedure downloadfiles(id.l)
   Protected http.HTTP_Query
+  Debug "__"
     ForEach gp\file()
-      HTTP_free(@http)
-        If gp\useProxy=#True
+      ;HTTP_free(@http)
+      
+      If gp\useProxy=#True
           HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
         EndIf
       HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
       HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
+      ;juste pour tester les images
+      ;gp\file()\filename="test.png"
+      ;gp\file()\id=13
+      ;id=7
       HTTP_addPostData(@http, "file", Str(gp\file()\id))
       HTTP_addPostData(@http, "code", Str(id))
       Debug "file:"+Str(gp\file()\id)+" code:"+Str(id)
@@ -164,7 +197,6 @@ Procedure downloadfiles(id.l)
     Next
 EndProcedure
 ; IDE Options = PureBasic 4.51 (Windows - x86)
-; CursorPosition = 161
-; FirstLine = 99
+; CursorPosition = 29
 ; Folding = --
 ; EnableXP
