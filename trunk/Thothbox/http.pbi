@@ -285,6 +285,22 @@ Enumeration
   #HTTP_METHOD_FILE
 EndEnumeration
 
+Procedure HTTP_free(*query.HTTP_Query)
+  *query\method=0
+  *query\host=""
+  *query\path=""
+  *query\boundary=""
+  ClearList(*query\headers())
+  ClearList(*query\postData())
+  ClearList(*query\files())
+  If *query\buffer>0 And MemorySize(*query\buffer)>0:FreeMemory(*query\buffer):EndIf
+  If *query\rawdata>0 And MemorySize(*query\rawdata)>0:FreeMemory(*query\rawdata):EndIf
+  If *query\data>0 And MemorySize(*query\data)>0:FreeMemory(*query\data):EndIf
+  If *query\header>0 And MemorySize(*query\header)>0:FreeMemory(*query\header):EndIf
+  *query\error=0;
+  *query\downCallback=0;
+  *query\upCallback=0;
+EndProcedure
 
 Procedure HTTP_addQueryHeader(*query.HTTP_Query, name.s, value.s)
   Protected string.s
@@ -592,6 +608,7 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
     ;-Search Data
     If *query\header>0
       size=MemorySize(*query\rawdata)-MemorySize(*query\header)
+      Debug "size:"+Str(size)
       *query\data=AllocateMemory(size)
       CopyMemory(*query\rawdata+MemorySize(*query\header),*query\data,size);
       FreeMemory(*query\rawdata):*query\rawdata=0
@@ -724,7 +741,7 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 698
-; FirstLine = 482
+; CursorPosition = 610
+; FirstLine = 367
 ; Folding = +v-86---
 ; EnableXP
