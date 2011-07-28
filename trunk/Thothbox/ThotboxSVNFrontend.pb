@@ -32,6 +32,7 @@ Enumeration
   #ButtonGetRepositery
   #ButtonCommit
   #ButtonUpdate
+  #ButtonCleanup
   #TextSVNUserName
   #StringSVNUserName
   #TextSVNPassword
@@ -983,6 +984,57 @@ Procedure Update(nil)
       
 EndProcedure
 
+Procedure Cleanup(nil)
+  Protected Item, svn, NewPath.s, Error.s, Counter, Output.s, Status.s
+  ; repositeries\pb-source-repositery --username " + SVNUserName + " --Password " + SVNPassword
+  
+  ClearList(tree())
+  Item = 0
+  
+  svn = SubversionCall("cleanup " + LocalRepositery)
+  
+  If svn
+    While ProgramRunning(svn)     
+      While AvailableProgramOutput(svn)
+        Error.s =  ASCII2UTF8(ReadProgramError(svn))
+        If Error <> ""
+          Debug Error
+        EndIf
+        Output.s = MyReadProgramString(svn)
+        Debug output
+        Status.s = StringField(Output, 1, " ")
+        NewPath = StringField(Output, 2, " ")
+        If Status <> "A" And Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
+          MessageRequester(t("Informations"), t("Update") + " : " + Output, #PB_MessageRequester_Ok)
+        ElseIf NewPath <> "" 
+          AddElement(Tree())
+          Tree()\Item = Item
+          Tree()\SubLevel = 0
+          Tree()\Path = NewPath
+          Tree()\FullPath = NewPath
+          Tree()\Status = Status
+          If IsFolder(NewPath.s)
+            Tree()\FolderFlag = #True
+          EndIf
+          AddGadgetItem(#TreeGadget, -1, NewPath, StatusImage(Tree()\Status))
+          Item + 1
+        EndIf
+      Wend
+      Delay(10)
+      Counter + 1
+    Wend
+    
+    Repeat
+      Error.s =  ASCII2UTF8(ReadProgramError(svn))
+      Debug Error
+    Until Error = ""
+    
+    CloseProgram(svn) ; Close the connection to the program
+  EndIf
+      
+EndProcedure
+
+
 Procedure Commit(Comment.s)
   Protected Item.s, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + SVNUserName + " --password " + SVNPassword
@@ -1235,7 +1287,8 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
   ButtonGadget(#ButtonGetRepositery, 10, 410, 341, 20, t("Receive a repositery work copy "))
   ButtonGadget(#ButtonUpdate, 350, 390, 90, 20, t("Receive update"))
   ButtonGadget(#ButtonCommit, 350, 410, 90, 20, t("Send update"))
-    
+  ButtonGadget(#ButtonCleanup, 350, 370, 90, 20, t("Cleanup"))
+
   PrepareImages()
   
   Exploration = 0
@@ -1394,6 +1447,16 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             SetGadgetText(#ButtonUpdate, t("Receive update"))
             Exploration = #Local            
             
+          Case #ButtonCleanup
+            
+            ;-#ButtonCleanup
+            ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
+            SetGadgetText(#ButtonCleanup, t("Please wait"))
+            Cleanup(nil)
+            SetGadgetText(#ButtonCleanup, t("Cleanup"))
+            Exploration = 0            
+
           Case #ButtonCommit
             
             ;-#ButtonCommit
@@ -1734,10 +1797,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1332
-; FirstLine = 1323
+; CursorPosition = 1454
+; FirstLine = 1439
 ; Folding = ------
-; Markers = 890
+; Markers = 891
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
