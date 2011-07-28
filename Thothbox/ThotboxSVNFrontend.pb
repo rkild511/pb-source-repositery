@@ -2,6 +2,12 @@ UsePNGImageDecoder()
 
 XIncludeFile "translator.pbi"
 
+;To have the possibility to send a message to a gadget in the main loop
+Import "Gadget.lib"
+  PB_Gadget_SendGadgetCommand(hWnd, EventType)
+EndImport
+Prototype.l PB_Gadget_SendGadgetCommand(hWnd.l,EventType.l)
+
 CompilerIf #PB_Compiler_OS = #PB_OS_Windows
   #PathSeparator = "\"
 CompilerElse 
@@ -26,13 +32,13 @@ Enumeration
   #ButtonGetRepositery
   #ButtonCommit
   #ButtonUpdate
-  #END_OF_THE_GADGETS_TO_DISABLE
   #TextSVNUserName
   #StringSVNUserName
   #TextSVNPassword
   #StringSVNPassword
-  #HyperlinkRepositery
   #CheckboxSVNAuthCache
+  #END_OF_THE_GADGETS_TO_DISABLE
+  #HyperlinkRepositery
   #ButtonStopSearch
   #TreeGadget
 EndEnumeration
@@ -89,6 +95,8 @@ EndEnumeration
 
 #Local = 1
 #Remote = 2
+#Search = 3
+#Get = 4
 
 ;*****************************************************************************
 ;- STRUCTURES
@@ -119,11 +127,13 @@ Global SVNAuthCacheFlag.i = #False
 Global SVNUserName.s = ""
 Global SVNPassword.s = ""
 Global *MyReadProgramStringBuffer = AllocateMemory(1024)
+Global StopSearchThread = #False, DisableGadgetsFlag = #False
+Global ButtonStopSearchGadgetID
 
 ;*****************************************************************************
 ;- PROCEDURES
 
-Procedure SubversionCall(SvnArgs.s, Path.s = "")
+Procedure SubversionCall(SvnArgs.s, Path.s = "", Auth = #True)
 
   If ProxyFlag
     SvnArgs + #SVNConfigProxyHost + SVNConfigProxyHost + #SVNConfigProxyPort + SVNConfigProxyPort + #SVNConfigProxyUserName + SVNConfigProxyUserName + #SVNConfigProxyPassword + SVNConfigProxyPassword
@@ -131,7 +141,9 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "")
   SvnArgs + " --non-interactive"
   If SVNAuthCacheFlag = #False 
     SvnArgs + " --no-auth-cache"
-    SvnArgs + " --username " + SVNUserName + " --password " + SVNPassword
+    If Auth = #True 
+      SvnArgs + " --username " + SVNUserName + " --password " + SVNPassword  
+    EndIf
   EndIf
 
   Debug SvnArgs   
@@ -157,7 +169,7 @@ Procedure.s MyReadProgramString(ProgramNr)
       PokeB(*MyReadProgramStringBuffer + MyReadProgramOffset, 0)
       Temp = PeekS(*MyReadProgramStringBuffer, -1, #PB_Ascii)
       MyReadProgramOffset = 0
-      ProcedureReturn ReplaceString(ReplaceString(Temp, Chr(13), ""), Chr(10), "")
+      ProcedureReturn Trim(ReplaceString(ReplaceString(Temp, Chr(13), ""), Chr(10), ""))
     EndIf
   EndIf
 EndProcedure
@@ -331,6 +343,12 @@ Procedure.s StatusName(Status.s)
       ProcedureReturn t("Lock Stolen")
     Case "B"
       ProcedureReturn t("Lock Broken")
+    Case "U"
+      ProcedureReturn t("Updated")
+    Case "G"
+      ProcedureReturn t("Merged")
+    Case "E"
+      ProcedureReturn t("Existed")
     Default
       ProcedureReturn ""
   EndSelect       
@@ -442,6 +460,7 @@ Procedure Disabler()
       DisableGadget(i, 1)
     EndIf  
   Next i
+  DisableGadgetsFlag = #True
 EndProcedure
 
 Procedure Enabler()
@@ -451,6 +470,7 @@ Procedure Enabler()
       DisableGadget(i, 0)
     EndIf
   Next i
+  DisableGadgetsFlag = #False
 EndProcedure
 
 Procedure Marquee(*Null)
@@ -821,15 +841,15 @@ Procedure Search(*Pattern.s)
       
       While AvailableProgramOutput(svn)
         Path.s = MyReadProgramString(svn)
-        Debug Path
+        ;Debug Path
         If Path<> "" And MatchRegularExpression(0, Path)
           ;AddElement(Tree())
           ;Tree()\Item = Item
           ;Tree()\SubLevel = SubLevel
           ;Tree()\Path = Path
           ;Debug "----"
-          Debug Path
-          Debug Item          
+          ;Debug Path
+          ;Debug Item          
           ;If IsFolder(Path.s)
           ;  Tree()\FolderFlag = #True
           ;  FoldersNb + 1
@@ -843,6 +863,10 @@ Procedure Search(*Pattern.s)
       Wend
       Delay(10)
       
+      If StopSearchThread
+        Break
+      EndIf
+      
     Wend
   EndIf
 
@@ -850,19 +874,20 @@ Procedure Search(*Pattern.s)
     Error.s =  ASCII2UTF8(ReadProgramError(svn))
     Debug Error
   Until Error = ""
-
-  ;MakeTreeGadget()
-  FreeGadget(#ButtonStopSearch)
-  ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))
-  Enabler()
+  
+  ;Little hack to simulate a message on stop button to do the cleaning in the main loop (coz threads are not gadgets friendly)
+  PB_Gadget_SendGadgetCommand(ButtonStopSearchGadgetID, #PB_EventType_LeftClick)
 
 EndProcedure
 
-;Locally download a read-only version of the repositery (no Password needed)
+;Locally download a Read-only version of the repositery (no Password needed)
 Procedure GetRepositeryReadOnly(nil)
-  Protected Item.s, svn, Path.s, Error.s, Counter
-   
-  svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
+  Protected Item, svn, Path.s, Error.s, Counter, Output.s, Status.s, Newpath.s
+  
+  ClearList(tree())
+  Item = 0
+  
+  svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery, "", #False)
   
   If svn
     While ProgramRunning(svn)     
@@ -871,9 +896,23 @@ Procedure GetRepositeryReadOnly(nil)
         If Error <> ""
           Debug Error
         EndIf
-        Item = MyReadProgramString(svn)
-        If Item <> ""
-          AddGadgetItem (#TreeGadget, -1, Item)
+        Output.s = MyReadProgramString(svn)
+        Status.s = Left(Output, 1)
+        NewPath = Trim(Right(Output, Len(Output) - 1))
+        If Status <> "A" And Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
+          MessageRequester(t("Informations"), t("Update") + " : " + Output, #PB_MessageRequester_Ok)
+        ElseIf NewPath <> "" 
+          AddElement(Tree())
+          Tree()\Item = Item
+          Tree()\SubLevel = 0
+          Tree()\Path = NewPath
+          Tree()\FullPath = NewPath
+          Tree()\Status = Status
+          If IsFolder(NewPath.s)
+            Tree()\FolderFlag = #True
+          EndIf
+          AddGadgetItem(#TreeGadget, -1, NewPath, StatusImage(Tree()\Status))
+          Item + 1
         EndIf
       Wend
       Delay(10)
@@ -911,10 +950,10 @@ Procedure Update(nil)
         If Error <> ""
           Debug Error
         EndIf
-        Output.s = MyReadProgramString(svn)    
+        Output.s = MyReadProgramString(svn) 
         Status.s = StringField(Output, 1, " ")
         NewPath = StringField(Output, 2, " ")
-        If Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
+        If Status <> "A" And Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
           MessageRequester(t("Informations"), t("Update") + " : " + Output, #PB_MessageRequester_Ok)
         ElseIf NewPath <> "" 
           AddElement(Tree())
@@ -922,7 +961,7 @@ Procedure Update(nil)
           Tree()\SubLevel = 0
           Tree()\Path = NewPath
           Tree()\FullPath = NewPath
-          Tree()\Status = StringField(Output, 1, " ")
+          Tree()\Status = Status
           If IsFolder(NewPath.s)
             Tree()\FolderFlag = #True
           EndIf
@@ -979,8 +1018,11 @@ Procedure Commit(Comment.s)
 EndProcedure
 
 Procedure GetRepositery(nil)
-  Protected Item.s, svn, Path.s, Error.s, Counter
-   
+  Protected Item, svn, Path.s, Error.s, Counter, Output.s, Status.s, Newpath.s
+  
+  ClearList(tree())
+  Item = 0
+  
   svn = SubversionCall("checkout " + RemoteRepositery + " " + LocalRepositery)
   
   If svn
@@ -990,9 +1032,23 @@ Procedure GetRepositery(nil)
         If Error <> ""
           Debug Error
         EndIf
-        Item = MyReadProgramString(svn)
-        If Item <> ""
-          AddGadgetItem (#TreeGadget, -1, Item)
+        Output.s = MyReadProgramString(svn)
+        Status.s = Left(Output, 1)
+        NewPath = Trim(Right(Output, Len(Output) - 1))
+        If Status <> "A" And Status <> "D" And Status <> "U" And Status <> "C" And Status <> "G" And Status <> "E" And Status <> " "
+          MessageRequester(t("Informations"), t("Update") + " : " + Output, #PB_MessageRequester_Ok)
+        ElseIf NewPath <> "" 
+          AddElement(Tree())
+          Tree()\Item = Item
+          Tree()\SubLevel = 0
+          Tree()\Path = NewPath
+          Tree()\FullPath = NewPath
+          Tree()\Status = Status
+          If IsFolder(NewPath.s)
+            Tree()\FolderFlag = #True
+          EndIf
+          AddGadgetItem(#TreeGadget, -1, NewPath, StatusImage(Tree()\Status))
+          Item + 1
         EndIf
       Wend
       Delay(10)
@@ -1179,12 +1235,14 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
   ButtonGadget(#ButtonGetRepositery, 10, 410, 341, 20, t("Receive a repositery work copy "))
   ButtonGadget(#ButtonUpdate, 350, 390, 90, 20, t("Receive update"))
   ButtonGadget(#ButtonCommit, 350, 410, 90, 20, t("Send update"))
-  
+    
   PrepareImages()
-
+  
   Exploration = 0
   
   Repeat
+    
+    ;LockMutex(ThreadSync)
     
     Event = WaitWindowEvent()
     
@@ -1198,6 +1256,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case  #StringRemoteRepositery
             
+            ;-#StringRemoteRepositery
             Select EventType()
                 
               Case #PB_EventType_Change 
@@ -1208,10 +1267,12 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #HyperlinkRepositery
             
+            ;-#HyperlinkRepositery
             RunProgram(RemoteRepositery) ;launch URL
             
           Case  #StringLocalRepositery
             
+            ;-#StringLocalRepositery
             Select EventType()
                 
               Case #PB_EventType_LostFocus
@@ -1225,6 +1286,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #CheckboxSVNAuthCache
             
+            ;-#CheckboxSVNAuthCache
             If GetGadgetState(#CheckboxSVNAuthCache)
                DisableGadget(#StringSVNUserName, 1)     
                DisableGadget(#StringSVNPassword, 1)     
@@ -1235,6 +1297,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case  #StringSVNUserName
             
+            ;-#StringSVNUserName
             Select EventType()
                 
               Case #PB_EventType_LostFocus
@@ -1244,51 +1307,61 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                   SetGadgetText(#StringSVNUserName, "")
                 EndIf
                 SVNUserName = GetGadgetText(#StringSVNUserName)
-                                
+                
             EndSelect
             
          Case  #StringSVNPassword
             
-            Select EventType()
-                
-              Case #PB_EventType_LostFocus 
-                
-                If FindString(GetGadgetText(#StringSVNPassword), " ")
-                  MessageRequester(t("Alert"), t("Your Password can't contain space"), #PB_MessageRequester_Ok)
-                  SetGadgetText(#StringSVNPassword, "")
-                EndIf
-                SVNPassword = GetGadgetText(#StringSVNPassword)
-                
-            EndSelect
-            
+           ;-#StringSVNPassword
+           Select EventType()
+               
+             Case #PB_EventType_LostFocus 
+               
+               If FindString(GetGadgetText(#StringSVNPassword), " ")
+                 MessageRequester(t("Alert"), t("Your Password can't contain space"), #PB_MessageRequester_Ok)
+                 SetGadgetText(#StringSVNPassword, "")
+               EndIf
+               SVNPassword = GetGadgetText(#StringSVNPassword)
+               
+           EndSelect
+           
           Case #ButtonSearch
             
+            ;-#ButtonSearch
             Disabler()
-            Exploration = #Remote
+            Exploration = #Search
             FreeGadget(#ButtonSearch)
             ButtonGadget(#ButtonStopSearch, 310, 30, 130, 20, t("Stop search"))
+            ButtonStopSearchGadgetID = GadgetID(#ButtonStopSearch) ;for the search thread
+            Debug ButtonStopSearchGadgetID
             Pattern.s = GetGadgetText(#StringSearch)
             SearchThread = CreateThread(@Search(), @Pattern)
+            StopSearchThread = #False
             
           Case #ButtonStopSearch
             
-            KillThread(SearchThread)
-            Exploration = #Remote
+            ;-#ButtonStopSearch
+            StopSearchThread = #True
+            WaitThread(SearchThread)
             FreeGadget(#ButtonStopSearch)
-            ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))  
+            ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))
+            StopSearchThread = #False
+            Exploration = #Search
             Enabler()
             
           Case #ButtonGetRepositeryReadOnly
             
+            ;-#ButtonGetRepositeryReadOnly
             Disabler()
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonGetRepositeryReadOnly, t("Please wait"))
             CreateThread(@GetRepositeryReadOnly(), nil)
-            Exploration = 0            
+            Exploration = #Get            
             
           Case #ButtonChangeLocalRepositery
             
+            ;-#ButtonChangeLocalRepositery
             If FileSize(LocalRepositery) = - 2 
               ;If folder exists
               LocalRepositery = PathRequester(t("Local repositery folder"), LocalRepositery)
@@ -1301,6 +1374,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #ButtonGetRepositery
             
+            ;-#ButtonGetRepositery
             Disabler()
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
@@ -1308,10 +1382,11 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             SVNPassword = GetGadgetText(#StringSVNPassword)
             SetGadgetText(#ButtonGetRepositery, t("Please wait"))
             CreateThread(@GetRepositery(), nil)
-            Exploration = 0            
+            Exploration = #Get            
             
           Case #ButtonUpdate
             
+            ;-#ButtonUpdate
             ClearList(Tree())
             ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonUpdate, t("Please wait"))
@@ -1321,6 +1396,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #ButtonCommit
             
+            ;-#ButtonCommit
             Comment = InputRequesterOkCancel(t("Comment"), t("Give a comment for your commit"), t("Update ") + Str(Date()))
             If Comment = ""
               MessageRequester(t("Alert"), t("Canceled"), #PB_MessageRequester_Ok)
@@ -1335,7 +1411,9 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
               
           Case #ButtonExploreRemoteRepositery
             
+            ;-#ButtonExploreRemoteRepositery
             ClearList(Tree())
+            ClearGadgetItems(#TreeGadget)
             SetGadgetText(#ButtonExploreRemoteRepositery, t("Please wait"))
             GetRemoteFileList(0, 0, "")
             MakeTreeGadget()
@@ -1344,6 +1422,7 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
           Case #ButtonExploreLocalRepositery
             
+            ;- #ButtonExploreLocalRepositery
             If FileSize(LocalRepositery) = -2
               ClearList(Tree())
               SetGadgetText(#ButtonExploreLocalRepositery, t("Please wait"))
@@ -1401,6 +1480,16 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
                     RemoteDownload(FullPath, Name, Filename)
                   EndIf
+                  
+                ElseIf Exploration = #Search
+                  
+                  ;-Search results exploration
+                  If IsFolder = #False
+                    Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
+                    ;If file, download it
+                    Filename = SaveFileRequester(t("Where should I save file ") + Name + " ?", Name, "", 0)
+                    RemoteDownload(FullPath, Name, Filename)
+                  EndIf                 
                 EndIf
                 
               ;-- Right click
@@ -1412,38 +1501,63 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                 IsFolder = GetGadgetItemData(#TreeGadget, Item)
                 FullPath.s = GetFullPathFromTree(Item, SubLevel)
                 
-                If Exploration = #Local
-                  ;-Local Popup Menu
-                  If CreatePopupMenu(0)
-                    SelectElement(Tree(), Item)
-                    If StatusName(tree()\Status) <> ""
-                      MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
-                      DisableMenuItem(0, #PopupMenuStatus, 1)
-                      MenuItem(#PopupMenuAdd, t("Add"))
-                      MenuItem(#PopupMenuRevert, t("Undo"))
+                Select Exploration
+                    
+                  Case #Local
+                    ;-Local Popup Menu
+                    If CreatePopupMenu(0)
+                      SelectElement(Tree(), Item)
+                      If StatusName(tree()\Status) <> ""
+                        MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
+                        DisableMenuItem(0, #PopupMenuStatus, 1)
+                        MenuItem(#PopupMenuAdd, t("Add"))
+                        MenuItem(#PopupMenuRevert, t("Undo"))
+                      EndIf
+                      MenuItem(#PopupMenuDelete, t("Delete"))
                     EndIf
-                    MenuItem(#PopupMenuDelete, t("Delete"))
-                  EndIf
-                  DisplayPopupMenu(0, WindowID(0))
-                ElseIf Exploration = #Remote
-
-                  ;-Remote Popup Menu
-                  Debug Name 
-                  Debug Fullpath
-                  If CreatePopupMenu(0)
-                    SelectElement(Tree(), Item)
-                    If IsFolder = #False
-                      MenuItem(#PopupMenuRemoteDownload, t("Download"))
-                      MenuItem(#PopupMenuRemoteOpen, t("Open"))
-                    EndIf             
-                    If GetGadgetText(#StringSVNUserName) <> "" And GetGadgetText(#StringSVNPassword) <> "" 
-                      MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
-                      MenuItem(#PopupMenuRemoteDelete, t("Delete"))
+                    DisplayPopupMenu(0, WindowID(0))
+                    
+                  Case #Get
+                    ;-Local Popup Menu
+                    If CreatePopupMenu(0)
+                      SelectElement(Tree(), Item)
+                      If StatusName(tree()\Status) <> ""
+                        MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
+                        DisableMenuItem(0, #PopupMenuStatus, 1)
+                      EndIf
+                      MenuItem(#PopupMenuDelete, t("Delete"))
                     EndIf
-                  EndIf
-                  DisplayPopupMenu(0, WindowID(0))
-                EndIf
-                
+                    DisplayPopupMenu(0, WindowID(0))
+                    
+                  Case #Remote
+                    
+                    ;-Remote Popup Menu
+                    If CreatePopupMenu(0)
+                      SelectElement(Tree(), Item)
+                      If IsFolder = #False
+                        MenuItem(#PopupMenuRemoteDownload, t("Download"))
+                        MenuItem(#PopupMenuRemoteOpen, t("Open"))
+                      EndIf
+                      If GetGadgetText(#StringSVNUserName) <> "" And GetGadgetText(#StringSVNPassword) <> "" 
+                        MenuItem(#PopupMenuRemoteMkdir, t("Create directory"))
+                        MenuItem(#PopupMenuRemoteDelete, t("Delete"))
+                      EndIf
+                    EndIf
+                    DisplayPopupMenu(0, WindowID(0))
+                    
+                  Case #Search
+                    
+                    ;-Search Popup Menu
+                    If CreatePopupMenu(0)
+                      SelectElement(Tree(), Item)
+                      If IsFolder = #False
+                        MenuItem(#PopupMenuRemoteDownload, t("Download"))
+                        MenuItem(#PopupMenuRemoteOpen, t("Open"))
+                      EndIf             
+                    EndIf
+                    DisplayPopupMenu(0, WindowID(0))
+                    
+                EndSelect
             EndSelect
             
         EndSelect
@@ -1582,21 +1696,32 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
     EndSelect
     
-    ;Disable "full access" gadgets if SVNUserName&SVNPassword are not given
-    If GetGadgetText(#StringSVNUserName) = "" Or GetGadgetState(#CheckboxSVNAuthCache)
-      DisableGadget(#StringSVNPassword, 1)     
-    Else
-      DisableGadget(#StringSVNPassword, 0)
-    EndIf
-    If (GetGadgetText(#StringSVNUserName) = "" Or GetGadgetText(#StringSVNPassword) = "") And GetGadgetState(#CheckboxSVNAuthCache) = #PB_Checkbox_Unchecked
-      DisableGadget(#ButtonGetRepositery, 1)
-      DisableGadget(#ButtonCommit, 1)
-      DisableGadget(#ButtonUpdate, 1)
-    ElseIf (GetGadgetText(#StringSVNUserName) <> "" And GetGadgetText(#StringSVNPassword) <> "") Or GetGadgetState(#CheckboxSVNAuthCache) = #PB_Checkbox_Checked
-      DisableGadget(#ButtonGetRepositery, 0)
-      DisableGadget(#ButtonCommit, 0)
-      DisableGadget(#ButtonUpdate, 0)      
-    EndIf
+    If DisableGadgetsFlag = #False
+      ;Disable "full access" gadgets if SVNUserName&SVNPassword are not given
+      If GetGadgetText(#StringSVNUserName) = "" Or GetGadgetState(#CheckboxSVNAuthCache)
+        DisableGadget(#StringSVNPassword, 1)     
+      Else
+        DisableGadget(#StringSVNPassword, 0)
+      EndIf
+      If (GetGadgetText(#StringSVNUserName) = "" Or GetGadgetText(#StringSVNPassword) = "") And GetGadgetState(#CheckboxSVNAuthCache) = #PB_Checkbox_Unchecked
+        DisableGadget(#ButtonGetRepositery, 1)
+        DisableGadget(#ButtonCommit, 1)
+        DisableGadget(#ButtonUpdate, 1)
+      ElseIf (GetGadgetText(#StringSVNUserName) <> "" And GetGadgetText(#StringSVNPassword) <> "") Or GetGadgetState(#CheckboxSVNAuthCache) = #PB_Checkbox_Checked
+        DisableGadget(#ButtonGetRepositery, 0)
+        DisableGadget(#ButtonCommit, 0)
+        DisableGadget(#ButtonUpdate, 0)      
+      EndIf
+    EndIf    
+    
+    ;Hate to have to do that but I don't have postmessage_()
+;     If CleanupSearch
+;       FreeGadget(#ButtonStopSearch)
+;       ButtonGadget(#ButtonSearch, 310, 30, 130, 20, t("Search"))
+;       StopSearchThread = #False
+;       Enabler()
+;       CleanupSearch = #False
+;     EndIf   
     
   Until Event = #PB_Event_CloseWindow
   
@@ -1609,12 +1734,11 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 946
-; FirstLine = 904
+; CursorPosition = 1332
+; FirstLine = 1323
 ; Folding = ------
-; Markers = 503
+; Markers = 890
 ; EnableUnicode
-; EnableThread
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
 ; Executable = ThotboxSVNFrontend.exe
