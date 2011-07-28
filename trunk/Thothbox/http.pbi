@@ -479,15 +479,15 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
   Protected *rawdata,time.i,readed.i,size.i,NEvent.i
   
   If *query\rawdata>0
-    FreeMemory(*query\rawdata)
+    FreeMemory(*query\rawdata):*query\rawdata=0
   EndIf
   
   If *query\header>0
-    FreeMemory(*query\header)
+    FreeMemory(*query\header):*query\header=0
   EndIf
   
   If *query\data>0
-    FreeMemory(*query\data)
+    FreeMemory(*query\data):*query\data=0
   EndIf
   
   If *query\conn
@@ -739,8 +739,8 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 
 CompilerEndIf
 
-; IDE Options = PureBasic 4.51 (Windows - x86)
-; CursorPosition = 633
-; FirstLine = 453
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 607
+; FirstLine = 378
 ; Folding = +v-86---
 ; EnableXP

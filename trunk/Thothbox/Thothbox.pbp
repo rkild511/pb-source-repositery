@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-27 12:36" user="lebrun_y" host="LEBRUN"/>
+    <lastopen date="2011-07-27 17:57" user="lebrun_y" host="LEBRUN"/>
   </section>
   <section name="files">
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="d9a84d798a899bff137bd44cfcfe555e"/>
+      <fingerprint md5="f2547d100b06bb20d866ca0941d7aff1"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0"/>
@@ -28,7 +28,7 @@
     </file>
     <file name="http.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="b8541080e057bc17c99bc46b63628fac"/>
+      <fingerprint md5="986f6f065569d220e31dbc1a4c4ab728"/>
     </file>
     <file name="preferences.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
@@ -36,7 +36,7 @@
     </file>
     <file name="network.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="e99409d07afe38024180a7079f2d2cdc"/>
+      <fingerprint md5="115db65363a0a29567bf9db9ba86bb45"/>
     </file>
     <file name="translator.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
@@ -48,7 +48,7 @@
     </file>
     <file name="tab.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="9fdc62a4989ddaa4c67b0adcaa4cc047"/>
+      <fingerprint md5="fd13dced67f6dcd2b2d2510c0caa13e7"/>
     </file>
   </section>
   <section name="targets">

@@ -151,6 +151,7 @@ Procedure getFilesListFromServer(id.l)
     ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
+    MessageRequester("getFilesListFromServer()",txt)
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
@@ -186,17 +187,24 @@ Procedure downloadfiles(id.l)
       HTTP_sendQuery(@http)
       HTTP_receiveRawData(@http)
       Debug GetTemporaryDirectory()+gp\file()\filename
-      If CreateFile(0,GetTemporaryDirectory()+gp\file()\filename)
-        WriteData(0,http\data,MemorySize(http\data))
-        CloseFile(0)
-      Else 
-        MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
+      If http\data>0
+        If CreateFile(0,GetTemporaryDirectory()+gp\file()\filename)
+          WriteData(0,http\data,MemorySize(http\data))
+          CloseFile(0)
+        Else 
+          MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
+        EndIf
+        ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
+        FreeMemory(http\data):http\data=0
+      ElseIf http\header>0
+        MessageRequester("",PeekS(http\header,MemorySize(http\header),#PB_Ascii))
+      Else
+        MessageRequester("","NO ANSWER")
       EndIf
-      ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
-      FreeMemory(http\data):http\data=0
     Next
 EndProcedure
-; IDE Options = PureBasic 4.51 (Windows - x86)
-; CursorPosition = 29
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 153
+; FirstLine = 134
 ; Folding = --
 ; EnableXP
