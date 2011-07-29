@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.51 (Windows - x86)">
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 Beta 3 (Windows - x86)">
   <section name="config">
     <options closefiles="1" openmode="0" name="Thothbox"/>
   </section>
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-27 17:57" user="lebrun_y" host="LEBRUN"/>
+    <lastopen date="2011-07-28 23:16" user="Thyphoon" host="GRAAL"/>
   </section>
   <section name="files">
     <file name="main.pb">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="f2547d100b06bb20d866ca0941d7aff1"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="0"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="4d163a5ddc0a39ff62b42d71d2d29669"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla_HeaderFile.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="0"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
       <fingerprint md5="72444cc5da1e66c0b0dd2d23cfc803a2"/>
     </file>
     <file name="svn.pb">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="0"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
       <fingerprint md5="98aa8ad558a5a962f3d4ee96374c5b62"/>
     </file>
     <file name="http.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="986f6f065569d220e31dbc1a4c4ab728"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="b84e9ec30e334784a0221a443fb879bd"/>
     </file>
     <file name="preferences.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="493a7ce52cf3fa84c23bbc5f88ac9867"/>
     </file>
     <file name="network.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
-      <fingerprint md5="115db65363a0a29567bf9db9ba86bb45"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="0212115ee21152f35e022a190e7eba14"/>
     </file>
     <file name="translator.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="910b30248070a8ea85e6a4364287e398"/>
     </file>
     <file name="locale.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="0"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
       <fingerprint md5="c7a4c9daf9cbe1dc4bedafb9a74fbdc1"/>
     </file>
     <file name="tab.pbi">
-      <config load="0" scan="1" panel="1" warn="1" lastopen="1"/>
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
       <fingerprint md5="fd13dced67f6dcd2b2d2510c0caa13e7"/>
     </file>
   </section>

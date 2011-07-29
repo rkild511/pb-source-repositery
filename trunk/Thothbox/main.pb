@@ -359,6 +359,15 @@ InitGadgets()
 gp\threadCheckServer=CreateThread(@CheckServer(),0)
 AddWindowTimer(0, 123, 250)
 
+  Procedure downll(i.l)
+    GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
+            SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
+            clearTabcode()
+            getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+            downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+            initTabCode()
+  EndProcedure
+
 ;-Parse input parameters
 z=0
 While z<CountProgramParameters()-1
@@ -422,7 +431,7 @@ Repeat
           EndIf
         Case #gdt_result
           If EventType()=#PB_EventType_LeftClick 
-            GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
+                GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
             SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
             clearTabcode()
             getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
@@ -512,9 +521,9 @@ EndDataSection
 
 
 
-; IDE Options = PureBasic 4.51 (Windows - x86)
-; CursorPosition = 425
-; FirstLine = 423
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 438
+; FirstLine = 415
 ; Folding = --
 ; EnableUnicode
 ; EnableXP
