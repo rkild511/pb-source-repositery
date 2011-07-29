@@ -166,45 +166,53 @@ Procedure getFilesListFromServer(id.l)
   EndIf
 EndProcedure
 
-Procedure downloadfiles(id.l)
+Procedure downloadfile(id.l)
   Protected http.HTTP_Query
+  
+  If gp\useProxy=#True
+    HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
+  EndIf
+  HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
+  HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
+  ;juste pour tester les images
+  ;gp\file()\filename="test.png"
+  ;gp\file()\id=13
+  ;id=7
+  HTTP_addPostData(@http, "file", Str(gp\file()\id))
+  HTTP_addPostData(@http, "code", Str(id))
+  Debug "file:"+Str(gp\file()\id)+" code:"+Str(id)
+  HTTP_sendQuery(@http)
+  HTTP_receiveRawData(@http)
+  Debug GetTemporaryDirectory()+gp\file()\filename
+  If http\data>0
+    If CreateFile(0,GetTemporaryDirectory()+gp\file()\filename)
+      WriteData(0,http\data,MemorySize(http\data))
+      CloseFile(0)
+    Else 
+      MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
+    EndIf
+    ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
+    FreeMemory(http\data):http\data=0
+  ElseIf http\header>0
+    MessageRequester("",PeekS(http\header,MemorySize(http\header),#PB_Ascii))
+  Else
+    MessageRequester("","NO ANSWER")
+  EndIf
+EndProcedure
+
+Procedure downloadfiles(id.l)
+  
   Debug "__"
     ForEach gp\file()
-      ;HTTP_free(@http)
-      
-      If gp\useProxy=#True
-          HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
-        EndIf
-      HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
-      HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
-      ;juste pour tester les images
-      ;gp\file()\filename="test.png"
-      ;gp\file()\id=13
-      ;id=7
-      HTTP_addPostData(@http, "file", Str(gp\file()\id))
-      HTTP_addPostData(@http, "code", Str(id))
-      Debug "file:"+Str(gp\file()\id)+" code:"+Str(id)
-      HTTP_sendQuery(@http)
-      HTTP_receiveRawData(@http)
-      Debug GetTemporaryDirectory()+gp\file()\filename
-      If http\data>0
-        If CreateFile(0,GetTemporaryDirectory()+gp\file()\filename)
-          WriteData(0,http\data,MemorySize(http\data))
-          CloseFile(0)
-        Else 
-          MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
-        EndIf
-        ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
-        FreeMemory(http\data):http\data=0
-      ElseIf http\header>0
-        MessageRequester("",PeekS(http\header,MemorySize(http\header),#PB_Ascii))
-      Else
-        MessageRequester("","NO ANSWER")
-      EndIf
+      ;Bug if you loop directy !works if you run thru a procedure
+      downloadfile(id.l)
     Next
-EndProcedure
+  EndProcedure
+  
+  
+
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 153
-; FirstLine = 134
+; CursorPosition = 169
+; FirstLine = 158
 ; Folding = --
 ; EnableXP

@@ -286,10 +286,10 @@ Enumeration
 EndEnumeration
 
 Procedure HTTP_free(*query.HTTP_Query)
-  *query\method=0
-  *query\host=""
-  *query\path=""
-  *query\boundary=""
+  ;*query\method=0
+  ;*query\host=""
+  ;*query\path=""
+  ;*query\boundary=""
   ClearList(*query\headers())
   ClearList(*query\postData())
   ClearList(*query\files())
@@ -740,7 +740,7 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 607
-; FirstLine = 378
+; CursorPosition = 300
+; FirstLine = 86
 ; Folding = +v-86---
 ; EnableXP
