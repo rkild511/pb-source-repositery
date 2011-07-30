@@ -24,6 +24,112 @@ EnableExplicit
 
 UsePNGImageDecoder()
 
+Structure TPEPCXHEADER
+  bytManufactor.b
+  bytVersion.b
+  bytEncoding.b
+  bytBitsPerPixel.b
+  intXMin.w
+  intYMin.w
+  intXMax.w
+  intYMax.w
+  intHDPI.w
+  intVDPI.w
+  bytColorMap.b[48]
+  bytReserved.b
+  bytNPlanes.b
+  intBytesPerline.w
+  intpalette_info.w
+  bytFiller.b[58]
+EndStructure
+Structure TPEPALLETS
+  bytColorR.a
+  bytColorG.a
+  bytColorB.a
+EndStructure
+;}
+
+; ****************************************************************************
+; ****************************************************************************
+; ****************************************************************************
+; ****************************************************************************
+
+; +--------------------------------------------------------------------------+
+; |                                                                          |
+; +--------------------------------------------------------------------------+
+
+Procedure.i LoadPCX(Image.i,Filename.s)
+  Protected i.l
+  Protected j.l
+  Protected k.l
+  Protected file.l
+  Protected bdata.a
+  Protected llenx.l
+  Protected lleny.l
+  Protected ltemp.l
+  Protected lcount.l
+  Protected lfllen.l
+  Protected lOffset.l
+  Protected Dim Raw.a(0)
+  Protected Dim Pallets.TPEPALLETS(255)
+  Protected header.TPEPCXHEADER
+  Protected result.i
+
+  file = ReadFile(#PB_Any, Filename)
+  If file
+    lfllen = Lof(file)
+    ReadData(file, header, SizeOf(header))
+    k = lfllen - SizeOf(header) - 768
+    If k <= 0 Or k => lfllen
+      CloseFile(file)
+      ProcedureReturn #False
+    EndIf
+    ReDim Raw(k)
+    ReadData(file, Raw(), k)
+    FileSeek(file, lfllen - 768)
+    ReadData(file, Pallets(), 768)
+    CloseFile(file)
+    If ((header\bytManufactor = 10) Or (header\bytVersion = 5) Or (header\bytEncoding = 1) Or (header\bytNPlanes = 1) Or (header\bytBitsPerPixel = 8))
+      i = 0
+      llenx = header\intBytesPerline
+      lleny = header\intYMax - header\intYMin + 1
+      ltemp = lleny
+      result = CreateImage(Image, llenx, lleny)
+      If result
+        If StartDrawing(ImageOutput(Image))
+          While ltemp
+            lOffset = 0
+            ltemp - 1
+            j = (lleny - ltemp) * llenx
+            While (lOffset < llenx)
+              bdata = Raw(i)
+              i + 1
+              If (bdata & 192) = 192
+                lcount  = bdata & 63
+                lOffset   + lcount
+                bdata     = Raw(i)
+                i + 1
+                While lcount
+                  lcount - 1
+                  Plot(j % llenx, (j / llenx) - 1, RGB(Pallets(bdata)\bytColorR, Pallets(bdata)\bytColorG, Pallets(bdata)\bytColorB))
+                  j + 1
+                Wend
+              Else
+                Plot(j % llenx, (j / llenx) - 1, RGB(Pallets(bdata)\bytColorR, Pallets(bdata)\bytColorG, Pallets(bdata)\bytColorB))
+                lOffset + 1
+                j + 1
+              EndIf
+            Wend
+          Wend
+          StopDrawing()
+          ProcedureReturn Image
+        EndIf
+      EndIf
+    EndIf
+  EndIf
+  ;
+EndProcedure
+
 ;Initialise the Scintilla library for Windows.
 CompilerIf  #PB_Compiler_OS = #PB_OS_Windows 
   ;try to found Scintilla.dll
@@ -106,6 +212,17 @@ Structure fileslist
   lenght.i
 EndStructure
 
+Structure threadinfo
+  thread.i
+  type.b  ;see thread enumeration
+EndStructure
+
+Enumeration
+  #thrd_serverCall
+  #thrd_serverSearch
+EndEnumeration
+
+#ThreadTimer=100 ; it's timer to check when Thread is finish
 
 Structure globalParameters
   page.l
@@ -113,6 +230,7 @@ Structure globalParameters
   server.s
   useProxy.b        ;#True or #False if you want to use proxy setting
   proxy.HTTP_Proxy
+  List thread.threadinfo()
   threadCheckServer.i
   onOffLine.b
   Map serverInfos.s()
@@ -121,6 +239,15 @@ EndStructure
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
+
+Procedure thothboxThread(*callfunction,type.b,value.i=0)
+  AddElement(gp\thread())
+  gp\thread()\thread=CreateThread(*callfunction,value) 
+  gp\thread()\type=type
+  If ListSize(gp\thread())=1
+    AddWindowTimer(#win_Main, #ThreadTimer, 250)
+  EndIf
+EndProcedure
 
 XIncludeFile "translator.pbi"
 
@@ -356,17 +483,7 @@ Next
 LoadLanguage()
 InitGadgets() 
 ;Check if server is Online
-gp\threadCheckServer=CreateThread(@CheckServer(),0)
-AddWindowTimer(0, 123, 250)
-
-  Procedure downll(i.l)
-    GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
-            SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
-            clearTabcode()
-            getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
-            downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
-            initTabCode()
-  EndProcedure
+thothboxThread(@CheckServer(),#thrd_serverCall)
 
 ;-Parse input parameters
 z=0
@@ -386,16 +503,35 @@ Repeat
   Select event
     Case #PB_Event_Timer 
       Define infotxt.s
-      If EventTimer() = 123
+      ;-End Thread Control
+      If EventTimer() = #ThreadTimer
         gp\onOffLine=1-gp\onOffLine
         SetGadgetState(#gdt_OffOnLine,ImageID(gp\onOffLine+1))
         infotxt=GetMenuTitleText(#win_Main,1)
-        If Len(infotxt)>5
+        If Len(infotxt)>4
           infotxt="";
         Else
           infotxt+"."
         EndIf
         SetMenuTitleText(#win_Main,1,infotxt)
+        
+        ForEach gp\thread()
+          If IsThread(gp\thread()\thread)=0
+            Select gp\thread()\type
+              Case  #thrd_serverCall
+              Case #thrd_serverSearch
+                initTabCode()
+                DisableGadget(#mode_viewWindow,0)
+            EndSelect
+            DeleteElement(gp\thread())
+            If ListSize(gp\thread())=0
+              RemoveWindowTimer(0, #ThreadTimer)
+              SetMenuTitleText(#win_Main,1,"")
+            EndIf
+          EndIf
+        Next
+        
+        
       EndIf
     Case #PB_Event_SizeWindow
       refreachWindow(gp\page) ;resize all gadget
@@ -431,12 +567,11 @@ Repeat
           EndIf
         Case #gdt_result
           If EventType()=#PB_EventType_LeftClick 
-                GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
+            GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
             SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
+            DisableGadget(#mode_viewWindow,1)
             clearTabcode()
-            getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
-            downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
-            initTabCode()
+            thothboxThread(@getCodeFromerServer(),#thrd_serverSearch)
             gp\page=#mode_viewWindow
             refreachWindow(gp\page)
           EndIf
@@ -459,13 +594,7 @@ Repeat
             gp\server=GetGadgetText(#gdt_prefsServer)
           EndIf
         Case #gdt_prefsServerTest
-          If EventType()=#PB_EventType_LeftClick 
-            If IsThread(gp\threadCheckServer)=0
-            gp\threadCheckServer=CreateThread(@CheckServer(),1)
-            AddWindowTimer(0, 123, 250)
-          Else
-            EndIf
-          EndIf
+          thothboxThread(@CheckServer(),#thrd_serverCall,#True)
         Case #gdt_prefsLanguage
           gp\language=GetGadgetText(#gdt_prefsLanguage)
           loadLanguage()
@@ -522,8 +651,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 438
-; FirstLine = 415
+; CursorPosition = 510
+; FirstLine = 505
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

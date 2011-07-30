@@ -90,14 +90,12 @@ EndProcedure
 
 Procedure CheckServer(n)
   If servercall()
-    RemoveWindowTimer(0, 123)
     SetMenuTitleText(#win_Main,1,t("Online"))
     SetGadgetState(#gdt_OffOnLine,ImageID(1))
     If n=#True
       MessageRequester(t("Server"),gp\serverInfos("message"))
     EndIf
   Else
-    RemoveWindowTimer(0, 123)
     SetGadgetState(#gdt_OffOnLine,ImageID(2))
     SetMenuTitleText(#win_Main,1,t("Offline"))
   EndIf
@@ -151,7 +149,6 @@ Procedure getFilesListFromServer(id.l)
     ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
-    MessageRequester("getFilesListFromServer()",txt)
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
@@ -209,10 +206,14 @@ Procedure downloadfiles(id.l)
     Next
   EndProcedure
   
+Procedure getCodeFromerServer(i.l)
+    getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+    downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+EndProcedure
   
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 169
-; FirstLine = 158
+; CursorPosition = 151
+; FirstLine = 130
 ; Folding = --
 ; EnableXP
