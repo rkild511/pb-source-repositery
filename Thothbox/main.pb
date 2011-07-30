@@ -13,8 +13,9 @@
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
 InitNetwork()
 
-XIncludeFile "http.pbi"
+;create a directory to download files this directory willbe erase when you quit
 
+XIncludeFile "http.pbi"
 
 DisableExplicit ; disable because GoScintilla is not EnableExplicit compatible
 IncludePath "GoScintilla_PB4.4"
@@ -23,6 +24,7 @@ IncludePath ".\"
 EnableExplicit
 
 UsePNGImageDecoder()
+UseJPEGImageDecoder()
 
 Structure TPEPCXHEADER
   bytManufactor.b
@@ -218,8 +220,10 @@ Structure threadinfo
 EndStructure
 
 Enumeration
+  #thrd_firstServerCall
   #thrd_serverCall
   #thrd_serverSearch
+  #thrd_serverGetResult
 EndEnumeration
 
 #ThreadTimer=100 ; it's timer to check when Thread is finish
@@ -234,11 +238,18 @@ Structure globalParameters
   threadCheckServer.i
   onOffLine.b
   Map serverInfos.s()
+  codeid.i
   List file.fileslist()
+  downloadDirectory.s
 EndStructure
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
+gp\downloadDirectory=GetTemporaryDirectory()+"ThothBox"
+If FileSize(gp\downloadDirectory)<>-2
+ CreateDirectory(gp\downloadDirectory)
+EndIf
+
 
 Procedure thothboxThread(*callfunction,type.b,value.i=0)
   AddElement(gp\thread())
@@ -286,6 +297,8 @@ EndMacro
 
 IncludeFile "tab.pbi"
 
+
+
 If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
   If CreateImageMenu(#win_Main, WindowID(#win_Main),#PB_Menu_ModernLook)
@@ -295,6 +308,7 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
     MenuTitle("")
   EndIf
   
+  AddKeyboardShortcut(#win_Main, #PB_Shortcut_Return, 1000)
   ;-mode_searchWindow Gadgets
   ContainerGadget(#mode_searchWindow,-WindowWidth(#win_Main),0,WindowWidth(#win_Main),WindowHeight(#win_Main))
   CatchImage(0,?Logo)
@@ -483,7 +497,7 @@ Next
 LoadLanguage()
 InitGadgets() 
 ;Check if server is Online
-thothboxThread(@CheckServer(),#thrd_serverCall)
+thothboxThread(@threadCheckServer(),#thrd_firstServerCall)
 
 ;-Parse input parameters
 z=0
@@ -502,7 +516,7 @@ Repeat
   
   Select event
     Case #PB_Event_Timer 
-      Define infotxt.s
+      Define infotxt.s,type.i
       ;-End Thread Control
       If EventTimer() = #ThreadTimer
         gp\onOffLine=1-gp\onOffLine
@@ -517,13 +531,24 @@ Repeat
         
         ForEach gp\thread()
           If IsThread(gp\thread()\thread)=0
-            Select gp\thread()\type
+            type=gp\thread()\type
+            DeleteElement(gp\thread())
+            Select type
+              Case #thrd_firstServerCall
+                
+                thothboxThread(@threadServerSearch(),#thrd_serverSearch)
+                ;Else
+                ;  MessageRequester("Server ERROR","we have a problem to connect server")
+                ;  gp\page=#mode_prefsWindow
+                ;  refreachWindow(gp\page)
+                ;EndIf
               Case  #thrd_serverCall
               Case #thrd_serverSearch
+              Case #thrd_serverGetResult
                 initTabCode()
                 DisableGadget(#mode_viewWindow,0)
             EndSelect
-            DeleteElement(gp\thread())
+            
             If ListSize(gp\thread())=0
               RemoveWindowTimer(0, #ThreadTimer)
               SetMenuTitleText(#win_Main,1,"")
@@ -552,6 +577,11 @@ Repeat
         Case 1
           gp\page=#mode_prefsWindow
           refreachWindow(gp\page)
+        Case 1000 ;Return keyshort
+          Select GetActiveGadget()
+            Case #gdt_search
+              thothboxThread(@threadServerSearch(),#thrd_serverSearch)
+          EndSelect
       EndSelect
     Case #PB_Event_Gadget 
       
@@ -562,21 +592,19 @@ Repeat
           refreachWindow(gp\page)
         Case #gdt_search
           If EventType()=#PB_EventType_LostFocus
-            serverSearch(GetGadgetText(#gdt_search))
-           
+            
+            thothboxThread(@threadServerSearch(),#thrd_serverSearch)
           EndIf
         Case #gdt_result
           If EventType()=#PB_EventType_LeftClick 
-            GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
+            gp\codeid=GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result))
             SetGadgetText(#gdt_title,GetGadgetItemText(#gdt_result,GetGadgetState(#gdt_result),0))
             DisableGadget(#mode_viewWindow,1)
             clearTabcode()
-            thothboxThread(@getCodeFromerServer(),#thrd_serverSearch)
+            thothboxThread(@threadDownloadFiles(),#thrd_serverGetResult)
             gp\page=#mode_viewWindow
             refreachWindow(gp\page)
           EndIf
-          gp\page=#mode_viewWindow
-          refreachWindow(gp\page)
           
           ;- Event viewWindow  
         Case #gdt_historic
@@ -588,13 +616,13 @@ Repeat
         Case #gdt_prefsback
           gp\page=#mode_searchWindow
           refreachWindow(gp\page)
-          SavePreferences()
+          CreateThread(@SavePreferences(),0)
         Case #gdt_prefsServer
           If EventType()=#PB_EventType_LostFocus
             gp\server=GetGadgetText(#gdt_prefsServer)
           EndIf
         Case #gdt_prefsServerTest
-          thothboxThread(@CheckServer(),#thrd_serverCall,#True)
+          thothboxThread(@threadCheckServer(),#thrd_serverCall,#True)
         Case #gdt_prefsLanguage
           gp\language=GetGadgetText(#gdt_prefsLanguage)
           loadLanguage()
@@ -638,6 +666,8 @@ Repeat
   
 Until quit = 1
 
+DeleteDirectory(gp\downloadDirectory, "", #PB_FileSystem_Recursive|#PB_FileSystem_Force)
+
 End
 DataSection
   Logo:
@@ -651,8 +681,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 510
-; FirstLine = 505
+; CursorPosition = 603
+; FirstLine = 589
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

@@ -11,7 +11,7 @@
   EndIf
   EndProcedure
   
-  Procedure SavePreferences()
+  Procedure SavePreferences(v.l=0)
   If CreatePreferences(#prg_name$+".prefs")
     WritePreferenceString("language", gp\language)
     WritePreferenceString("server", gp\server)
@@ -22,8 +22,6 @@
     WritePreferenceString("proxyPassword", gp\proxy\password)
     ClosePreferences()
   EndIf
-  
-  
 EndProcedure
   
   
@@ -71,6 +69,6 @@ EndProcedure
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 3
+; CursorPosition = 13
 ; Folding = -
 ; EnableXP

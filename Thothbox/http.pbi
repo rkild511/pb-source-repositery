@@ -526,6 +526,7 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
                     If CreateRegularExpression(0, "^HTTP.+\s[0-9][0-9][0-9]\s.+")
                       Dim Result$(0)
                       nbFound = ExtractRegularExpression(0, line, Result$())
+                      
                     Else
                       Debug RegularExpressionError()
                     EndIf
@@ -740,7 +741,7 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 300
-; FirstLine = 86
+; CursorPosition = 532
+; FirstLine = 286
 ; Folding = +v-86---
 ; EnableXP

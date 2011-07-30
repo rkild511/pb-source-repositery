@@ -99,16 +99,17 @@ Procedure clearTabcode()
 EndProcedure
 
 Procedure initTabCode()
-  Protected z.l,gdt.i,code.s
+  Protected z.l,gdt.i,code.s,filepath.s
   ForEach gp\file()
     OpenGadgetList(#gdt_tab)
     AddGadgetItem (#gdt_tab, ListIndex(gp\file()), gp\file()\filename)
     gdt=#gdt_end+ListIndex(gp\file())
-    Select LCase(GetExtensionPart(gp\file()\filename))
+    filepath=gp\downloadDirectory+"\"+Str(gp\codeid)+"\"+gp\file()\filename
+    Select LCase(GetExtensionPart(filepath))
       Case "pb","pbi",""
         initCodeGadget(gdt)
         code="";
-        If ReadFile(0,GetTemporaryDirectory()+gp\file()\filename)
+        If ReadFile(0,filepath)
           While Eof(0) = 0           ; loop as long the 'end of file' isn't reached
             code=code+ ReadString(0)+#LF$      ; display line by line in the debug window
           Wend
@@ -116,14 +117,14 @@ Procedure initTabCode()
           GOSCI_SetText(gdt, code)
 
         Else
-          MessageRequester("Error InitTabCode()","Can't Read Code from"+#LFCR$+GetTemporaryDirectory()+gp\file()\filename)
+          MessageRequester("Error InitTabCode()","Can't Read Code from"+#LFCR$+filepath)
         EndIf
       Case "pcx"
-        If LoadPCX(gdt,GetTemporaryDirectory()+gp\file()\filename)
+        If LoadPCX(gdt,filepath)
           ImageGadget(gdt,0,0,580,580,ImageID(gdt))
-        endif
+        EndIf
       Case "jpb","png","bmp","jpeg"
-        If LoadImage(gdt,GetTemporaryDirectory()+gp\file()\filename)
+        If LoadImage(gdt,filepath)
           ImageGadget(gdt,0,0,580,580,ImageID(gdt))
         EndIf
       Default
@@ -132,7 +133,7 @@ Procedure initTabCode()
   Next  
 EndProcedure
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 123
-; FirstLine = 77
+; CursorPosition = 107
+; FirstLine = 79
 ; Folding = -
 ; EnableXP
