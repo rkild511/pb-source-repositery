@@ -118,7 +118,10 @@ Procedure initTabCode()
         Else
           MessageRequester("Error InitTabCode()","Can't Read Code from"+#LFCR$+GetTemporaryDirectory()+gp\file()\filename)
         EndIf
-        
+      Case "pcx"
+        If LoadPCX(gdt,GetTemporaryDirectory()+gp\file()\filename)
+          ImageGadget(gdt,0,0,580,580,ImageID(gdt))
+        endif
       Case "jpb","png","bmp","jpeg"
         If LoadImage(gdt,GetTemporaryDirectory()+gp\file()\filename)
           ImageGadget(gdt,0,0,580,580,ImageID(gdt))
@@ -128,8 +131,8 @@ Procedure initTabCode()
     CloseGadgetList()
   Next  
 EndProcedure
-; IDE Options = PureBasic 4.51 (Windows - x86)
-; CursorPosition = 98
-; FirstLine = 72
+; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
+; CursorPosition = 123
+; FirstLine = 77
 ; Folding = -
 ; EnableXP
