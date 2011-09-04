@@ -123,7 +123,7 @@ Procedure initTabCode()
         If LoadPCX(gdt,filepath)
           ImageGadget(gdt,0,0,580,580,ImageID(gdt))
         EndIf
-      Case "jpb","png","bmp","jpeg"
+      Case "jpg","png","bmp","jpeg"
         If LoadImage(gdt,filepath)
           ImageGadget(gdt,0,0,580,580,ImageID(gdt))
         EndIf
@@ -132,8 +132,8 @@ Procedure initTabCode()
     CloseGadgetList()
   Next  
 EndProcedure
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 107
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 125
 ; FirstLine = 79
 ; Folding = -
 ; EnableXP
