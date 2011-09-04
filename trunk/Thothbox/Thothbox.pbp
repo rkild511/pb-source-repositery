@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 Beta 3 (Windows - x86)">
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 Beta 4 (Windows - x86)">
   <section name="config">
     <options closefiles="1" openmode="0" name="Thothbox"/>
   </section>
   <section name="data">
     <explorer view="C:\Users\Thyphoon\Documents\" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-07-28 23:16" user="Thyphoon" host="GRAAL"/>
+    <lastopen date="2011-09-03 06:22" user="Thyphoon" host="GRAAL"/>
   </section>
   <section name="files">
     <file name="main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="f2547d100b06bb20d866ca0941d7aff1"/>
+      <fingerprint md5="0442cc846dd981c7504e600ffd28b8df"/>
     </file>
     <file name="GoScintilla_PB4.4\GoScintilla.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="++"/>
@@ -28,15 +28,15 @@
     </file>
     <file name="http.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="b84e9ec30e334784a0221a443fb879bd"/>
+      <fingerprint md5="5ca131eea923393597fb7d8d538bf34e"/>
     </file>
     <file name="preferences.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="493a7ce52cf3fa84c23bbc5f88ac9867"/>
+      <fingerprint md5="d8d9e43b6301d034aa468da65ff1defc"/>
     </file>
     <file name="network.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="0212115ee21152f35e022a190e7eba14"/>
+      <fingerprint md5="3ba6f28618e073200dfc0d2e98a73777"/>
     </file>
     <file name="translator.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -48,7 +48,7 @@
     </file>
     <file name="tab.pbi">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="fd13dced67f6dcd2b2d2510c0caa13e7"/>
+      <fingerprint md5="ef678ca19351a826c6d8bf3d52c3b97b"/>
     </file>
   </section>
   <section name="targets">

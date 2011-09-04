@@ -30,7 +30,8 @@
 EndProcedure
 
 Procedure myCallBack(l.i,max.i)
-SetGadgetText(#gdt_waitTxt,Str(l))
+  SetGadgetState(#gdt_bar,Int(1000*gp\progressBarPointer/gp\progressBarMax))
+ ;gp\progressBarPointer+l
 EndProcedure
 ;http://www.koakdesign.info/thothbox/thothbox.php
 
@@ -157,7 +158,7 @@ Procedure getFilesListFromServer(id.l)
   ClearList(gp\file())
   If http\data<>0
     ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
-    Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s
+    Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s,l.l,cara.l
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
@@ -184,7 +185,21 @@ Procedure getFilesListFromServer(id.l)
       AddElement(gp\file())
       gp\file()\id=Val(StringField(line, 1, ";"))
       gp\file()\filename=StringField(line, 2, ";")
+      Debug gp\file()\filename
+      ;clean filename
+      For l=1 To Len(gp\file()\filename)
+        cara=Asc(Mid(gp\file()\filename,l,1)); get the ascii value
+        Select cara
+          Case 46,47, 48 To 57,65 To 90,92,95,97 To 122,128,150
+          Case 232 To 235
+            gp\file()\filename=Mid(gp\file()\filename,1,l-1)+"e"+Mid(gp\file()\filename,l+1,Len(gp\file()\filename)-l)
+          Default 
+            gp\file()\filename=Mid(gp\file()\filename,1,l-1)+"_"+Mid(gp\file()\filename,l+1,Len(gp\file()\filename)-l)
+         EndSelect
+       Next
+       Debug gp\file()\filename
       gp\file()\lenght=Val(StringField(line, 3, ";"))
+      
     Next
 
   Else
@@ -199,6 +214,7 @@ Procedure downloadfile()
     HTTP_proxy(@http,gp\proxy\host,gp\proxy\port,gp\proxy\login,gp\proxy\password)
   EndIf
   HTTP_query(@http, #HTTP_METHOD_POST, gp\server)
+  http\downCallback=@myCallBack();
   HTTP_addQueryHeader(@http, "User-Agent", "ThothBox")
   ;juste pour tester les images
   ;gp\file()\filename="test.png"
@@ -219,6 +235,7 @@ Procedure downloadfile()
     If CreateFile(0,path+gp\file()\filename)
       WriteData(0,http\data,MemorySize(http\data))
       CloseFile(0)
+      gp\progressBarPointer+MemorySize(http\data)
     Else 
       MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
     EndIf
@@ -240,14 +257,22 @@ Procedure downloadfiles(id.l)
     Next
   EndProcedure
   
-Procedure threadDownloadFiles(i.l)
-  getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+  Procedure threadDownloadFiles(i.l)
+    
+    ;SetGadgetAttribute(#gdt_bar,#PB_ProgressBar_Maximum,gp\progressBarMax)
+    getFilesListFromServer(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
+    gp\progressBarMax=0
+    ForEach gp\file()
+      gp\progressBarMax=gp\progressBarMax+gp\file()\lenght
+    Next
+    Debug">>>>"+Str(gp\progressBarMax)
+    gp\progressBarPointer=0
   downloadfiles(GetGadgetItemData(#gdt_result,GetGadgetState(#gdt_result)))
 EndProcedure
   
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 244
-; FirstLine = 193
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 192
+; FirstLine = 180
 ; Folding = ---
 ; EnableXP

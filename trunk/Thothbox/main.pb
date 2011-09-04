@@ -186,6 +186,7 @@ Enumeration
   #gdt_compile
   #gdt_tab
   #gdt_code
+  #gdt_bar
   #gdt_historic
   #mode_prefsWindow
   #gdt_prefsBack
@@ -203,6 +204,7 @@ Enumeration
   #gdt_poxyLoginTxt
   #gdt_poxyPassword
   #gdt_poxyPasswordTxt
+  
   ;for #win_Wait
   #gdt_waitTxt
   #gdt_end
@@ -241,6 +243,8 @@ Structure globalParameters
   codeid.i
   List file.fileslist()
   downloadDirectory.s
+  progressBarMax.i
+  progressBarPointer.i
 EndStructure
 Global gp.globalParameters
 
@@ -338,7 +342,8 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   ButtonGadget(#gdt_backSearch,0,0,100,#gdtH,"Back")
   PanelGadget(#gdt_tab, 10, 10, 580, 580)
   CloseGadgetList()
-
+  ProgressBarGadget(#gdt_bar,  0, 550, 250,  20, 0, 1000,#PB_ProgressBar_Smooth)
+  SetGadgetState(#gdt_bar,50)
  
   ButtonGadget(#gdt_compile,GadgetX(#gdt_tab),GadgetY(#gdt_tab)-20,100,20,"Compile this code")
   ListIconGadget(#gdt_historic,  0,  0, 300, 300, "Date", 75,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
@@ -517,7 +522,7 @@ Repeat
   Select event
     Case #PB_Event_Timer 
       Define infotxt.s,type.i
-      ;-End Thread Control
+      ;-Thread Control
       If EventTimer() = #ThreadTimer
         gp\onOffLine=1-gp\onOffLine
         SetGadgetState(#gdt_OffOnLine,ImageID(gp\onOffLine+1))
@@ -528,8 +533,9 @@ Repeat
           infotxt+"."
         EndIf
         SetMenuTitleText(#win_Main,1,infotxt)
-        
+        ;check all thread to check finish and running
         ForEach gp\thread()
+          ;-If thread is finish
           If IsThread(gp\thread()\thread)=0
             type=gp\thread()\type
             DeleteElement(gp\thread())
@@ -542,7 +548,7 @@ Repeat
                 ;  gp\page=#mode_prefsWindow
                 ;  refreachWindow(gp\page)
                 ;EndIf
-              Case  #thrd_serverCall
+              Case #thrd_serverCall
               Case #thrd_serverSearch
               Case #thrd_serverGetResult
                 initTabCode()
@@ -553,6 +559,13 @@ Repeat
               RemoveWindowTimer(0, #ThreadTimer)
               SetMenuTitleText(#win_Main,1,"")
             EndIf
+          ;-threade run 
+          Else
+            
+            Select gp\thread()\type
+              Case #thrd_serverGetResult
+               
+            EndSelect
           EndIf
         Next
         
@@ -681,8 +694,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 603
-; FirstLine = 589
+; CursorPosition = 533
+; FirstLine = 410
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

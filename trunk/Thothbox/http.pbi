@@ -526,11 +526,11 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
                     If CreateRegularExpression(0, "^HTTP.+\s[0-9][0-9][0-9]\s.+")
                       Dim Result$(0)
                       nbFound = ExtractRegularExpression(0, line, Result$())
-                      
+                      FreeRegularExpression(0)
                     Else
                       Debug RegularExpressionError()
                     EndIf
-                    FreeRegularExpression(0)
+                    
                     If NbFound>0
                       *query\error=Val(StringField(line,3," "))
                       ;http://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html
@@ -740,8 +740,8 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 
 CompilerEndIf
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 532
-; FirstLine = 286
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 528
+; FirstLine = 292
 ; Folding = +v-86---
 ; EnableXP
