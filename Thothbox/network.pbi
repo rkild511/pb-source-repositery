@@ -123,9 +123,35 @@ Procedure serverSearch(keywords.s)
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
-      AddGadgetItem(#gdt_result,z-1,StringField(line, 2, ";")+Chr(10)+StringField(line, 3, ";")+Chr(10)+StringField(line, 4, ";"))
-      id=Val(StringField(line, 1, ";"))
-      SetGadgetItemData(#gdt_result,z-1, id)
+      
+      ;first line header Data With name
+      If z=1
+        Protected d.i, Dim key2col.l(10)
+        For d=0 To 5:
+          key2col(d)=1
+        next
+        For d=1 To CountString(line,";")+1
+          Debug LCase(StringField(line, d, ";"))
+          Select LCase(StringField(line, d, ";"))
+            Case "id"
+              key2col(0)=d
+            Case "codename"
+              key2col(1)=d
+            Case "author"
+              key2col(2)=d
+            Case "date"
+              key2col(3)=d
+            Case "category"
+              key2col(4)=d
+            Case "compatibility"
+              key2col(5)=d
+          EndSelect
+        Next
+      Else
+      AddGadgetItem(#gdt_result,z-2, StringField(line, key2col(1), ";")+Chr(10)+StringField(line, key2col(4), ";")+Chr(10)+StringField(line, key2col(2), ";")+Chr(10)+StringField(line, key2col(3), ";")+Chr(10)+StringField(line, key2col(5), ";"))
+      id=Val(StringField(line, key2col(0), ";"))
+      SetGadgetItemData(#gdt_result,z-2, id)
+      EndIf
     Next
   Else
     MessageRequester("serverSearch()","Error")
@@ -160,32 +186,35 @@ Procedure getFilesListFromServer(id.l)
     ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s,l.l,cara.l
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
+    MessageRequester("Files List",txt)
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
+      
       ;first line header data with name
-;       If z=-1
-;         Protected d.i, Dim key2col.l(10)
-;         For d=1 To CountString(line,";")
-;           Select LCase(StringField(line, d, ";"))
-;             Case "id"
-;               key2col(0)=d
-;             Case "filename"
-;               key2col(1)=d
-;             Case "lenght"
-;               key2col(2)=d
-;             Case "md5"
-;               key2col(3)=d
-;             Case "date"
-;               key2col(4)=d
-;           EndSelect
-;             
-;         Next
-;       EndIf
+      If z=1
+        Protected d.i, Dim key2col.l(10)
+        For d=1 To CountString(line,";")+1
+          Debug LCase(StringField(line, d, ";"))
+          Select LCase(StringField(line, d, ";"))
+            Case "id"
+              key2col(0)=d
+            Case "filename"
+              key2col(1)=d
+            Case "filesize"
+              key2col(2)=d
+            Case "md5"
+              key2col(3)=d
+          EndSelect
+        Next
+      Else
       AddElement(gp\file())
-      gp\file()\id=Val(StringField(line, 1, ";"))
-      gp\file()\filename=StringField(line, 2, ";")
+      gp\file()\id=Val(StringField(line, key2col(0), ";"))
+      gp\file()\filename=StringField(line, key2col(1), ";")
+      gp\file()\lenght=Val(StringField(line, key2col(2), ";"))
+      gp\file()\md5=StringField(line, key2col(3), ";")
       Debug gp\file()\filename
+      
       ;clean filename
       For l=1 To Len(gp\file()\filename)
         cara=Asc(Mid(gp\file()\filename,l,1)); get the ascii value
@@ -197,10 +226,27 @@ Procedure getFilesListFromServer(id.l)
             gp\file()\filename=Mid(gp\file()\filename,1,l-1)+"_"+Mid(gp\file()\filename,l+1,Len(gp\file()\filename)-l)
          EndSelect
        Next
-       Debug gp\file()\filename
-      gp\file()\lenght=Val(StringField(line, 3, ";"))
-      
+       ;ready to sort
+       If LCase(gp\file()\filename)="main.pb"
+         gp\file()\sort=1
+       Else
+         Select GetExtensionPart(LCase(gp\file()\filename))
+             Case "pb"
+                gp\file()\sort=2
+             Case "pbi"
+                gp\file()\sort=3  
+             Case "jpg","jpeg","gif","pcx","png"
+               gp\file()\sort=4
+             Case "txt"
+               gp\file()\sort=5
+             Default 
+               gp\file()\sort=6
+         EndSelect
+       EndIf
+       EndIf
     Next
+    ;sort file list ! first main.pb>*.pb>*.pbi>*.jpg
+    SortStructuredList(gp\file(), 0, OffsetOf(fileslist\sort), #PB_Sort_Byte)
 
   Else
     MessageRequester("getFilesListFromServer()","Error")
@@ -272,7 +318,7 @@ EndProcedure
   
 
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 192
-; FirstLine = 180
+; CursorPosition = 248
+; FirstLine = 231
 ; Folding = ---
 ; EnableXP
