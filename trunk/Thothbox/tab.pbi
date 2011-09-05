@@ -102,7 +102,7 @@ Procedure initTabCode()
   Protected z.l,gdt.i,code.s,filepath.s
   ForEach gp\file()
     OpenGadgetList(#gdt_tab)
-    AddGadgetItem (#gdt_tab, ListIndex(gp\file()), gp\file()\filename)
+    AddGadgetItem (#gdt_tab, ListIndex(gp\file()), GetFilePart(gp\file()\filename))
     gdt=#gdt_end+ListIndex(gp\file())
     filepath=gp\downloadDirectory+"\"+Str(gp\codeid)+"\"+gp\file()\filename
     Select LCase(GetExtensionPart(filepath))
@@ -115,6 +115,19 @@ Procedure initTabCode()
           Wend
           CloseFile(0)
           GOSCI_SetText(gdt, code)
+
+        Else
+          MessageRequester("Error InitTabCode()","Can't Read Code from"+#LFCR$+filepath)
+        EndIf
+      Case "txt"
+         EditorGadget(gdt, 10, 10, GetGadgetAttribute(#gdt_tab,#PB_Panel_ItemWidth)-20, GetGadgetAttribute(#gdt_tab,#PB_Panel_ItemHeight)-20)
+        code="";
+        If ReadFile(0,filepath)
+          While Eof(0) = 0           ; loop as long the 'end of file' isn't reached
+            code=code+ ReadString(0)+#LF$      ; display line by line in the debug window
+          Wend
+          CloseFile(0)
+          SetGadgetText(gdt, code)
 
         Else
           MessageRequester("Error InitTabCode()","Can't Read Code from"+#LFCR$+filepath)
@@ -133,7 +146,7 @@ Procedure initTabCode()
   Next  
 EndProcedure
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 125
-; FirstLine = 79
+; CursorPosition = 122
+; FirstLine = 92
 ; Folding = -
 ; EnableXP

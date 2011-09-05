@@ -214,6 +214,8 @@ Structure fileslist
   id.i
   filename.s
   lenght.i
+  md5.s
+  sort.b    ; to sort 1 = main.pb / 2=*.pb /3=*.pbi /4=*jpeg/png/gif
 EndStructure
 
 Structure threadinfo
@@ -329,7 +331,9 @@ If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version
   ListIconGadget(#gdt_result,  0,  0, 300, 300, t("Name"), 300,#PB_ListIcon_FullRowSelect|#PB_ListIcon_GridLines)
   GadgetToolTip(#gdt_result, "choose to see code and information")
   AddGadgetColumn(#gdt_result, 1, t("Category"), 100)
-  AddGadgetColumn(#gdt_result, 2, t("Platform"), 250)
+  AddGadgetColumn(#gdt_result, 2, t("Author"), 100)
+  AddGadgetColumn(#gdt_result, 3, t("Date"), 100)
+  AddGadgetColumn(#gdt_result, 4, t("Platform"), 250)
   CloseGadgetList()
   ;-mode_viewWindow Gadgets
   ContainerGadget(#mode_viewWindow,-WindowWidth(#win_Main)*2,0,WindowWidth(#win_Main),WindowHeight(#win_Main))
@@ -385,9 +389,10 @@ Procedure LoadLanguage()
   SetMenuItemText(#win_Main, 1,t("Preferences"))
   SetGadgetText(#gdt_version,t("version")+" "+#prg_version$)
   SetGadgetText(#gdt_searchTxt,t("search"))
-  SetGadgetItemText(#gdt_result, -1, t("Name") ,0)
-  SetGadgetItemText(#gdt_result, -1, t("Category") ,1)
-  SetGadgetItemText(#gdt_result, -1, t("Platform") ,2)
+  ;SetGadgetItemText(#gdt_result, -1, t("Name") ,0)
+  ;SetGadgetItemText(#gdt_result, -1, t("Author") ,1)
+  ;SetGadgetItemText(#gdt_result, -1, t("Date") ,2)
+  ;SetGadgetItemText(#gdt_result, -1, t("Category") ,3)
   GadgetToolTip(#gdt_result, t("choose to see code and information"))
   ;-langue viewWindow
   SetGadgetText(#gdt_titleTxt,t("Title")+":")
@@ -693,9 +698,9 @@ EndDataSection
 
 
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 533
-; FirstLine = 410
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 217
+; FirstLine = 208
 ; Folding = --
 ; EnableUnicode
 ; EnableXP
