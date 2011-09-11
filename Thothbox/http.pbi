@@ -4,7 +4,7 @@
 ;******** client event by DarkPlayer *********
 ;****** et quelques modif part thyphoon ******
 ;*********************************************
-;
+;TODO Cookie support
 
 EnableExplicit
 
@@ -741,7 +741,6 @@ Procedure.s translate(text.s,langSource.s,langTarget.s)
 CompilerEndIf
 
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 528
-; FirstLine = 292
+; CursorPosition = 6
 ; Folding = +v-86---
 ; EnableXP

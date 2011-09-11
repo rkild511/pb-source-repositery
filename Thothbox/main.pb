@@ -4,16 +4,16 @@
 ; web : GallyHC
 ; GoScintilla : Srod
 ; Purebasic tools Configuration
-; arguments -send "%FILE"
+; arguments :
+;-send "%FILE"
+;-checkupdate
 
 #prg_name$="Thothbox"
-#prg_version$="0.1"
+#prg_version$="0.1.";#PB_Editor_BuildCount
 
 
 #INCLUDEINPROJECT=#True ; to inform some include file to not compile exemple !(exemple http.pbi)
 InitNetwork()
-
-;create a directory to download files this directory willbe erase when you quit
 
 XIncludeFile "http.pbi"
 
@@ -245,12 +245,15 @@ Structure globalParameters
   codeid.i
   List file.fileslist()
   downloadDirectory.s
+  purebasicPath.s
+  purebasicPrefsPath.s
   progressBarMax.i
   progressBarPointer.i
 EndStructure
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
+;TODO add DownloadDirectory in Prefs to change path
 gp\downloadDirectory=GetTemporaryDirectory()+"ThothBox"
 If FileSize(gp\downloadDirectory)<>-2
  CreateDirectory(gp\downloadDirectory)
@@ -271,6 +274,31 @@ XIncludeFile "translator.pbi"
 
 XIncludeFile "preferences.pbi"
 LoadPreferences()
+
+;-IDE
+;Get Home for purebasic
+If GetEnvironmentVariable("PUREBASIC_HOME")<>""
+  gp\purebasicPath=GetEnvironmentVariable("PUREBASIC_HOME")
+  Debug "PUREBASIC_HOME:"+gp\purebasicPath
+EndIf
+
+;Get Home for Purebasic prefs 
+If GetEnvironmentVariable("PB_TOOL_Preferences")<>""
+  gp\purebasicPrefsPath=GetPathPart(GetEnvironmentVariable("PB_TOOL_Preferences")+"Tools.prefs")
+  
+  If OpenPreferences(path)
+    ExaminePreferenceGroups()
+; TODO Check IDE Config if Thothbox is Ok !    
+;     While NextPreferenceGroup()
+;       Debug "["+PreferenceGroupName()+"]"
+;       ExaminePreferenceKeys()
+;       While NextPreferenceKey()
+;         Debug PreferenceKeyName()+"="+PreferenceKeyValue()
+;       Wend
+;     Wend
+    ClosePreferences()
+  EndIf
+EndIf
 
 XIncludeFile "network.pbi"
 
@@ -303,9 +331,7 @@ EndMacro
 
 IncludeFile "tab.pbi"
 
-
-
-If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$, #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
+If OpenWindow(#win_Main, 100, 200, 800, 600, #prg_name$+" version "+#prg_version$+"."+Str(#PB_Editor_BuildCount), #PB_Window_SystemMenu | #PB_Window_MinimizeGadget | #PB_Window_MaximizeGadget|#PB_Window_SizeGadget)
   ;-menu
   If CreateImageMenu(#win_Main, WindowID(#win_Main),#PB_Menu_ModernLook)
     MenuTitle("?")
@@ -488,7 +514,10 @@ Procedure commitNewCode(file.s)
   EndIf
 EndProcedure
 
+Define event.l,quit.b=#False,file.s,z.l
+
 ;White background for a smart rendering !
+;But some problem with some Gadget ... disable i wait a portable solution
 ;SetGadgetColor(#mode_searchWindow,#PB_Gadget_BackColor,#White)
 ;SetGadgetColor(#mode_viewWindow,#PB_Gadget_BackColor,#White)
 ;SetGadgetColor(#mode_prefsWindow,#PB_Gadget_BackColor,#White)
@@ -496,7 +525,6 @@ EndProcedure
 ;SetGadgetColor(#gdt_titleTxt,#PB_Gadget_BackColor,#White)
 ;SetGadgetColor(#gdt_authorTxt,#PB_Gadget_BackColor,#White)
 ;SetGadgetColor(#gdt_version,#PB_Gadget_BackColor,#White)
-Define event.l,quit.b=#False,file.s,z.l
 For z=#mode_searchWindow To #gdt_end-1
   If IsGadget(z)
     ;SetGadgetColor(z,#PB_Gadget_BackColor,#White)
@@ -506,6 +534,7 @@ Next
 
 LoadLanguage()
 InitGadgets() 
+
 ;Check if server is Online
 thothboxThread(@threadCheckServer(),#thrd_firstServerCall)
 
@@ -517,13 +546,16 @@ While z<CountProgramParameters()-1
       Case "-send"
         z+1
         commitNewCode(ProgramParameter(z))
+      Case "-checkupdate"
+        ;TODO force checkupdate and background download
     EndSelect
   EndIf
   z+1
 Wend
+
+;-Main Loop
 Repeat
   event = WaitWindowEvent()
-  
   Select event
     Case #PB_Event_Timer 
       Define infotxt.s,type.i
@@ -583,13 +615,13 @@ Repeat
       Select EventMenu()
         Case 0
           Define txt.s
-          txt.s=#prg_name$+" version "+#prg_version$+#LFCR$
+          txt.s=#prg_name$+" version "+#prg_version$+"."+Str(#PB_Editor_BuildCount)+#LFCR$
           txt+"Jean-Yves LERICQUE/ GallyHC"+#LFCR$
           txt+"Jesahel BENOIST / Djes"+#LFCR$
           txt+"Yann LEBRUN / Thyphoon"+#LFCR$
           txt+#LFCR$
           txt+"thanks to"+#LFCR$
-          txt+"srdo : GoScintilla"+#LFCR$
+          txt+"srod : GoScintilla"+#LFCR$
           txt+"Fred Laboureur : Purebasic"+#LFCR$
           MessageRequester("Information", txt.s, #PB_MessageRequester_Ok)
         Case 1
@@ -626,7 +658,10 @@ Repeat
           
           ;- Event viewWindow  
         Case #gdt_historic
-          
+        Case #gdt_compile
+          SelectElement(gp\file(),GetGadgetState(#gdt_tab))
+          RunProgram(gp\downloadDirectory+"\"+Str(gp\codeid)+"\"+gp\file()\filename)
+
         Case #gdt_backSearch
           gp\page=#mode_searchWindow
           refreachWindow(gp\page)
@@ -677,6 +712,7 @@ Repeat
             If EventType()=#PB_EventType_LostFocus
               gp\proxy\password=GetGadgetText(#gdt_poxyPassword)
             EndIf
+          
         EndSelect
     Case #PB_Event_CloseWindow
       quit=1
@@ -699,8 +735,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 217
-; FirstLine = 208
+; CursorPosition = 255
+; FirstLine = 288
 ; Folding = --
 ; EnableUnicode
 ; EnableXP

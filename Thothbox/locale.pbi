@@ -535,8 +535,8 @@ Procedure.s getLanguageName()
 EndProcedure
 
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 343
-; FirstLine = 337
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 228
+; FirstLine = 201
 ; Folding = -
 ; EnableUnicode

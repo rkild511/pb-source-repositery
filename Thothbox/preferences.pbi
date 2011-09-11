@@ -44,7 +44,6 @@ Procedure InitLanguageGadget()
 EndProcedure  
   
 Procedure InitGadgets()  
-  
   If gp\useProxy=#True
     SetGadgetState(#gdt_usePoxy, #PB_Checkbox_Checked)
     DisableGadget(#gdt_poxyHost,0)
@@ -68,7 +67,8 @@ Procedure InitGadgets()
 EndProcedure
 
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 13
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 46
+; FirstLine = 14
 ; Folding = -
 ; EnableXP

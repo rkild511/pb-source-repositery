@@ -146,7 +146,7 @@ Procedure initTabCode()
   Next  
 EndProcedure
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 122
+; CursorPosition = 103
 ; FirstLine = 92
 ; Folding = -
 ; EnableXP
