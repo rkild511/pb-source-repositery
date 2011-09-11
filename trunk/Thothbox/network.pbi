@@ -1,4 +1,4 @@
-﻿Procedure.b Create_Directory(directory.s)
+﻿Procedure.b Create_Directory_old(directory.s)
   ;
   Define bindex.l
   Define bnumbs.l
@@ -28,6 +28,81 @@
   EndIf
   ProcedureReturn #False
 EndProcedure
+
+
+Procedure.b DirectoryCreate(dossier$)
+      ; Il est préférable de mettre le code ci-dessous parce que pour MakeSureDirectoryPathExists_
+      ; Si l'on met : MakeSureDirectoryPathExists_(toto\titi\vovo\aze) cela ne créer pas le repertoire
+      ; aze considérant certainement que c'est un fichier.
+      If Right(dossier$, 1) <> "\"
+            dossier$ + "\"
+      EndIf
+     
+      CompilerSelect #PB_Compiler_OS 
+                 
+            CompilerCase #PB_OS_Windows
+                  Debug "Windows Use:"+dossier$
+                  ; Sous Windows autant utiliser une API existante.
+                  ProcedureReturn MakeSureDirectoryPathExists_(dossier$)
+                 
+                 
+            CompilerCase #PB_OS_Linux Or #PB_OS_MacOS
+                  Debug "Linux Mac Use"
+                  Protected indexDossierActuel.b
+                  Protected nbDossiersExistants.b
+                 
+                  Protected nomDossier$
+                  Protected nomCheminComplet$
+                 
+                  Repeat
+                        indexDossierActuel + 1
+                        Debug "indexDossierActuel DEBUT : "+ Str(indexDossierActuel)
+                       
+                        nomDossier$ = StringField(dossier$, indexDossierActuel, "\")
+                        Debug "nomDossier$ : "+ nomDossier$
+                       
+                        If nomDossier$ <> ""
+                              ; On a un dossier principal et pas de sous-dossier.
+                              If indexDossierActuel = 1
+                                    nomCheminComplet$ + nomDossier$
+                                    Debug Str(indexDossierActuel) +" nomCheminComplet$ + nomDossier$ >>> " + nomCheminComplet$
+                                   
+                              Else
+                                    nomCheminComplet$ + "\" + nomDossier$
+                                    Debug Str(indexDossierActuel) +" nomCheminComplet$ + nomDossier$ >>> " + nomCheminComplet$
+                                   
+                              EndIf
+                             
+                              ; Si c'est un repertoire et qu'il existe alors on incremente nbDossiersExistants
+                              If FileSize(nomCheminComplet$) = -2
+                                    nbDossiersExistants + 1
+                                   
+                              Else
+                                    ; Si le dossier n'existe pas, alors on le créer et si le dossier a bien été créé,
+                                    ; alors on incremente nbDossiersExistants
+                                    If CreateDirectory(nomCheminComplet$) <> 0
+                                          nbDossiersExistants + 1
+                                         
+                                    EndIf
+                              EndIf
+                             
+                        EndIf
+                       
+                  Until nomDossier$ = ""
+                 
+                  ; Pour avoir le vrai nombre de dossier créés, on enlève 1
+                  indexDossierActuel - 1
+                  Debug "indexDossierActuel FIN : "+ Str(indexDossierActuel)
+                 
+                  ; Si indexDossierActuel = nbDossiersExistants, alors c'est que tout les dossiers on bien été créés
+                  ; et donc la procedure retourne 1
+                  If indexDossierActuel = nbDossiersExistants
+                        ProcedureReturn #True
+                  EndIf
+                  ProcedureReturn #False
+      CompilerEndSelect
+EndProcedure
+
 
 Procedure myCallBack(l.i,max.i)
   SetGadgetState(#gdt_bar,Int(1000*gp\progressBarPointer/gp\progressBarMax))
@@ -126,10 +201,11 @@ Procedure serverSearch(keywords.s)
       
       ;first line header Data With name
       If z=1
+        Debug line
         Protected d.i, Dim key2col.l(10)
         For d=0 To 5:
           key2col(d)=1
-        next
+        Next
         For d=1 To CountString(line,";")+1
           Debug LCase(StringField(line, d, ";"))
           Select LCase(StringField(line, d, ";"))
@@ -186,7 +262,7 @@ Procedure getFilesListFromServer(id.l)
     ;MessageRequester("Files List",PeekS(http\data,MemorySize(http\data),#PB_Ascii))
     Protected txt.s,nbline.l,z.l,line.s,sepa.l,key.s,value.s,l.l,cara.l
     txt.s=PeekS(http\data,MemorySize(http\data),#PB_Ascii);
-    MessageRequester("Files List",txt)
+    ;MessageRequester("Files List",txt)
     nbline=CountString(txt,#LFCR$)
     For z=1 To nbline
       line=ReplaceString(StringField(txt, z, #LFCR$),Chr(13),"")
@@ -276,14 +352,14 @@ Procedure downloadfile()
   If http\data>0
     path=gp\downloadDirectory+"\"+Str(gp\codeid)+"\"
     gp\file()\filename=ReplaceString(gp\file()\filename,"/","\")
-    Create_Directory(GetPathPart(path+gp\file()\filename))
+    DirectoryCreate(GetPathPart(path))
     Debug path+gp\file()\filename
     If CreateFile(0,path+gp\file()\filename)
       WriteData(0,http\data,MemorySize(http\data))
       CloseFile(0)
       gp\progressBarPointer+MemorySize(http\data)
     Else 
-      MessageRequester("Error downloadfiles()","Can't write file:"+GetTemporaryDirectory()+gp\file()\filename)
+      MessageRequester("Error downloadfiles()","Can't write file:"+path+gp\file()\filename)
     EndIf
     ;RunProgram("notepad.exe",GetTemporaryDirectory()+gp\file()\filename,GetCurrentDirectory())
     FreeMemory(http\data):http\data=0
@@ -318,7 +394,7 @@ EndProcedure
   
 
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 248
-; FirstLine = 231
+; CursorPosition = 354
+; FirstLine = 340
 ; Folding = ---
 ; EnableXP
