@@ -235,7 +235,7 @@ Procedure SavePreferences()
  ;*****************************************************************************
 ;----
 ;By Joakim Christiansen
-Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
+Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$="")
   Protected Result$, Window, String, OK, Cancel, Event
   Window = OpenWindow(#PB_Any,0,0,300,95,Title$,#PB_Window_ScreenCentered| #PB_Window_SystemMenu ) 
   If Window
@@ -243,7 +243,7 @@ Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
     String = StringGadget(#PB_Any,10,30,280,20,DefaultString$): SetActiveGadget(String)
     OK     = ButtonGadget(#PB_Any,60,60,80,25,"OK",#PB_Button_Default)
     Cancel = ButtonGadget(#PB_Any,150,60,80,25,"Cancel")
-    AddKeyboardShortcut(Window, #PB_Shortcut_Return, 15)
+    AddKeyboardShortcut(Window, #PB_Shortcut_Return, 1000)
     Repeat
       Event = WaitWindowEvent() 
       If Event = #PB_Event_Gadget
@@ -258,9 +258,11 @@ Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
       If Event = #PB_Event_CloseWindow
         Break
       EndIf
-      If Event = 15
-        Result$ = GetGadgetText(String)
-        Break
+      If Event = #PB_Event_Menu
+        If EventMenu() = 1000
+          Result$ = GetGadgetText(String)
+          Break
+        EndIf  
       EndIf
     ForEver
   EndIf
@@ -1860,9 +1862,10 @@ Translator_destroy()
 End
 
 ; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 1
+; CursorPosition = 252
+; FirstLine = 234
 ; Folding = ------
-; Markers = 930
+; Markers = 932
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
