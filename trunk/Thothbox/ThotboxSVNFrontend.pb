@@ -17,10 +17,12 @@ UsePNGImageDecoder()
 XIncludeFile "translator.pbi"
 
 ;To have the possibility to send a message to a gadget in the main loop
-Import "Gadget.lib"
-  PB_Gadget_SendGadgetCommand(hWnd, EventType)
-EndImport
-Prototype.l PB_Gadget_SendGadgetCommand(hWnd.l,EventType.l)
+
+; Import "Gadget.lib"
+;   PB_Gadget_SendGadgetCommand(hWnd, EventType)
+; EndImport
+; 
+; Prototype.l PB_Gadget_SendGadgetCommand(hWnd.l,EventType.l)
 
 CompilerIf #PB_Compiler_OS = #PB_OS_Windows
   #PathSeparator = "\"
@@ -131,7 +133,7 @@ EndStructure
 Global NewList Tree.Path()
 Global Language.s
 Global RemoteRepositery.s = "https://pb-source-repositery.googlecode.com/svn/trunk/"
-Global LocalRepositery.s = GetCurrentDirectory() + "repositeries\pb-source-repositery\"
+Global LocalRepositery.s = GetCurrentDirectory() + "repositeries" + #PathSeparator + "pb-source-repositery" + #PathSeparator
 ;Global LocalRepositeryReadOnly.s = GetCurrentDirectory() + "repositeries\pb-source-repositery-ReadOnly"
 Global ProxyFlag.i = #False
 Global SVNConfigProxyHost.s = "proxy.cg59.fr"
@@ -204,7 +206,7 @@ Procedure LoadPreferences()
   Language               = ReadPreferenceString( "language", "")
   
   RemoteRepositery       = ReadPreferenceString( "SVNRemoteRepositery", "https://pb-source-repositery.googlecode.com/svn/trunk/")
-  LocalRepositery        = ReadPreferenceString( "SVNLocalRepositery",  GetCurrentDirectory() + "repositeries\pb-source-repositery\")
+  LocalRepositery        = ReadPreferenceString( "SVNLocalRepositery",  GetCurrentDirectory() + "repositeries" + #PathSeparator + "pb-source-repositery"+ #PathSeparator)
   SVNUserName            = ReadPreferenceString( "SVNUsername", "")
   SVNPassword            = ReadPreferenceString( "SVNPassword", "")
   SVNAuthCacheFlag       = ReadPreferenceInteger("SVNAuthCache", #False) ;To use the installed svn auth mechanism
@@ -391,29 +393,29 @@ EndProcedure
 Procedure PrepareImages()
   Static i
   
-  MyLoadImage(#FolderImg, "gfx\FolderIcon16x16.png")
-  MyLoadImage(#FileImg, "gfx\FileIcon16x16.png")
+  MyLoadImage(#FolderImg, "gfx" + #PathSeparator + "FolderIcon16x16.png")
+  MyLoadImage(#FileImg, "gfx" + #PathSeparator + "FileIcon16x16.png")
   
-  MyLoadImage(#Added, "gfx\AIcon16x16.png")
-  MyLoadImage(#Conflicted, "gfx\CIcon16x16.png")
-  MyLoadImage(#Suppressed, "gfx\SIcon16x16.png")
-  MyLoadImage(#Ignored, "gfx\IIcon16x16.png")
-  MyLoadImage(#Modified, "gfx\MIcon16x16.png")
-  MyLoadImage(#Remplaced, "gfx\RIcon16x16.png")
-  MyLoadImage(#NonVersionnedFolder, "gfx\XIcon16x16.png")
-  MyLoadImage(#NonVersionned, "gfx\NVIcon16x16.png")
-  MyLoadImage(#Missing, "gfx\!Icon16x16.png")
-  MyLoadImage(#Dissimulated, "gfx\~Icon16x16.png")
-  MyLoadImage(#Locked, "gfx\LIcon16x16.png")
-  MyLoadImage(#AddedWithHistory, "gfx\+Icon16x16.png")
-  MyLoadImage(#Switched, "gfx\SIcon16x16.png")
-  MyLoadImage(#LockToken, "gfx\KIcon16x16.png")
-  MyLoadImage(#LockOther, "gfx\OIcon16x16.png")
-  MyLoadImage(#LockStolen, "gfx\TIcon16x16.png")
-  MyLoadImage(#LockBroken, "gfx\BIcon16x16.png")
-  MyLoadImage(#Updated, "gfx\UIcon16x16.png")
-  MyLoadImage(#Merged, "gfx\GIcon16x16.png")
-  MyLoadImage(#Existed, "gfx\EIcon16x16.png")
+  MyLoadImage(#Added, "gfx" + #PathSeparator + "AIcon16x16.png")
+  MyLoadImage(#Conflicted, "gfx" + #PathSeparator + "CIcon16x16.png")
+  MyLoadImage(#Suppressed, "gfx" + #PathSeparator + "SIcon16x16.png")
+  MyLoadImage(#Ignored, "gfx" + #PathSeparator + "IIcon16x16.png")
+  MyLoadImage(#Modified, "gfx" + #PathSeparator + "MIcon16x16.png")
+  MyLoadImage(#Remplaced, "gfx" + #PathSeparator + "RIcon16x16.png")
+  MyLoadImage(#NonVersionnedFolder, "gfx" + #PathSeparator + "XIcon16x16.png")
+  MyLoadImage(#NonVersionned, "gfx" + #PathSeparator + "NVIcon16x16.png")
+  MyLoadImage(#Missing, "gfx" + #PathSeparator + "!Icon16x16.png")
+  MyLoadImage(#Dissimulated, "gfx" + #PathSeparator + "~Icon16x16.png")
+  MyLoadImage(#Locked, "gfx" + #PathSeparator + "LIcon16x16.png")
+  MyLoadImage(#AddedWithHistory, "gfx" + #PathSeparator + "+Icon16x16.png")
+  MyLoadImage(#Switched, "gfx" + #PathSeparator + "SIcon16x16.png")
+  MyLoadImage(#LockToken, "gfx" + #PathSeparator + "KIcon16x16.png")
+  MyLoadImage(#LockOther, "gfx" + #PathSeparator + "OIcon16x16.png")
+  MyLoadImage(#LockStolen, "gfx" + #PathSeparator + "TIcon16x16.png")
+  MyLoadImage(#LockBroken, "gfx" + #PathSeparator + "BIcon16x16.png")
+  MyLoadImage(#Updated, "gfx" + #PathSeparator + "UIcon16x16.png")
+  MyLoadImage(#Merged, "gfx" + #PathSeparator + "GIcon16x16.png")
+  MyLoadImage(#Existed, "gfx" + #PathSeparator + "EIcon16x16.png")
   
   For i = #Added To #END_OF_IMAGES - 1
     CreateImage(#FolderImgs + i, 16, 16, 32)
@@ -454,7 +456,7 @@ EndProcedure
 Procedure.i IsFolder(Path.s)
   Static LastChar.s
   LastChar = Right(Path, 1)
-  If LastChar = "\" Or LastChar = "/"
+  If LastChar = #PathSeparator ;"\" Or LastChar = "/"
     ProcedureReturn #True
   Else
     ProcedureReturn #False
@@ -917,7 +919,7 @@ Procedure Search(*Pattern.s)
   Until Error = ""
   
   ;Little hack to simulate a message on stop button to do the cleaning in the main loop (coz threads are not gadgets friendly)
-  PB_Gadget_SendGadgetCommand(ButtonStopSearchGadgetID, #PB_EventType_LeftClick)
+  ; PB_Gadget_SendGadgetCommand(ButtonStopSearchGadgetID, #PB_EventType_LeftClick)
 
 EndProcedure
 
@@ -1326,7 +1328,7 @@ Define.s Pattern, Name, FullPath, Filename, Comment
 LoadPreferences()
 
 ; Initialize Translator
-Translator_init("locale\", Language)
+Translator_init("locale" + #PathSeparator, Language)
 
 If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Window_SystemMenu | #PB_Window_ScreenCentered)
   
@@ -1860,12 +1862,11 @@ SavePreferences()
 Translator_destroy()
 
 End
-
-; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 252
-; FirstLine = 234
-; Folding = ------
-; Markers = 932
+; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
+; CursorPosition = 406
+; FirstLine = 391
+; Folding = -------
+; Markers = 934
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
