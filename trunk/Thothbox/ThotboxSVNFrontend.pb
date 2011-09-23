@@ -1,3 +1,17 @@
+;*****************************************************************************
+;
+; ThotboxSVNFrontend
+;
+; For Thotbox project
+; http://purebasic.fr/french/viewtopic.php?f=4&t=12008&start=135
+;
+; Lead coder djes@free.fr - 2011
+;
+; Comments :
+;   in code : "Todo" -> need fix
+;
+;*****************************************************************************
+
 UsePNGImageDecoder()
 
 XIncludeFile "translator.pbi"
@@ -153,6 +167,7 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "", Auth = #True)
 
 EndProcedure
 
+;*****************************************************************************
 ;Coz bug of the ReadProgramString() in unicode
 
 Procedure.s MyReadProgramString(ProgramNr)
@@ -175,6 +190,7 @@ Procedure.s MyReadProgramString(ProgramNr)
   EndIf
 EndProcedure
 
+;*****************************************************************************
 ;---- Typhoon
 
 #prg_name$="Thothbox"
@@ -201,6 +217,7 @@ Procedure LoadPreferences()
   ClosePreferences()
 EndProcedure
 
+;*****************************************************************************
 Procedure SavePreferences() 
   If OpenPreferences(GetHomeDirectory() + #prg_name$ + ".prefs") = 0
     CreatePreferences(GetHomeDirectory() + #prg_name$ + ".prefs")
@@ -214,6 +231,8 @@ Procedure SavePreferences()
   WritePreferenceString( "SVNPassword",   SVNPassword)
   ClosePreferences()
  EndProcedure
+ 
+ ;*****************************************************************************
 ;----
 ;By Joakim Christiansen
 Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
@@ -224,6 +243,7 @@ Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
     String = StringGadget(#PB_Any,10,30,280,20,DefaultString$): SetActiveGadget(String)
     OK     = ButtonGadget(#PB_Any,60,60,80,25,"OK",#PB_Button_Default)
     Cancel = ButtonGadget(#PB_Any,150,60,80,25,"Cancel")
+    AddKeyboardShortcut(Window, #PB_Shortcut_Return, 15)
     Repeat
       Event = WaitWindowEvent() 
       If Event = #PB_Event_Gadget
@@ -238,7 +258,7 @@ Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
       If Event = #PB_Event_CloseWindow
         Break
       EndIf
-      If GetKeyState_(#VK_RETURN) > 1
+      If Event = 15
         Result$ = GetGadgetText(String)
         Break
       EndIf
@@ -248,6 +268,7 @@ Procedure.s InputRequesterOkCancel(Title$,Message$,DefaultString$)
   ProcedureReturn Result$
 EndProcedure
 
+;*****************************************************************************
 Procedure.i StatusImage(Status.s, Folder = #False)
   Static Base
   If Folder
@@ -307,6 +328,7 @@ Procedure.i StatusImage(Status.s, Folder = #False)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure.s StatusName(Status.s)
  
   Select Status
@@ -356,12 +378,14 @@ Procedure.s StatusName(Status.s)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure MyLoadImage(Nb.i, Filename.s)
   If LoadImage(Nb, Filename) = #False
     Debug "Can't load " + Filename
   EndIf
 EndProcedure
 
+;*****************************************************************************
 Procedure PrepareImages()
   Static i
   
@@ -404,6 +428,7 @@ Procedure PrepareImages()
   
 EndProcedure
 
+;*****************************************************************************
 Procedure MakeTreeGadget()
   ClearGadgetItems(#TreeGadget)
   ForEach Tree()
@@ -423,6 +448,7 @@ Procedure MakeTreeGadget()
   Next
 EndProcedure
 
+;*****************************************************************************
 Procedure.i IsFolder(Path.s)
   Static LastChar.s
   LastChar = Right(Path, 1)
@@ -433,6 +459,7 @@ Procedure.i IsFolder(Path.s)
   EndIf
 EndProcedure
 
+;*****************************************************************************
 ;Ne sert pas ici, mais ça peut servir plus tard ;)
 Procedure.s GetStdOut(Prog.s, Arg.s)
   Protected svn, Output$
@@ -449,11 +476,13 @@ Procedure.s GetStdOut(Prog.s, Arg.s)
   ProcedureReturn Output$
 EndProcedure
 
+;*****************************************************************************
 ;To correct the infamous ReadProgramString() sending ascii instead of utf8 in an unicode compiled program
 Procedure.s ASCII2UTF8(str.s)
   ProcedureReturn PeekS(@str, -1, #PB_Ascii)
 EndProcedure  
 
+;*****************************************************************************
 Procedure Disabler()
   Protected i
   For i = 0 To #END_OF_THE_GADGETS_TO_DISABLE - 1
@@ -464,6 +493,7 @@ Procedure Disabler()
   DisableGadgetsFlag = #True
 EndProcedure
 
+;*****************************************************************************
 Procedure Enabler()
   Protected i
   For i = 0 To #END_OF_THE_GADGETS_TO_DISABLE - 1
@@ -474,6 +504,7 @@ Procedure Enabler()
   DisableGadgetsFlag = #False
 EndProcedure
 
+;*****************************************************************************
 Procedure Marquee(*Null)
   Protected txt.s, counter
   Repeat
@@ -493,6 +524,7 @@ Procedure Marquee(*Null)
   
 EndProcedure
 
+;*****************************************************************************
 ; Take over a gadget tree to obtain a full path from a sub level item
 Procedure.s GetFullPathFromTree(Item, SubLevel)
   Static Path.s, i
@@ -520,6 +552,7 @@ Procedure.s GetFullPathFromTree(Item, SubLevel)
   
 EndProcedure
 
+;*****************************************************************************
 ;Get file list on svn servers and construct tree list
 Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   Protected FoldersNb, NewItemsNb, FirstItem, svn, NewPath.s, Error.s
@@ -616,6 +649,7 @@ Procedure GetRemoteFileList(Item, SubLevel, Path.s)
   ;Enabler()  
 EndProcedure
 
+;*****************************************************************************
 Procedure.s Status(FileName.s)
   Protected svn, Error.s, Output.s
    
@@ -648,6 +682,7 @@ Procedure.s Status(FileName.s)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure.s Add(FileName.s)
   Protected svn, Error.s, Output.s
    
@@ -678,6 +713,7 @@ Procedure.s Add(FileName.s)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure.s Revert(FileName.s)
   Protected svn, Error.s, Output.s
    
@@ -708,6 +744,7 @@ Procedure.s Revert(FileName.s)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure.s Delete(FileName.s)
   Protected svn, Error.s, Output.s
    
@@ -738,6 +775,7 @@ Procedure.s Delete(FileName.s)
   
 EndProcedure
 
+;*****************************************************************************
 ;Get file list on local repositery and construct tree list
 Procedure GetLocalFileList(Item, SubLevel, Path.s)
   Protected FoldersNb, NewItemsNb, FirstItem, svn, NewPath.s, Error.s
@@ -823,7 +861,7 @@ Procedure GetLocalFileList(Item, SubLevel, Path.s)
   ;Enabler()  
 EndProcedure
 
-
+;*****************************************************************************
 Procedure Search(*Pattern.s)
   Protected Item, svn, Path.s, Error.s
   
@@ -881,6 +919,7 @@ Procedure Search(*Pattern.s)
 
 EndProcedure
 
+;*****************************************************************************
 ;Locally download a Read-only version of the repositery (no Password needed)
 Procedure GetRepositeryReadOnly(nil)
   Protected Item, svn, Path.s, Error.s, Counter, Output.s, Status.s, Newpath.s
@@ -935,6 +974,7 @@ Procedure GetRepositeryReadOnly(nil)
   
 EndProcedure
 
+;*****************************************************************************
 Procedure Update(nil)
   Protected Item, svn, NewPath.s, Error.s, Counter, Output.s, Status.s
   ; repositeries\pb-source-repositery --username " + SVNUserName + " --Password " + SVNPassword
@@ -984,6 +1024,7 @@ Procedure Update(nil)
       
 EndProcedure
 
+;*****************************************************************************
 Procedure Cleanup(nil)
   Protected Item, svn, NewPath.s, Error.s, Counter, Output.s, Status.s
   ; repositeries\pb-source-repositery --username " + SVNUserName + " --Password " + SVNPassword
@@ -1034,7 +1075,7 @@ Procedure Cleanup(nil)
       
 EndProcedure
 
-
+;*****************************************************************************
 Procedure Commit(Comment.s)
   Protected Item.s, svn, Path.s, Error.s, Counter
   ; repositeries\pb-source-repositery --username " + SVNUserName + " --password " + SVNPassword
@@ -1069,6 +1110,7 @@ Procedure Commit(Comment.s)
       
 EndProcedure
 
+;*****************************************************************************
 Procedure GetRepositery(nil)
   Protected Item, svn, Path.s, Error.s, Counter, Output.s, Status.s, Newpath.s
   
@@ -1122,6 +1164,7 @@ Procedure GetRepositery(nil)
   
 EndProcedure
 
+;*****************************************************************************
 ; Procedure MakeDirOnRepositery(Url.s, SVNUserName.s, SVNPassword.s, LocalFolder.s, PleaseWaitButton.i)
 ;   Protected Item, svn, Path.s, Error.s, Counter, txt.s, Result.s
 ;   
@@ -1168,6 +1211,7 @@ EndProcedure
 ; EndProcedure
 
 
+;*****************************************************************************
 Procedure.s RemoteMakeDir(Path.s, Filename.s)
   Protected svn, Error.s, Output.s
   
@@ -1203,6 +1247,7 @@ Procedure.s RemoteMakeDir(Path.s, Filename.s)
 
 EndProcedure
 
+;*****************************************************************************
 Procedure.s RemoteDelete(FullPath.s)
   Protected svn, Error.s, Output.s
   
@@ -1238,13 +1283,30 @@ Procedure.s RemoteDelete(FullPath.s)
 
 EndProcedure
 
+;*****************************************************************************
 Procedure RemoteDownload(FullPath.s, Name.s, Filename.s)
   If Filename
-    If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
+    
+    CompilerSelect #PB_Compiler_OS
+        
+      CompilerCase #PB_OS_Windows 
+        ;Todo : This command is the only one working with proxy on Windows
+        If URLDownloadToFile_(0,"" + RemoteRepositery + "" + FullPath, Filename, 0, 0) = #S_OK
+        
+      CompilerCase #PB_OS_Linux
+        If ReceiveHTTPFile("" + RemoteRepositery + "" + FullPath, Filename)
+        
+      CompilerCase #PB_OS_MacOS
+        If ReceiveHTTPFile("" + RemoteRepositery + "" + FullPath, Filename)
+        
+    CompilerEndSelect
+    
       Debug "Download succeded"  
+      ProcedureReturn #True
     Else
       Debug "Download failed"
       MessageRequester(t("Alert"), t("Saving failed"), #PB_MessageRequester_Ok)
+      ProcedureReturn #False
     EndIf
   EndIf
 EndProcedure  
@@ -1681,9 +1743,10 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             Name.s = GetGadgetItemText(#TreeGadget, Item, #PB_Tree_SubLevel)
             FullPath.s = GetFullPathFromTree(Item, SubLevel)
             Name = GetFilePart(Name) ;In case where the Name is coming from a search with a full path
-            RemoteDownload(FullPath, Name, GetTemporaryDirectory() + Name)
-            RunProgram(GetTemporaryDirectory() + Name, "", GetTemporaryDirectory())
-              
+            If RemoteDownload(FullPath, Name, GetTemporaryDirectory() + Name)
+              RunProgram(GetTemporaryDirectory() + Name, "", GetTemporaryDirectory())
+            EndIf
+            
           Case #PopupMenuRemoteDelete
             
             Item = GetGadgetState(#TreeGadget)
@@ -1796,11 +1859,10 @@ Translator_destroy()
 
 End
 
-; IDE Options = PureBasic 4.60 Beta 3 (Windows - x86)
-; CursorPosition = 1454
-; FirstLine = 1439
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 1
 ; Folding = ------
-; Markers = 891
+; Markers = 930
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
