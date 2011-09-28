@@ -250,6 +250,7 @@ Structure globalParameters
   progressBarMax.i
   progressBarPointer.i
 EndStructure
+
 Global gp.globalParameters
 
 gp\page=#mode_searchWindow
@@ -658,6 +659,7 @@ Repeat
           
           ;- Event viewWindow  
         Case #gdt_historic
+          
         Case #gdt_compile
           SelectElement(gp\file(),GetGadgetState(#gdt_tab))
           RunProgram(gp\downloadDirectory+"\"+Str(gp\codeid)+"\"+gp\file()\filename)
@@ -731,15 +733,11 @@ DataSection
   OffLine:
   IncludeBinary "gfx/serverOffline.png"
 EndDataSection 
-
-
-
-; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 255
-; FirstLine = 288
-; Folding = --
+; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
+; CursorPosition = 656
+; FirstLine = 445
+; Folding = ----
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibis.ico
-; Executable = C:\Program Files (x86)\PureBasic\Thothbox.exe
-; Compiler = PureBasic 4.60 Beta 3 (Windows - x86)
+; Executable = C:/Program Files (x86)/PureBasic/Thothbox.exe
