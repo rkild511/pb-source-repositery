@@ -12,7 +12,8 @@ EnableExplicit
 ;- Client Event4 support by DarkPlayer, PureFan
 ; Source :http://www.purebasic.fr/english/viewtopic.php?f=12&t=42559&hilit=Disconnect
 ;EDIT 2010-06-13: Improved the MacOS and Linux version, added some checks to prevent crashing in case of incorrect usage
-CompilerIf #PB_Compiler_OS = #PB_OS_Linux ;{
+
+CompilerIf #PB_Compiler_OS = #PB_OS_Linux
   #FIONREAD     = $541B
  
   #__FD_SETSIZE = 1024
@@ -80,10 +81,11 @@ CompilerIf #PB_Compiler_OS = #PB_OS_Linux ;{
    
     ProcedureReturn 0
   EndProcedure
-  ;}
+  
 CompilerEndIf
 
-CompilerIf #PB_Compiler_OS = #PB_OS_MacOS ;{
+CompilerIf #PB_Compiler_OS = #PB_OS_MacOS 
+  
   #IOC_OUT  = $40000000 ;(__uint32_t)
   Macro _IOR(g,n,t)
     _IOC(#IOC_OUT, (g), (n), (t))
@@ -150,10 +152,10 @@ CompilerIf #PB_Compiler_OS = #PB_OS_MacOS ;{
    
     ProcedureReturn 0
   EndProcedure
-  ;}
+  
 CompilerEndIf
 
-CompilerIf #PB_Compiler_OS = #PB_OS_Windows ;{
+CompilerIf #PB_Compiler_OS = #PB_OS_Windows
   ; #FIONREAD is already defined
   ; FD_SET is already defined
  
@@ -182,25 +184,30 @@ CompilerIf #PB_Compiler_OS = #PB_OS_Windows ;{
   Procedure.i _NFDS(*set.FD_SET)
     ProcedureReturn *set\fd_count
   EndProcedure
-  ;}
+
 CompilerEndIf
  
  
-CompilerIf Defined(TIMEVAL, #PB_Structure) = #False ;{
+CompilerIf Defined(TIMEVAL, #PB_Structure) = #False
+  
   Structure TIMEVAL
     tv_sec.l
     tv_usec.l
-  EndStructure ;}
+  EndStructure
+  
 CompilerEndIf
 
 Procedure.i Hook_NetworkClientEvent(Connection.i)
+  
   Protected Event.i = NetworkClientEvent(Connection)
+  
   If Event
     ProcedureReturn Event
   EndIf
  
   Protected hSocket.i = ConnectionID(Connection)
   Protected tv.timeval, readfds.fd_set, RetVal.i, Length.i
+  
   tv\tv_sec  = 0 ; Dont even wait, just query status
   tv\tv_usec = 0
  
@@ -209,6 +216,7 @@ Procedure.i Hook_NetworkClientEvent(Connection.i)
  
   ; Check if there is something new
   RetVal = select_(_NFDS(readfds), @readfds, #Null, #Null, @tv)
+  
   If RetVal < 0 ; Seems to be an error
     ProcedureReturn #PB_NetworkEvent_Disconnect
   ElseIf RetVal = 0 Or Not FD_ISSET(hSocket, readfds) ; No data available
@@ -217,10 +225,15 @@ Procedure.i Hook_NetworkClientEvent(Connection.i)
  
   ; Check if data is available?
   CompilerIf #PB_Compiler_OS = #PB_OS_Windows
+    
     RetVal = ioctlsocket_(hSocket, #FIONREAD, @Length)
+    
   CompilerElse
+    
     RetVal = ioctl_(hSocket, #FIONREAD, @Length)
+    
   CompilerEndIf
+  
   If RetVal Or Length = 0 ; Not successful to query for data available OR no data available ? This seems to be an error!
     ProcedureReturn #PB_NetworkEvent_Disconnect
   EndIf
@@ -286,20 +299,40 @@ Enumeration
 EndEnumeration
 
 Procedure HTTP_free(*query.HTTP_Query)
-  ;*query\method=0
-  ;*query\host=""
-  ;*query\path=""
-  ;*query\boundary=""
+  
+  *query\method = 0
+  *query\host = ""
+  *query\path = ""
+  *query\boundary = ""
+  
   ClearList(*query\headers())
   ClearList(*query\postData())
   ClearList(*query\files())
-  If *query\buffer>0 And MemorySize(*query\buffer)>0:FreeMemory(*query\buffer):EndIf
-  If *query\rawdata>0 And MemorySize(*query\rawdata)>0:FreeMemory(*query\rawdata):EndIf
-  If *query\data>0 And MemorySize(*query\data)>0:FreeMemory(*query\data):EndIf
-  If *query\header>0 And MemorySize(*query\header)>0:FreeMemory(*query\header):EndIf
-  *query\error=0;
-  *query\downCallback=0;
-  *query\upCallback=0;
+  
+  If *query\buffer <> #Null 
+    FreeMemory(*query\buffer)
+    *query\buffer = #Null
+  EndIf
+  
+  If *query\rawdata <> #Null
+    FreeMemory(*query\rawdata)
+    *query\rawdata = #Null
+  EndIf
+  
+  If *query\data <> #Null
+    FreeMemory(*query\data)
+    *query\data = #Null
+  EndIf
+  
+  If *query\header <> #Null
+    FreeMemory(*query\header)
+    *query\header = #Null
+  EndIf
+
+  *query\error = 0;
+  *query\downCallback = 0;
+  *query\upCallback = 0;
+  
 EndProcedure
 
 Procedure HTTP_addQueryHeader(*query.HTTP_Query, name.s, value.s)
@@ -350,6 +383,7 @@ Procedure HTTP_addPostData(*query.HTTP_Query, name.s, value.s)
 EndProcedure
 
 Procedure HTTP_addFile(*query.HTTP_Query, name.s, fileName.s)
+  
   If *query\method = #HTTP_METHOD_FILE And FileSize(fileName) > -1
     AddElement(*query\files())
     *query\files()\name = name
@@ -453,6 +487,7 @@ Procedure HTTP_sendQuery(*query.HTTP_Query)
         
         postData = "--"+*query\boundary+"--"
         SendNetworkData(*query\conn, @postData, Len(postData))
+        
     EndSelect
     
     ProcedureReturn #True
@@ -478,16 +513,19 @@ EndProcedure
 Procedure HTTP_receiveRawData(*query.HTTP_Query)
   Protected *rawdata,time.i,readed.i,size.i,NEvent.i
   
-  If *query\rawdata>0
-    FreeMemory(*query\rawdata):*query\rawdata=0
+  If *query\rawdata <> #Null
+    FreeMemory(*query\rawdata)
+    *query\rawdata = #Null
   EndIf
   
-  If *query\header>0
-    FreeMemory(*query\header):*query\header=0
+  If *query\header <> #Null
+    FreeMemory(*query\header)
+    *query\header = #Null
   EndIf
   
-  If *query\data>0
-    FreeMemory(*query\data):*query\data=0
+  If *query\data <> #Null
+    FreeMemory(*query\data)
+    *query\data = #Null
   EndIf
   
   If *query\conn
@@ -628,29 +666,42 @@ Procedure HTTP_receiveRawData(*query.HTTP_Query)
   EndIf
 EndProcedure
 
-Procedure HTTP_query(*query.HTTP_Query,method.b,url.s)
+Procedure HTTP_query(*query.HTTP_Query, method.b, url.s)
+  
   Protected host.s,port.l,path.s,login.s,pass.s,res.s,string.s
   ; si on a un proxy
+  
   If *query\proxy\host<>""
+    
     ;Debug "Use Proxy:"+*query\proxy\host+" port:"+Str(*query\proxy\port)
-    HTTP_createQuery(*query, method, url, *query\proxy\host,*query\proxy\port,*query\proxy\login,*query\proxy\password)
+    HTTP_createQuery(*query, method, url, *query\proxy\host,*query\proxy\port,"", *query\proxy\login,*query\proxy\password)
     ;si on a pas de proxy 
+    
   Else
+    
     host = GetURLPart(url, #PB_URL_Site); the main domain
-    path =GetURLPart(url,#PB_URL_Path); the path
-    port= Val(GetURLPart(url, #PB_URL_Port))
-    If port=0:port=80:EndIf
-    HTTP_createQuery(*query, method, "/"+path, host,port)
+    path = GetURLPart(url,#PB_URL_Path); the path
+    port = Val(GetURLPart(url, #PB_URL_Port))
+    
+    If port = 0
+      port = 80
+    EndIf
+    
+    HTTP_createQuery(*query, method, "/" + path, host, port)
+    
   EndIf
+  
   ;si on a une protection part login/password via un htacess
-  login=GetURLPart(url, #PB_URL_User)
-  pass=GetURLPart(url, #PB_URL_Password)
+  login = GetURLPart(url, #PB_URL_User)
+  pass = GetURLPart(url, #PB_URL_Password)
+  
   If login <> ""
     string = login+":"+pass
     res = Space(Len(string)*4)
     Base64Encoder(@string, Len(string), @res, Len(string)*4)
     HTTP_addQueryHeader(*query, "Authorization", "Basic "+res)
   EndIf
+  
 EndProcedure
 
 Procedure HTTP_DownloadToMem(*query.HTTP_Query,url.s)
@@ -677,70 +728,70 @@ EndProcedure
 
 
 ;-Exemple !
-CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
-  InitNetwork()
-  
-Procedure mytestCallBack(l.i,max.i)
-Debug Str(l)+"/"+Str(max)
-EndProcedure
-  
-  
-  Procedure test1()
-    Protected test.HTTP_Query, string.s, readed.i, conn.i, time.i,*string,*rawdata
-    OpenConsole()
-    ;HTTP_proxy(@test,"spxy.bpi.fr",3128)
-    test\upCallback=@mytestCallBack() ;if you want a call Back
-    HTTP_query(@test, #HTTP_METHOD_FILE, "http://www.thyphoon.com/test.php")
-    HTTP_addQueryHeader(@test, "User-Agent", "PB")
-    HTTP_addPostData(@test, "pseudo", "lepiaf31")
-    HTTP_addPostData(@test, "nom", "Kevin")
-    HTTP_addFile(@test, "datafile", OpenFileRequester("Please choose file to load", "", "*.*", 0))
-    HTTP_sendQuery(@test)
-    HTTP_receiveRawData(@test)
-    Print(PeekS(test\data,MemorySize(test\data),#PB_Ascii))
-    Input()
-  EndProcedure
-  
-  
-  Procedure test2()
-    Protected test.HTTP_Query,url.s
-    ;HTTP_proxy(@test,"spxy.bpi.fr",3128)
-    url="http://www.purebasic.com/images/box.png"
-    test\downCallback=@mytestCallBack() ;if you want a call Back
-    HTTP_DownloadToFile(@test,url,GetTemporaryDirectory()+GetFilePart(url))
-    RunProgram(GetTemporaryDirectory()+GetFilePart(url))
-  EndProcedure
-  
-  ;test1()
-  ;test2()
-  
-;http://sites.google.com/site/tomihasa/google-language-codes
-Procedure.s translate(text.s,langSource.s,langTarget.s)
-    Protected test.HTTP_Query,url.s
-    text.s="bonjour"
-    langSource.s="fr"
-    langTarget.s="en"
-    url.s="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q="+text+"&langpair="+langSource+"|"+langTarget
-    ;HTTP_proxy(@test,"spxy.bpi.fr",3128) ;<<<<<<<<<<<<<<<if you have a proxy change it
-    HTTP_query(@test, #HTTP_METHOD_GET, url)
-    ;HTTP_addQueryHeader(@test, "X-Requested-With", "XMLHttpRequest")
-    HTTP_sendQuery(@test)
-    HTTP_receiveRawData(@test)
-    Protected s.l,e.l,result.s
-    result.s=PeekS(test\data,MemorySize(test\data),#PB_Ascii)
-    s=FindString(result,"translatedText",0)+Len("translatedText")+3
-    If s>0
-      e=FindString(result,Chr(34)+"}, "+Chr(34),s)
-      ProcedureReturn Mid(result,s,e-s)
-    Else
-      ProcedureReturn ""
-    EndIf
-  EndProcedure
-  
-
-CompilerEndIf
-
-; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 6
-; Folding = +v-86---
+; CompilerIf Defined(INCLUDEINPROJECT,#PB_Constant)=0
+;   InitNetwork()
+;   
+; Procedure mytestCallBack(l.i,max.i)
+; Debug Str(l)+"/"+Str(max)
+; EndProcedure
+;   
+;   
+;   Procedure test1()
+;     Protected test.HTTP_Query, string.s, readed.i, conn.i, time.i,*string,*rawdata
+;     OpenConsole()
+;     ;HTTP_proxy(@test,"spxy.bpi.fr",3128)
+;     test\upCallback=@mytestCallBack() ;if you want a call Back
+;     HTTP_query(@test, #HTTP_METHOD_FILE, "http://www.thyphoon.com/test.php")
+;     HTTP_addQueryHeader(@test, "User-Agent", "PB")
+;     HTTP_addPostData(@test, "pseudo", "lepiaf31")
+;     HTTP_addPostData(@test, "nom", "Kevin")
+;     HTTP_addFile(@test, "datafile", OpenFileRequester("Please choose file to load", "", "*.*", 0))
+;     HTTP_sendQuery(@test)
+;     HTTP_receiveRawData(@test)
+;     Print(PeekS(test\data,MemorySize(test\data),#PB_Ascii))
+;     Input()
+;   EndProcedure
+;   
+;   
+;   Procedure test2()
+;     Protected test.HTTP_Query,url.s
+;     ;HTTP_proxy(@test,"spxy.bpi.fr",3128)
+;     url="http://www.purebasic.com/images/box.png"
+;     test\downCallback=@mytestCallBack() ;if you want a call Back
+;     HTTP_DownloadToFile(@test,url,GetTemporaryDirectory()+GetFilePart(url))
+;     RunProgram(GetTemporaryDirectory()+GetFilePart(url))
+;   EndProcedure
+;   
+;   ;test1()
+;   ;test2()
+;   
+; ;http://sites.google.com/site/tomihasa/google-language-codes
+; Procedure.s translate(text.s,langSource.s,langTarget.s)
+;     Protected test.HTTP_Query,url.s
+;     text.s="bonjour"
+;     langSource.s="fr"
+;     langTarget.s="en"
+;     url.s="http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q="+text+"&langpair="+langSource+"|"+langTarget
+;     ;HTTP_proxy(@test,"spxy.bpi.fr",3128) ;<<<<<<<<<<<<<<<if you have a proxy change it
+;     HTTP_query(@test, #HTTP_METHOD_GET, url)
+;     ;HTTP_addQueryHeader(@test, "X-Requested-With", "XMLHttpRequest")
+;     HTTP_sendQuery(@test)
+;     HTTP_receiveRawData(@test)
+;     Protected s.l,e.l,result.s
+;     result.s=PeekS(test\data,MemorySize(test\data),#PB_Ascii)
+;     s=FindString(result,"translatedText",0)+Len("translatedText")+3
+;     If s>0
+;       e=FindString(result,Chr(34)+"}, "+Chr(34),s)
+;       ProcedureReturn Mid(result,s,e-s)
+;     Else
+;       ProcedureReturn ""
+;     EndIf
+;   EndProcedure
+;   
+; 
+; CompilerEndIf
+; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
+; CursorPosition = 743
+; FirstLine = 725
+; Folding = ---8-----
 ; EnableXP
