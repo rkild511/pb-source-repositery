@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Thotbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-28 12:10+0100\n"
-"PO-Revision-Date: 2011-10-02 20:07-0500\n"
+"PO-Revision-Date: 2011-10-02 20:36-0500\n"
 "Last-Translator: Guillaume Saumure <gsaumure79@videotron.ca>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -64,6 +64,10 @@ msgstr "Remerciment spécial"
 #: GUIMAUVE MANUELLEMENT
 msgid "Authors"
 msgstr "Auteurs"
+
+#: GUIMAUVE MANUELLEMENT
+msgid "Close"
+msgstr "Fermer"
 
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:167
 #: f:\Documents\Code\SvnTest\repositeries\pb-source-repositery\Thothbox/main.pb:239

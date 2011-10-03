@@ -7,7 +7,7 @@
 ; Alias : Guimauve
 ; Courriel : gsaumure79@videotron.ca
 ; Date : 23-09-2011
-; Mise à jour : 26-09-2011
+; Mise à jour : 02-10-2011
 ; Code PureBasic : 4.60
 ; Plateforme : Windows, Linux, MacOS X
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -25,8 +25,8 @@ IncludeFile "Thothbox - Support Function.pb"
 IncludeFile "Thothbox - Language.pb"
 IncludeFile "Thothbox - Window.pb"
 IncludeFile "Thothbox - TwinState.pb"
-
 IncludeFile "Thothbox - Credit.pb"
+
 ; IncludeFile ""
 ; IncludeFile ""
 ; IncludeFile ""
@@ -62,8 +62,9 @@ ThothboxEventManager(Thothbox)
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 30
+; CursorPosition = 9
 ; EnableUnicode
 ; EnableXP
+; DisableDebugger
 ; CompileSourceDirectory
 ; EnableBuildCount = 0

@@ -103,7 +103,7 @@ Procedure InitializeCredit(*CreditA.Credit)
   ClearStructure(*CreditA, Credit)
   InitializeStructure(*CreditA, Credit)
   
-  UpdateWindow(GetCreditWindow(*CreditA), 0, 0, 400, 300)
+  UpdateWindow(GetCreditWindow(*CreditA), 0, 0, 400, 340)
 
   SetCreditInformations(*CreditA, #Txt_ProgramName, #Program_Name + " V" + #Program_Version + Str(#PB_Editor_BuildCount) + " (" + #Operating_System_Name + ")")
   SetCreditInformations(*CreditA, #Txt_Author_00, "LANGUAGE MESSAGE : AUTHORS")
@@ -126,37 +126,40 @@ EndProcedure
 ; <<<<< L'opérateur Initialize <<<<<
 
 Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
-
+  
   If CreateWindowEx(#CreditWin, GetCreditWindow(*CreditA), "", #PB_Window_ScreenCentered, #MainWin)
     
     ImageGadget(#Image_Credit_Logo, (WindowWidth(#CreditWin) - #GadgetSpacing - ImageWidth(#Image_Logo)) >> 1, #GadgetSpacing, ImageWidth(#Image_Logo), ImageHeight(#Image_Logo), ImageID(#Image_Logo))
     
     ScrollAreaWidth = WindowWidth(#CreditWin) - 7 * #GadgetSpacing
     
-    ScrollAreaGadget(#ScrollArea_Credit_Informations, #GadgetSpacing, GadgetDown(#Image_Credit_Logo) + 3 * #GadgetSpacing, WindowWidth(#CreditWin) - 2 * #GadgetSpacing, WindowHeight(#CreditWin) - ImageHeight(#Image_Logo) - 40, ScrollAreaWidth, (#CREDIT_INFORMATIONS_MAX + 2) * (#GadgetHeight + #GadgetSpacing), #PB_ScrollArea_Raised) 
-    SetGadgetColor(#ScrollArea_Credit_Informations, #PB_Gadget_BackColor, RGB(255, 255, 255))
-    
-    PosY = #GadgetSpacing
-    
-    For InformationsID = 0 To #CREDIT_INFORMATIONS_MAX - 1
+    ScrollAreaGadget(#ScrollArea_Credit_Informations, #GadgetSpacing, GadgetDown(#Image_Credit_Logo) + 3 * #GadgetSpacing, WindowWidth(#CreditWin) - 2 * #GadgetSpacing, WindowHeight(#CreditWin) - ImageHeight(#Image_Logo) - 56, ScrollAreaWidth, (#CREDIT_INFORMATIONS_MAX + 2) * (#GadgetHeight + #GadgetSpacing), #PB_ScrollArea_Raised) 
       
-      If InformationsID = #Txt_Author_00
-        PosY + #GadgetHeight
-        TextGadget(#PB_Any, 2, PosY, ScrollAreaWidth - 2, #GadgetHeight, CreditMessage(*LanguageA, 0), #PB_Text_Center)
+      SetGadgetColor(#ScrollArea_Credit_Informations, #PB_Gadget_BackColor, RGB(255, 255, 255))
+  
+      PosY = #GadgetSpacing
+      
+      For InformationsID = 0 To #CREDIT_INFORMATIONS_MAX - 1
         
-      ElseIf InformationsID = #Txt_Thanks_00
-        PosY + #GadgetHeight
-        TextGadget(#PB_Any, 2, PosY, ScrollAreaWidth - 2, #GadgetHeight, CreditMessage(*LanguageA, 1), #PB_Text_Center)
+        If InformationsID = #Txt_Author_00
+          PosY + #GadgetHeight
+          TextGadget(#PB_Any, #GadgetSpacing, PosY, ScrollAreaWidth - 2 * #GadgetSpacing, #GadgetHeight, CreditMessage(*LanguageA, 0), #PB_Text_Center)
+          
+        ElseIf InformationsID = #Txt_Thanks_00
+          PosY + #GadgetHeight
+          TextGadget(#PB_Any, #GadgetSpacing, PosY, ScrollAreaWidth - 2 * #GadgetSpacing, #GadgetHeight, CreditMessage(*LanguageA, 1), #PB_Text_Center)
+          
+        Else
+          TextGadget(#PB_Any, #GadgetSpacing, PosY, ScrollAreaWidth - 2 * #GadgetSpacing, #GadgetHeight, GetCreditInformations(*CreditA, InformationsID), #PB_Text_Center)
+        EndIf
         
-      Else
-        TextGadget(#PB_Any, 2, PosY, ScrollAreaWidth - 2, #GadgetHeight, GetCreditInformations(*CreditA, InformationsID), #PB_Text_Center)
-      EndIf
+        PosY + #GadgetHeight
+        
+      Next
       
-      PosY + #GadgetHeight
-      
-    Next
+    CloseGadgetList()
     
-    
+    ButtonGadget(#Btn_Credit_Close, (WindowWidth(#CreditWin) - 120 - #GadgetSpacing) >> 1, WindowHeight(#CreditWin) - #GadgetHeight - #GadgetSpacing, 120, #GadgetHeight, "")
     
     Language_To_CreditWindow(*LanguageA)
     
@@ -176,6 +179,9 @@ Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
           
           Select EventGadget()
               
+            Case #Btn_Credit_Close
+              EventID = #PB_Event_CloseWindow
+              
           EndSelect
           
       EndSelect
@@ -183,6 +189,7 @@ Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
     Until EventID = #PB_Event_CloseWindow
     
     CloseWindow(#CreditWin)
+    
   EndIf
   
 EndProcedure
@@ -191,7 +198,7 @@ EndProcedure
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 144
-; FirstLine = 122
+; CursorPosition = 161
+; FirstLine = 124
 ; Folding = --
 ; EnableXP

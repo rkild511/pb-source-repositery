@@ -1449,6 +1449,8 @@ Procedure Language_To_CreditWindow(*LanguageA.Language)
   
   SetWindowTitle(#CreditWin, LanguageMessage(*LanguageA, "About") + " ...")
   
+  SetGadgetText(#Btn_Credit_Close, LanguageMessage(*LanguageA, "Close"))
+  
 EndProcedure
 
 Procedure.s CreditMessage(*LanguageA, Flag)
@@ -1544,7 +1546,7 @@ EndProcedure
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 1453
+; CursorPosition = 1452
 ; FirstLine = 198
 ; Folding = +BAQK++
 ; EnableXP
