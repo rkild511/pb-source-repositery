@@ -186,17 +186,25 @@ EndMacro
 ; <<<<< Ouverture d'un fichier de Préférences <<<<<
 
 Procedure OpenThothboxPreferences(*ThothboxA.Thothbox)
+  
+  Result = #True
+  
+  ;Try to open prefs file in the user's home directory, and after in the current directory
+  If OpenPreferences(GetHomeDirectory() + GetThothboxPrefFileName(*ThothboxA)) = #False
+    If OpenPreferences(GetCurrentDirectory() + GetThothboxPrefFileName(*ThothboxA)) = #False     
+      Result = #False
+    EndIf
+  EndIf  
 
-  If OpenPreferences(GetThothboxPrefFileName(*ThothboxA))
-
-    ReadPreferenceLanguage("Language", GetThothboxLanguage(*ThothboxA))
-    ReadPreferenceWindow("Window", GetThothboxWindow(*ThothboxA))
-    ReadPreferenceConnection("Connection", GetThothboxConnection(*ThothboxA))
-    
-    ClosePreferences()
-
-  EndIf
-
+  ;If we cannot open preferences files, values are default ones
+  ReadPreferenceLanguage("Language", GetThothboxLanguage(*ThothboxA))
+  ReadPreferenceWindow("Window", GetThothboxWindow(*ThothboxA))
+  ReadPreferenceConnection("Connection", GetThothboxConnection(*ThothboxA))
+  
+  ClosePreferences()
+  
+  ProcedureReturn Result
+  
 EndProcedure
 
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -204,15 +212,18 @@ EndProcedure
 
 Procedure CreateThothboxPreferences(*ThothboxA.Thothbox)
 
-  If CreatePreferences(GetThothboxPrefFileName(*ThothboxA))
-
-    WritePreferenceLanguage("Language", GetThothboxLanguage(*ThothboxA))
-    WritePreferenceWindow("Window", GetThothboxWindow(*ThothboxA))
-    WritePreferenceConnection("Connection", GetThothboxConnection(*ThothboxA))
-    
-    ClosePreferences()
-
+  ;Try to create prefs file in the user's home directory, and after in the current directory
+  If CreatePreferences(GetHomeDirectory() + GetThothboxPrefFileName(*ThothboxA)) = #False
+    If CreatePreferences(GetCurrentDirectory() + GetThothboxPrefFileName(*ThothboxA)) = #False
+      ProcedureReturn #False
+    EndIf
   EndIf
+  
+  WritePreferenceLanguage("Language", GetThothboxLanguage(*ThothboxA))
+  WritePreferenceWindow("Window", GetThothboxWindow(*ThothboxA))
+  WritePreferenceConnection("Connection", GetThothboxConnection(*ThothboxA))
+  
+  ClosePreferences()   
 
 EndProcedure
 
@@ -258,10 +269,8 @@ Procedure InitializeThothbox(*ThothboxA.Thothbox)
   ; We try to load the preferences (If the file don't exist we create 
   ; it then we run the program with the default parameters)
   
-  If FileSize(GetThothboxPrefFileName(*ThothboxA)) = -1
-    CreateThothboxPreferences(*ThothboxA)
-  Else
-    OpenThothboxPreferences(*ThothboxA)
+  If OpenThothboxPreferences(*ThothboxA) = #False
+    CreateThothboxPreferences(*ThothboxA) 
   EndIf
   
   ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -652,8 +661,8 @@ EndProcedure
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
-; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 586
-; FirstLine = 490
-; Folding = ---fH3-
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 190
+; FirstLine = 187
+; Folding = ----H+
 ; EnableXP

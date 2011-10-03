@@ -96,6 +96,7 @@ EndEnumeration
 ;Menus
 Enumeration 1
   #PopupMenuStatus
+  #PopupMenuOpen
   #PopupMenuAdd
   #PopupMenuRevert
   #PopupMenuDelete
@@ -158,9 +159,7 @@ Procedure SubversionCall(SvnArgs.s, Path.s = "", Auth = #True)
   SvnArgs + " --non-interactive"
   If SVNAuthCacheFlag = #False 
     SvnArgs + " --no-auth-cache"
-    If Auth = #True 
-      SvnArgs + " --username " + SVNUserName + " --password " + SVNPassword  
-    EndIf
+    SvnArgs + " --username " + SVNUserName + " --password " + SVNPassword  
   EndIf
 
   Debug SvnArgs   
@@ -455,8 +454,8 @@ EndProcedure
 ;*****************************************************************************
 Procedure.i IsFolder(Path.s)
   Static LastChar.s
-  LastChar = Right(Path, 1)
-  If LastChar = #PathSeparator ;"\" Or LastChar = "/"
+  LastChar = RTrim(Right(Path, 1))
+  If LastChar = "\" Or LastChar = "/" ;whatever is the remote os
     ProcedureReturn #True
   Else
     ProcedureReturn #False
@@ -1407,11 +1406,13 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
             
             ;-#CheckboxSVNAuthCache
             If GetGadgetState(#CheckboxSVNAuthCache)
-               DisableGadget(#StringSVNUserName, 1)     
-               DisableGadget(#StringSVNPassword, 1)     
+              SVNAuthCacheFlag = #True
+              DisableGadget(#StringSVNUserName, 1)     
+              DisableGadget(#StringSVNPassword, 1)     
             Else
-               DisableGadget(#StringSVNUserName, 0)     
-               DisableGadget(#StringSVNPassword, 0)  
+              SVNAuthCacheFlag = #false
+              DisableGadget(#StringSVNUserName, 0)     
+              DisableGadget(#StringSVNPassword, 0)  
             EndIf
             
           Case  #StringSVNUserName
@@ -1636,6 +1637,9 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     ;-Local Popup Menu
                     If CreatePopupMenu(0)
                       SelectElement(Tree(), Item)
+                      If IsFolder = #False
+                        MenuItem(#PopupMenuOpen, t("Open"))
+                      EndIf
                       If StatusName(tree()\Status) <> ""
                         MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
                         DisableMenuItem(0, #PopupMenuStatus, 1)
@@ -1650,6 +1654,9 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     ;-Local Popup Menu
                     If CreatePopupMenu(0)
                       SelectElement(Tree(), Item)
+                      If IsFolder = #False
+                        MenuItem(#PopupMenuOpen, t("Open"))
+                      EndIf                      
                       If StatusName(tree()\Status) <> ""
                         MenuItem(#PopupMenuStatus, StatusName(tree()\Status))
                         DisableMenuItem(0, #PopupMenuStatus, 1)
@@ -1659,7 +1666,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     DisplayPopupMenu(0, WindowID(0))
                     
                   Case #Remote
-                    
                     ;-Remote Popup Menu
                     If CreatePopupMenu(0)
                       SelectElement(Tree(), Item)
@@ -1675,7 +1681,6 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
                     DisplayPopupMenu(0, WindowID(0))
                     
                   Case #Search
-                    
                     ;-Search Popup Menu
                     If CreatePopupMenu(0)
                       SelectElement(Tree(), Item)
@@ -1696,6 +1701,13 @@ If OpenWindow(0, 0, 0, 450, 430, t("ThotBox SubVersion Tiny FrontEnd"), #PB_Wind
       Case #PB_Event_Menu
         
         Select EventMenu()  ; To see which menu has been selected
+            
+          Case #PopupMenuOpen
+            
+            Item = GetGadgetState(#TreeGadget)
+            
+            FullPath.s = GetFullPathFromTree(Item, SubLevel)
+            RunProgram(FullPath, "", GetPathPart(FullPath))
             
           Case #PopupMenuAdd
             
@@ -1862,11 +1874,11 @@ SavePreferences()
 Translator_destroy()
 
 End
-; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 406
-; FirstLine = 391
-; Folding = -------
-; Markers = 934
+; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
+; CursorPosition = 1412
+; FirstLine = 1394
+; Folding = ------
+; Markers = 933
 ; EnableUnicode
 ; EnableXP
 ; UseIcon = gfx\ibisv2.ico
