@@ -101,6 +101,7 @@ Enumeration
   
   #ScrollArea_Credit_Informations
   #Image_Credit_Logo
+  #Btn_Credit_Close
   
 EndEnumeration
 
@@ -189,7 +190,7 @@ EndDataSection
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 102
+; CursorPosition = 103
 ; FirstLine = 83
 ; Folding = -
 ; EnableXP
