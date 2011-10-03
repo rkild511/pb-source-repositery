@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 RC 1 (Linux - x64)">
+  <section name="config">
+    <options closefiles="1" openmode="0" name="Thothbox V2"/>
+    <comment>
+      La version de Thothbox programmé avec un style PBO
+    </comment>
+  </section>
+  <section name="data">
+    <explorer view="" pattern="0"/>
+    <log show="1"/>
+    <lastopen date="2011-10-03 17:48" host="guillaume-desktop"/>
+  </section>
+  <section name="files">
+    <file name="Desktop Configuration File.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="0b434a5df127037c5707fc9d666b02bb"/>
+    </file>
+    <file name="GoScintilla.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="371b569fc5daeaa7e9aab6e537181a2c"/>
+    </file>
+    <file name="Chronometer.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="7a6975af424c013b3af95bcf36aa618d"/>
+    </file>
+    <file name="Gadget Helpers Macros.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="02db8ca3dbaca4bdd5a6a814aceb2888"/>
+    </file>
+    <file name="Levenshtein Distance.pbi">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="9bea2418f6ba80e7d4f3930cddc78aff"/>
+    </file>
+    <file name="Thothbox - Query.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="ed699e94c5d47897ed768aeaa4a32bd7"/>
+    </file>
+    <file name="Thothbox - Proxy.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="764aedac966f12f3c2eeccac4028fc27"/>
+    </file>
+    <file name="Thothbox - Thothbox.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="e10b9c43cfa66f3b6994b6397cdd6fd0"/>
+    </file>
+    <file name="Thothbox - Connection.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="a0d2fa78912514f9ace2020c742f0006"/>
+    </file>
+    <file name="Thothbox - Main.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
+      <fingerprint md5="09d57161eab67e8517f55417aee17638"/>
+    </file>
+    <file name="Thothbox - Language.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="2d382c498dbab9414e7b7e1d9663d497"/>
+    </file>
+    <file name="Thothbox - TwinState.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="9a47c2981bc8009b0983f634e4649449"/>
+    </file>
+    <file name="Thothbox - Support Function.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="fea69206b2b315e18abefe40b1306b38"/>
+    </file>
+    <file name="Thothbox - HttpFile.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="74f2012f6e28ab91455bbfd63481948b"/>
+    </file>
+    <file name="Thothbox - Constants.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="c9f580940280e38cec3804e6dac4df6c"/>
+    </file>
+    <file name="Thothbox - Window.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="6004e86eb4d87e76a8414014248eb242"/>
+    </file>
+    <file name="Thothbox - Credit.pb">
+      <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
+      <fingerprint md5="2107b2a3b96dfaa1ec3a86bb09d74966"/>
+    </file>
+  </section>
+  <section name="targets">
+    <target name="Cible par défaut" enabled="1" default="1">
+      <inputfile value="Thothbox - Main.pb"/>
+      <outputfile value=""/>
+      <options xpskin="1" debug="1"/>
+      <buildcount enable="1" value="1"/>
+    </target>
+  </section>
+</project>
