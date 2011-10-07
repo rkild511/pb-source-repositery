@@ -2,4 +2,4 @@
 
 = Introduction =
 
-Purebasic *free source code* repositery.
+Purebasic *free source code* repositery utility.
