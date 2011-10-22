@@ -1,7 +1,7 @@
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ; Nom du projet : Thothbox
 ; Nom du fichier : Thothbox - Main.pb
-; Version du fichier : 0.0.0
+; Version du fichier : 0.1.1
 ; Programmation : En cours
 ; Programmé par : Guillaume Saumure
 ; Alias : Guimauve
@@ -61,8 +61,9 @@ ThothboxEventManager(Thothbox)
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
-; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 9
+; IDE Options = PureBasic 4.60 RC 2 (Linux - x64)
+; CursorPosition = 3
+; FirstLine = 20
 ; EnableUnicode
 ; EnableXP
 ; DisableDebugger

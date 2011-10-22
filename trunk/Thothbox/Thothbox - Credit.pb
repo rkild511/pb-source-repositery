@@ -127,7 +127,7 @@ EndProcedure
 
 Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
   
-  If CreateWindowEx(#CreditWin, GetCreditWindow(*CreditA), "", #PB_Window_ScreenCentered, #MainWin)
+  If CreateWindowEx(#CreditWin, GetCreditWindow(*CreditA), "", #PB_Window_WindowCentered, #MainWin)
     
     ImageGadget(#Image_Credit_Logo, (WindowWidth(#CreditWin) - #GadgetSpacing - ImageWidth(#Image_Logo)) >> 1, #GadgetSpacing, ImageWidth(#Image_Logo), ImageHeight(#Image_Logo), ImageID(#Image_Logo))
     
@@ -139,7 +139,7 @@ Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
   
       PosY = #GadgetSpacing
       
-      For InformationsID = 0 To #CREDIT_INFORMATIONS_MAX - 1
+      For InformationsID = #Txt_Author_00 To #CREDIT_INFORMATIONS_MAX - 1
         
         If InformationsID = #Txt_Author_00
           PosY + #GadgetHeight
@@ -161,6 +161,8 @@ Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
     
     ButtonGadget(#Btn_Credit_Close, (WindowWidth(#CreditWin) - 120 - #GadgetSpacing) >> 1, WindowHeight(#CreditWin) - #GadgetHeight - #GadgetSpacing, 120, #GadgetHeight, "")
     
+    AddKeyboardShortcut(#CreditWin, #PB_Shortcut_Return, #Btn_Credit_Close)
+    
     Language_To_CreditWindow(*LanguageA)
     
     Repeat
@@ -172,6 +174,9 @@ Procedure OpenCreditWindow(*CreditA.Credit, *LanguageA.Language)
         Case #PB_Event_Menu
           
           Select EventMenu()
+              
+            Case #Btn_Credit_Close
+              EventID = #PB_Event_CloseWindow
               
           EndSelect
           
@@ -197,8 +202,8 @@ EndProcedure
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
-; IDE Options = PureBasic 4.60 RC 1 (Linux - x64)
-; CursorPosition = 161
-; FirstLine = 124
+; IDE Options = PureBasic 4.60 RC 2 (Linux - x64)
+; CursorPosition = 129
+; FirstLine = 115
 ; Folding = --
 ; EnableXP
