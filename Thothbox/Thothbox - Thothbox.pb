@@ -609,8 +609,7 @@ Procedure ThothboxEventManager(*ThothboxA.Thothbox)
             
           Case #Menu_Configuration
             SwitchThothboxDisplayMode(*ThothboxA, #Container_Window_Prefs)
-            
-            
+
           Case #Menu_Quit
             WindowEventID = #PB_Event_CloseWindow
             
@@ -661,8 +660,8 @@ EndProcedure
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
 ; <<<<< FIN DU FICHIER <<<<<
 ; <<<<<<<<<<<<<<<<<<<<<<<<<<
-; IDE Options = PureBasic 4.60 Beta 4 (Windows - x86)
-; CursorPosition = 190
-; FirstLine = 187
-; Folding = ----H+
+; IDE Options = PureBasic 4.60 RC 2 (Linux - x64)
+; CursorPosition = 611
+; FirstLine = 567
+; Folding = ----H+-
 ; EnableXP

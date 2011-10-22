@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 RC 1 (Linux - x64)">
+<project xmlns="http://www.purebasic.com/namespace" version="1.0" creator="PureBasic 4.60 RC 2 (Linux - x64)">
   <section name="config">
     <options closefiles="1" openmode="0" name="Thothbox V2"/>
     <comment>
@@ -10,7 +10,7 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2011-10-03 17:48" host="guillaume-desktop"/>
+    <lastopen date="2011-10-21 21:50" host="guillaume-desktop"/>
   </section>
   <section name="files">
     <file name="Desktop Configuration File.pbi">
@@ -43,7 +43,7 @@
     </file>
     <file name="Thothbox - Thothbox.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
-      <fingerprint md5="e10b9c43cfa66f3b6994b6397cdd6fd0"/>
+      <fingerprint md5="7deb59e31da36263d422ca88bf66464c"/>
     </file>
     <file name="Thothbox - Connection.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
@@ -51,11 +51,11 @@
     </file>
     <file name="Thothbox - Main.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="09d57161eab67e8517f55417aee17638"/>
+      <fingerprint md5="26fae821f47ea29766ee6ee3ed69120c"/>
     </file>
     <file name="Thothbox - Language.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
-      <fingerprint md5="2d382c498dbab9414e7b7e1d9663d497"/>
+      <fingerprint md5="10215df7bc78784d894c04bf4364e486"/>
     </file>
     <file name="Thothbox - TwinState.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
@@ -75,11 +75,11 @@
     </file>
     <file name="Thothbox - Window.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
-      <fingerprint md5="6004e86eb4d87e76a8414014248eb242"/>
+      <fingerprint md5="91d250f8d3db0a53107cab9155c11ee0"/>
     </file>
     <file name="Thothbox - Credit.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="0" panelstate="+"/>
-      <fingerprint md5="2107b2a3b96dfaa1ec3a86bb09d74966"/>
+      <fingerprint md5="41e3381fe01e9633bafbc06f5f1033fc"/>
     </file>
   </section>
   <section name="targets">
